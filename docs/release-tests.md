@@ -1,6 +1,6 @@
 ## BTCP Full Node Wallet
 
-Tests to perform before each release
+**Tests to perform before each release**
 
 1. Connection
 	1. User can connect for the first time.
@@ -23,7 +23,7 @@ Tests to perform before each release
 	4. User can send from Z->Z
 	5. Coinbase transaction error handling is correctly done ('e.g. needs to send full amount to Z').
 
-4. Messaging
+### 4. Messaging
 	1. User can create messaging identity
 	2. User can export messaging identity
 	3. User can import contacts
