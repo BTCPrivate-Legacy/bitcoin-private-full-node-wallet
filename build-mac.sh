@@ -55,7 +55,8 @@ echo "******************"
 echo ""
 
 #build the jar from source
-ant jar -f src/build/build.xml
+./gradlew clean fatJar 
+#./gradlew clean build #includes tests
 
 echo ""
 echo "*******************"

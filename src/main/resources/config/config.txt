@@ -43,7 +43,7 @@
 ##############################################################
 
 # Use as many addnode= settings as you like to connect to specific peers
-addnode=dnsseed.btcprivate.org
+#addnode=dnsseed.btcprivate.org
 
 # Alternatively use as many connect= settings as you like to connect ONLY to specific peers
 #connect=69.164.218.197

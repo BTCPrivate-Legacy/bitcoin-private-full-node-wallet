@@ -14,13 +14,25 @@ plugins {
     id 'application'
 }
 
-// Define the main class for the application
-mainClassName = 'org.btcprivate.wallets.fullnode.ui.BTCPWalletUI'
+version = '1.0.2'
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+
 
 repositories {
     mavenCentral()
 }
 
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Main-Class':'org.btcprivate.wallets.fullnode.ui.BTCPWalletUI'
+    }
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    exclude 'META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA'
+    with jar
+}
 
 dependencies {
     compile group: 'org.bitcoinj', name: 'bitcoinj-core', version: '0.14.5'
