@@ -171,7 +171,20 @@ public class SingleKeyImportDialog
                     {
                         addition = " It corresponds to address:\n" + address;
                     }else {
+
                         address = getAddressForPrivateKey(key);
+                        //still NULL if no balance, since looping over balances to get PKs and check a matching PK.
+                        if(Util.stringIsEmpty(address)) {
+                            //show insufficient balance warning. let them know that they can still manually sweep later on should the blockchain not be synced 100% yet.
+                            JOptionPane.showMessageDialog(
+                                    SingleKeyImportDialog.this.getRootPane().getParent(),
+                                    "Import successful.\n\n"
+                                            + "However, the imported address has no (confirmed) balance.\n"
+                                            + " If there is an unconfirmed balance, please manually sweep to a new address to claim your BTCP once confirmed.\n"
+                                            + " You may need to wait for the blockchain to fully sync.\n",
+                                    "Insufficient Balance", JOptionPane.WARNING_MESSAGE);
+                            return;
+                        }
                     }
 
                     int doSweep = JOptionPane.showConfirmDialog(
@@ -197,10 +210,12 @@ public class SingleKeyImportDialog
                             //show insufficient balance warning. let them know that they can still manually sweep later on should the blockchain not be synced 100% yet.
                             JOptionPane.showMessageDialog(
                                     SingleKeyImportDialog.this.getRootPane().getParent(),
-                                    "The imported address has unsuficcient (confirmed) balance to Sweep.\n"
-                                            + " If there is unconfirmed balance, please manually Sweep your balance later\n"
-                                            + " by generating a new address and send your balance over.\n",
-                                    "No balance to sweep", JOptionPane.ERROR_MESSAGE);
+                                    "The imported address has an insufficient (confirmed) balance - cannot Sweep.\n"
+                                            + " If there is an unconfirmed balance, please manually try again later.\n"
+                                            + " You may need to wait for the blockchain to fully sync.\n"
+                                            + "\n\n"
+                                            + " Your private key has only been imported.",
+                                    "Insufficient Balance", JOptionPane.ERROR_MESSAGE);
                         }
                         else {
                             float amount = balance-txnFee;
@@ -208,9 +223,9 @@ public class SingleKeyImportDialog
                             SingleKeyImportDialog.this.caller.sendCash(address, sweepZ,String.valueOf(amount), "", String.valueOf(txnFee));
                             JOptionPane.showMessageDialog(
                                     SingleKeyImportDialog.this.getRootPane().getParent(),
-                                    String.valueOf(amount) + " was Swept from "+address+"\n"
+                                    String.valueOf(amount) + " was Swept from " + address + "\n"
                                             + " to " + sweepZ,
-                                    "Sweep succeeded",JOptionPane.INFORMATION_MESSAGE);
+                                    "Sweep Successful", JOptionPane.INFORMATION_MESSAGE);
                         }
                     }
 

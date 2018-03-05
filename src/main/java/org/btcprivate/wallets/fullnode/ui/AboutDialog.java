@@ -16,9 +16,11 @@ import java.io.UnsupportedEncodingException;
  * @author Ivan Vaklinov <ivan@vaklinov.com>
  */
 public class AboutDialog
-        extends JDialog {
+        extends JDialog
+{
     public AboutDialog(JFrame parent)
-            throws UnsupportedEncodingException {
+            throws UnsupportedEncodingException
+    {
         this.setTitle("About");
         this.setSize(620, 440);
         this.setLocation(100, 100);
@@ -35,12 +37,12 @@ public class AboutDialog
                         + "Jon Layton <me@jonl.io>"
                         + "\n"
                         + "Donate BTCP: TODO   "
-                        + "\n\n"
+                        +"\n\n"
                         + "Niels Buekers <niels.buekers@gmail.com>"
                         + "\n"
-                        + "Donate BTCP: TODO   "
-                        + "\n\n\n\n"
-                        + "Forked from the ZENCash wallet\n"
+                        + "Donate BTCP: zkN1kCVEy7yNA8BrY8yZNYyLJKcMFs1nDALoXD9eTD3uSGn4jixv1pyYYoroEaKUyyhnkfC8gAm4wLMH2kx3WXgKduLo7eD"
+                        +"\n\n\n\n"
+                        +"Forked from the ZENCash wallet\n"
                         + "Copyright (c) 2016-2017 Ivan Vaklinov <ivan@vaklinov.com> \n" +
                         "\n" +
                         " Permission is hereby granted, free of charge, to any person obtaining a copy\n" +
@@ -72,9 +74,11 @@ public class AboutDialog
         closePanel.add(closeButton);
         this.getContentPane().add(closePanel, BorderLayout.SOUTH);
 
-        closeButton.addActionListener(new ActionListener() {
+        closeButton.addActionListener(new ActionListener()
+        {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e)
+            {
                 AboutDialog.this.setVisible(false);
                 AboutDialog.this.dispose();
             }
@@ -83,4 +87,3 @@ public class AboutDialog
         pack();
     }
 }
-

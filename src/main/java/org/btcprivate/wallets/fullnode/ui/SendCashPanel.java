@@ -54,10 +54,10 @@ import org.btcprivate.wallets.fullnode.util.StatusUpdateErrorReporter;
 public class SendCashPanel
         extends WalletTabPanel
 {
-    private BTCPClientCaller clientCaller;
+    private BTCPClientCaller         clientCaller;
     private StatusUpdateErrorReporter errorReporter;
     private BTCPInstallationObserver installationObserver;
-    private BackupTracker backupTracker;
+    private BackupTracker             backupTracker;
 
     private JComboBox  balanceAddressCombo     = null;
     private JPanel     comboBoxParentPanel     = null;
@@ -399,9 +399,9 @@ public class SendCashPanel
         if (!installationObserver.isOnTestNet())
         {
             //TODO - BTCP
-            if (!(destinationAddress.startsWith("zz") ||
-                    destinationAddress.startsWith("n1") ||
-                    destinationAddress.startsWith("nx")))
+            if (!(destinationAddress.startsWith("zk") ||
+                    destinationAddress.startsWith("b1") ||
+                    destinationAddress.startsWith("bx")))
             {
                 Object[] options = { "OK" };
 
@@ -409,7 +409,7 @@ public class SendCashPanel
                         SendCashPanel.this.getRootPane().getParent(),
                         "The destination address to send BTCP to:\n" +
                                 destinationAddress + "\n"+
-                                "does not appear to be a valid BTCP address. BTCP addresses start with n1, nx or zz!",
+                                "does not appear to be a valid BTCP address. BTCP addresses start with b1, bx or zk!",
                         "Destination Address Invalid",
                         JOptionPane.DEFAULT_OPTION,
                         JOptionPane.ERROR_MESSAGE,
@@ -719,12 +719,10 @@ public class SendCashPanel
             {
                 // Open block explorer
                 Log.info("Transaction ID for block explorer is: " + TXID);
-                // TODO: PEGA88 && JON BTCP EXPLORER
-                String urlPrefix = "https://zcl-explorer.com/tx/";
+                String urlPrefix = "https://explorer.btcprivate.org/tx/";
                 if (installationObserver.isOnTestNet())
                 {
-                    //TODO BTCP testnet explorer
-                    urlPrefix = "https://explorer-testnet.zen-solutions.io/tx/";
+                    urlPrefix = "https://testnet.btcprivate.org/tx/";
                 }
                 Desktop.getDesktop().browse(new URL(urlPrefix + TXID).toURI());
             }

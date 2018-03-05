@@ -100,7 +100,7 @@ public class DashboardPanel
 		tempPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 1, 1));
 		transactionHeadingLabel.setFont(new Font("Helvetica", Font.BOLD, 19));
 		tempPanel.add(transactionHeadingLabel);
-		*/
+		 */
         balanceStatusPanel.add(tempPanel, BorderLayout.CENTER);
 
         balanceStatusPanel.add(walletBalanceLabel = new JLabel(), BorderLayout.EAST);
@@ -254,7 +254,7 @@ public class DashboardPanel
                         return data;
                     }
                 },
-                this.errorReporter, 10000, true);
+                this.errorReporter, 5000, true);
         this.threads.add(this.netInfoGatheringThread);
 
         ActionListener alNetAndBlockchain = new ActionListener() {
@@ -303,7 +303,7 @@ public class DashboardPanel
             return;
         }
 
-        String daemonStatus = "<span style=\"color:green;font-weight:bold\">RUNNING</span>";
+        String daemonStatus = "<span style=\"font-weight:bold\">RUNNING</span>";
         if (daemonInfo.status != DAEMON_STATUS.RUNNING)
         {
             daemonStatus = "<span style=\"color:red;font-weight:bold\">NOT RUNNING</span>";
@@ -357,46 +357,48 @@ public class DashboardPanel
             tickSymbol = " \u2606";
         }
 
-        String tick = "";
-        if (percentage.equals("100"))
-        {
-            tick = "<span style=\"font-weight:bold;font-size:1.4em;color:green\">" + tickSymbol + "</span>";
-        }
+        String tick = "<span style=\"font-weight:bold;color:green\">" + tickSymbol + "</span>";
 
-        String netColor = "red";
-        if (info.numConnections > 0)
+        String netColor = "#808080";
+        if (info.numConnections > 6)
         {
-            netColor = "#cc3300";
-        }
-
-        if (info.numConnections > 2)
+            netColor = "green";
+        }else if (info.numConnections > 0)
         {
             netColor = "black";
         }
 
-        if (info.numConnections > 6)
-        {
-            netColor = "green";
-        }
         DateFormat formatter = DateFormat.getDateTimeInstance();
         String lastBlockDate = formatter.format(info.lastBlockDate);
-
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("<html>");
         stringBuilder.append("Daemon status: ");
         stringBuilder.append(daemonStatus);
-        stringBuilder.append(" - Network: ");
-        stringBuilder.append("<span style=\"font-weight:bold;color:");
+        stringBuilder.append(" - <span style=\"font-weight:bold;color:");
         stringBuilder.append(netColor);
         stringBuilder.append("\">");
-        stringBuilder.append(info.numConnections);
-        stringBuilder.append(" connections </span>");
-        stringBuilder.append(" - Blockchain synchronized: <span style=\"font-weight:bold\">");
+        if(info.numConnections == 1) {
+            stringBuilder.append("1 connection</span>");
+        }
+        else if(info.numConnections > 1) {
+            stringBuilder.append(info.numConnections);
+            stringBuilder.append(" connections</span>");
+        }else {
+            stringBuilder.append("Looking for peers...</span>");
+        }
+        stringBuilder.append("<br/>Blockchain sync: <span style=\"font-weight:bold\">");
         stringBuilder.append(percentage);
         stringBuilder.append("%</span>");
-        stringBuilder.append(tick);
-        stringBuilder.append(" <span style=\"font-size:0.8em\"> (latest block: ");
+        if(percentage.equals("100")) {
+            stringBuilder.append("<span style=\"color:green;margin-left: 40px\"> you ");
+            stringBuilder.append("<span style=\"font-weight:bold\">are</span>");
+            stringBuilder.append(" Bitcoin Private</span>");
+            stringBuilder.append(tick);
+        }
+        stringBuilder.append("<br/>(Latest block: ");
         stringBuilder.append(lastBlockDate );
+        stringBuilder.append(", Height: ");
+        stringBuilder.append(info.lastBlockHeight.trim());
         stringBuilder.append(")</span>");
         String text =
                 stringBuilder.toString();

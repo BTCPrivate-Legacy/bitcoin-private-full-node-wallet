@@ -41,7 +41,7 @@ public class StatusUpdateErrorReporter
             lastReportedErrorTime = time;
         }
 
-        String settingsDirectory = ".BitcoinPrivateSwingWallet";
+        String settingsDirectory = ".BitcoinPrivateDesktopWallet";
 
         try
         {

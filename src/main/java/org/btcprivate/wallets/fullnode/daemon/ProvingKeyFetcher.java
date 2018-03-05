@@ -34,8 +34,7 @@ public class ProvingKeyFetcher {
 
     private static final int PROVING_KEY_SIZE = 910173851;
     private static final String SHA256 = "8bc20a7f013b2b58970cddd2e7ea028975c88ae7ceb9259a5344a16bc2c0eef7";
-    private static final String pathURL = "https://z.cash/downloads/sprout-proving.key";
-    // TODO: add backups
+    private static final String pathURL = "https://storage.googleapis.com/btcp-sprout-key/sprout-proving.key";
     //private static final String altPathURL = "https://zensystem.io/downloads/sprout-proving.key";
 
     public void fetchIfMissing(StartupProgressDialog parent) throws IOException {
