@@ -14,7 +14,7 @@ plugins {
     id 'application'
 }
 
-version = '1.0.2'
+
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
@@ -34,6 +34,18 @@ task fatJar(type: Jar) {
     exclude 'META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA'
     with jar
 }
+
+
+tasks.fatJar.doFirst{
+    File file = file('src/main/java/org/btcprivate/wallets/fullnode/ui/BTCPWalletUI.java')
+    file.readLines().each{
+        if(it.contains("private static final String VERSION")){
+            def versionString =it.split("=")[1]
+            version=versionString.substring(2, versionString.length()-2)
+        }
+    }
+}
+
 
 dependencies {
     compile group: 'org.bitcoinj', name: 'bitcoinj-core', version: '0.14.5'
