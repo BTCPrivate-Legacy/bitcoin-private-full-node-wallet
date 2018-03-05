@@ -3,7 +3,9 @@
 Tests to perform before each release
 
 1. Connection
-	1. User can connect for the first time. This includes an empty BTCPrivate dir
+	1. User can connect for the first time.
+		1. User can connect without having a BTCPrivate directory
+		2. User can connect having an existing, matching, BTCPrivate directory
 	2. User can connect consecutively. This includes being able to resume from previous sync
 
 2. Key management
