@@ -28,8 +28,9 @@ task fatJar(type: Jar) {
     manifest {
         attributes 'Main-Class':'org.btcprivate.wallets.fullnode.ui.BTCPWalletUI'
     }
-    baseName = project.name + '-all'
+    //baseName = project.name + '-all'
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    //avoid signage issues
     exclude 'META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA'
     with jar
 }
