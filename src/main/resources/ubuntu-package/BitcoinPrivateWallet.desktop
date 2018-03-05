@@ -1,0 +1,13 @@
+[Desktop Entry]
+Version=0.0.1
+Name=Bitcoin Private Wallet
+Comment=Bitcoin Private Desktop GUI Wallet (full node)
+GenericName=Bitcoin Private Wallet
+Keywords=BitcoinPrivate;cryptocurrency;BTCP;
+Exec=bitcoinpricat-desktop-gui-wallet
+Terminal=false
+X-MultipleArgs=false
+Type=Application
+Icon=/usr/lib/bitcoinprivate-gui-wallet/btcp-icon.png
+Categories=GNOME;Application;
+StartupNotify=true

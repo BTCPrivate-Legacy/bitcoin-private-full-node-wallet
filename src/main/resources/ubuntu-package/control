@@ -1,0 +1,8 @@
+Package: bitcoinprivate-desktop-gui-wallet
+Version: 0.0.1
+Section: misc
+Priority: low
+Architecture: all
+Description: Bitcoin Private Desktop GUI Wallet
+Maintainer: btcprivate.org
+Depends: default-jdk, btcp
