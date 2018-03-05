@@ -1,30 +1,14 @@
 package org.btcprivate.wallets.fullnode.messaging;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileFilter;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
-
 import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.WriterConfig;
 import org.btcprivate.wallets.fullnode.util.Log;
 import org.btcprivate.wallets.fullnode.util.OSUtil;
 import org.btcprivate.wallets.fullnode.util.Util;
+
+import java.io.*;
+import java.util.*;
 
 
 /**
@@ -428,7 +412,7 @@ public class MessagingStorage {
      * Returns all known messages for a certain contact in ascending date order.
      * If identity not found etc. thorws an exception
      *
-     * @param contact
+     * @param conact
      * @return all known messages for a certain contact in ascending date order.
      */
     public List<Message> getAllMessagesForContact(MessagingIdentity contact)
@@ -547,7 +531,7 @@ public class MessagingStorage {
 
     // Stores the details of a single contact
     // Root dir may be like:
-    // ~/.BitcoinPrivateSwingWallet/messaging/contact_XXXX
+    // ~/.BitcoinPrivateDesktopWallet/messaging/contact_XXXX
     static class SingleContactStorage {
         final String IGNORED_GROUP_IDS = "ignored_group_ids.json";
 
@@ -730,7 +714,7 @@ public class MessagingStorage {
 
     // Stores messages of one type - sent/received for one contact
     // Root directory may be like:
-    // ~/.BitcoinPrivateSwingWallet/messaging/contact_XXXX/sent
+    // ~/.BitcoinPrivateDesktopWallet/messaging/contact_XXXX/sent
     static class SentOrReceivedMessagesStore {
         private File rootDir;
 

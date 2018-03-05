@@ -315,10 +315,11 @@ public class Util
 
     // zc/zt - mainnet and testnet
     // TODO: We need a much more precise criterion to distinguish T/Z adresses;
+    // Testnet: "zz", "zt"
     public static boolean isZAddress(String address)
     {
         return (address != null) &&
-                (address.startsWith("zc") || address.startsWith("zz") || address.startsWith("zt")) &&
+                address.startsWith("zk") &&
                 (address.length() > 40);
     }
 

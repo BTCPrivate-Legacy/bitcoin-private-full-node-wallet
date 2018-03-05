@@ -1,32 +1,18 @@
 package org.btcprivate.wallets.fullnode.daemon;
 
 
-import java.io.File;
-
-import org.btcprivate.wallets.fullnode.util.OSUtil.*;
-
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.HashMap;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-
-import com.eclipsesource.json.Json;
-import com.eclipsesource.json.JsonArray;
-import com.eclipsesource.json.JsonObject;
-import com.eclipsesource.json.JsonValue;
-import com.eclipsesource.json.ParseException;
-import com.eclipsesource.json.WriterConfig;
+import com.eclipsesource.json.*;
 import org.btcprivate.wallets.fullnode.util.Log;
 import org.btcprivate.wallets.fullnode.util.OSUtil;
+import org.btcprivate.wallets.fullnode.util.OSUtil.OS_TYPE;
 import org.btcprivate.wallets.fullnode.util.Util;
+
+import java.io.File;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.*;
 
 public class BTCPClientCaller {
 
@@ -44,6 +30,7 @@ public class BTCPClientCaller {
     public static class NetworkAndBlockchainInfo {
         public int numConnections;
         public Date lastBlockDate;
+        public String lastBlockHeight;
     }
 
 
@@ -653,6 +640,7 @@ public class BTCPClientCaller {
         info.numConnections = Integer.valueOf(strNumCons.trim());
 
         String strBlockCount = this.executeCommandAndGetSingleStringResponse("getblockcount");
+        info.lastBlockHeight = strBlockCount;
         String lastBlockHash = this.executeCommandAndGetSingleStringResponse("getblockhash", strBlockCount.trim());
         JsonObject lastBlock = this.executeCommandAndGetJsonObject("getblock", wrapStringParameter(lastBlockHash.trim()));
         info.lastBlockDate = new Date(Long.valueOf(lastBlock.getLong("time", -1) * 1000L));

@@ -28,4 +28,4 @@
 #  THE SOFTWARE.
 #
 
-java -jar /usr/lib/bitcoinprivate-gui-wallet/BitcoinPrivateSwingWallet.jar
+java -jar /usr/lib/bitcoinprivate-gui-wallet/BitcoinPrivateDesktopWallet.jar
