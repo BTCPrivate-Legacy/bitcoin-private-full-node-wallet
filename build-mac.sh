@@ -23,18 +23,6 @@ else
   rm -rf jar2app
 fi
 
-#fetch + install dylibbundler
-if [ -e /usr/local/bin/dylibbundler ]
-then
-    echo "dylibbundler already installed - OK"
-else
-	git clone https://github.com/auriamg/macdylibbundler
-	cd macdylibbundler
-	sudo make install
-  cd ..
-  rm -rf macdylibbundler
-fi
-
 if [ ! -e ./btcpd ]
 then
 	echo "please provide btcpd in the root directory"
