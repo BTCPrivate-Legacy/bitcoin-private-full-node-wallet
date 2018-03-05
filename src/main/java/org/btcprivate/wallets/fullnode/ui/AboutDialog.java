@@ -36,7 +36,7 @@ public class AboutDialog
                 "" + "Copyright (c) 2018 - The Bitcoin Private Team\n\n"
                         + "Jon Layton <me@jonl.io>"
                         + "\n"
-                        + "Donate BTCP: TODO   "
+                        + "Donate BTCP: zkT7ciUjQavpH4W7g7FvjortXn8aaKdCxBpU9Fx5Qydy6C9yC9taiTRjCyTTVCXFiLcXjrxNGwpcK5D1f6VTeChA2JyVFai"
                         +"\n\n"
                         + "Niels Buekers <niels.buekers@gmail.com>"
                         + "\n"
