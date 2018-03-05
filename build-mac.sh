@@ -64,7 +64,7 @@ echo "|| Packaging App ||"
 echo "*******************"
 echo ""
 #package jar to app
-jar2app build/libs/BitcoinPrivateDesktopWallet-1.0.2.jar -n BitcoinPrivateDesktopWallet  -i ./src/main/resources/images/btcp.icns
+jar2app build/libs/BitcoinPrivateDesktopWallet-*.jar -n BitcoinPrivateDesktopWallet  -i ./src/main/resources/images/btcp.icns
 
 #add btcpd and btcp-cli into the required Contents folder of the App
 cp ./btcpd ./BitcoinPrivateDesktopWallet.app/Contents/btcpd
