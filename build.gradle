@@ -5,7 +5,6 @@
  * For more details take a look at the Java Quickstart chapter in the Gradle
  * user guide available at https://docs.gradle.org/4.6/userguide/tutorial_java_projects.html
  */
-
 plugins {
     // Apply the java plugin to add support for Java
     id 'java'
@@ -14,10 +13,8 @@ plugins {
     id 'application'
 }
 
-
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
-
 
 mainClassName='org.btcprivate.wallets.fullnode.ui.BTCPWalletUI'
 
