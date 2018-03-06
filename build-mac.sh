@@ -61,3 +61,7 @@ cp ./btcp-cli ./BitcoinPrivateDesktopWallet.app/Contents/btcp-cli
 
 chmod +x ./BitcoinPrivateDesktopWallet.app/Contents/btcpd
 chmod +x ./BitcoinPrivateDesktopWallet.app/Contents/btcp-cli
+
+VERSION=1.0.2
+sudo hdiutil create -fs "HFS+" -volname "BTCP Full-Node GUI Wallet - Installer" -srcfolder "." btcp-desktop-wallet-$VERSION-macosx.dmg
+

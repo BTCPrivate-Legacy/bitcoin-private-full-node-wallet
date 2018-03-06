@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+@SuppressWarnings({"deprecation"})
 public class Log
 {
     private static PrintStream fileOut;

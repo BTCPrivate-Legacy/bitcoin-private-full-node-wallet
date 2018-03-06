@@ -34,6 +34,7 @@ import org.btcprivate.wallets.fullnode.util.Util;
  *
  * @author Ivan Vaklinov <ivan@vaklinov.com>
  */
+@SuppressWarnings({"deprecation"})
 public class MessagingPanel
         extends WalletTabPanel
 {

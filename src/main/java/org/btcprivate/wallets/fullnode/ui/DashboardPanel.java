@@ -29,6 +29,7 @@ import java.util.Date;
  *
  * @author Ivan Vaklinov <ivan@vaklinov.com>
  */
+@SuppressWarnings({"deprecation"})
 public class DashboardPanel
         extends WalletTabPanel
 {

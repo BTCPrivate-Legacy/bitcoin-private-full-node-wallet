@@ -19,15 +19,11 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 
-
 repositories {
     mavenCentral()
 }
 
 
-compileJava {
-    options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
-}
 
 
 task fatJar(type: Jar) {
@@ -49,8 +45,10 @@ tasks.fatJar.doFirst{
             version=versionString.substring(2, versionString.length()-2)
         }
     }
+    compileJava {
+        options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+    }
 }
-
 
 dependencies {
     compile group: 'org.bitcoinj', name: 'bitcoinj-core', version: '0.14.5'
