@@ -19,6 +19,8 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 
+mainClassName='org.btcprivate.wallets.fullnode.ui.BTCPWalletUI'
+
 repositories {
     mavenCentral()
 }
