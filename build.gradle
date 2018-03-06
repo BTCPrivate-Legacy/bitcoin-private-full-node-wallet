@@ -23,9 +23,6 @@ repositories {
     mavenCentral()
 }
 
-
-
-
 task fatJar(type: Jar) {
     manifest {
         attributes 'Main-Class':'org.btcprivate.wallets.fullnode.ui.BTCPWalletUI'

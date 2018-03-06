@@ -54,14 +54,24 @@ echo ""
 #package jar to app
 jar2app build/libs/BitcoinPrivateDesktopWallet-*.jar -n BitcoinPrivateDesktopWallet  -i ./src/main/resources/images/btcp.icns
 
+mkdir installer-mac/
+
+#add instruction text
+touch "installer-mac/To install, copy it into Applications"
+touch "installer-mac/(btcpd and btcp-cli are bundled)"
+
+mv BitcoinPrivateDesktopWallet.app installer-mac/
+
 #add btcpd and btcp-cli into the required Contents folder of the App
-cp ./btcpd ./BitcoinPrivateDesktopWallet.app/Contents/btcpd
-cp ./btcp-cli ./BitcoinPrivateDesktopWallet.app/Contents/btcp-cli
+cp ./btcpd ./installer-mac/BitcoinPrivateDesktopWallet.app/Contents/btcpd
+cp ./btcp-cli ./installer-mac/BitcoinPrivateDesktopWallet.app/Contents/btcp-cli
 
+chmod +x ./installer-mac/BitcoinPrivateDesktopWallet.app/Contents/btcpd
+chmod +x ./installer-mac/BitcoinPrivateDesktopWallet.app/Contents/btcp-cli
 
-chmod +x ./BitcoinPrivateDesktopWallet.app/Contents/btcpd
-chmod +x ./BitcoinPrivateDesktopWallet.app/Contents/btcp-cli
+mv ./installer-mac/BitcoinPrivateDesktopWallet.app "./installer-mac/Bitcoin Private Desktop Wallet.app"
 
 VERSION=1.0.2
-sudo hdiutil create -fs "HFS+" -volname "BTCP Full-Node GUI Wallet - Installer" -srcfolder "." btcp-desktop-wallet-$VERSION-macosx.dmg
+sudo hdiutil create -fs "HFS+" -volname "BTCP Full-Node GUI Wallet - Installer" -srcfolder "installer-mac" btcp-desktop-wallet-$VERSION-macosx.dmg
 
+rm -rf installer-mac
