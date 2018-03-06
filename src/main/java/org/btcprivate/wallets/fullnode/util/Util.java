@@ -14,6 +14,7 @@ import java.security.NoSuchAlgorithmException;
  *
  * @author Ivan Vaklinov <ivan@vaklinov.com>
  */
+@SuppressWarnings({"unchecked", "deprecated"})
 public class Util
 {
     // Compares two string arrays (two dimensional).

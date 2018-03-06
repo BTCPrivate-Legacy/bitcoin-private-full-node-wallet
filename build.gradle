@@ -24,6 +24,12 @@ repositories {
     mavenCentral()
 }
 
+
+compileJava {
+    options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+}
+
+
 task fatJar(type: Jar) {
     manifest {
         attributes 'Main-Class':'org.btcprivate.wallets.fullnode.ui.BTCPWalletUI'
@@ -34,7 +40,6 @@ task fatJar(type: Jar) {
     exclude 'META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA'
     with jar
 }
-
 
 tasks.fatJar.doFirst{
     File file = file('src/main/java/org/btcprivate/wallets/fullnode/ui/BTCPWalletUI.java')
