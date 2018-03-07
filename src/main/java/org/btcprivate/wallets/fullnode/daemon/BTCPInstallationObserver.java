@@ -97,7 +97,6 @@ public class BTCPInstallationObserver {
                 } else {
                     break;
                 }
-
                 if (i == 2) {
                     try {
                         info.cpuPercentage = Double.valueOf(token);
@@ -114,7 +113,9 @@ public class BTCPInstallationObserver {
                     } catch (NumberFormatException nfe) { /* TODO: Log or handle exception */ }
                     ;
                 } else if (i == 10) {
-                    if ((token.equals(daemonName)) || (token.endsWith("/" + daemonName))) {
+                	// account for the case where Application names in Mac OS X commonly have spaces in them
+                	String fullToken = line.substring(line.indexOf(token), line.length());
+                    if ((fullToken.equals(daemonName)) || (fullToken.contains("/" + daemonName + " ")) || (fullToken.endsWith("/" + daemonName))) {
                         info.status = DAEMON_STATUS.RUNNING;
                         foundZCash = true;
                         break;

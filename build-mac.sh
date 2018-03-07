@@ -7,9 +7,10 @@
 
 # set up your app name, version number, and background image file name
 APP_NAME="BitcoinPrivateDesktopWallet"
+APP_DISPLAY_NAME="Bitcoin Private Desktop Wallet"
 VERSION="1.0.2"
-APP_EXE="${APP_NAME}.app/Contents/MacOS/JavaAppLauncher"
-VOL_NAME="${APP_NAME} ${VERSION}"
+APP_EXE="${APP_DISPLAY_NAME}.app/Contents/MacOS/JavaAppLauncher"
+VOL_NAME="${APP_NAME}_${VERSION}"
 DMG_TMP="${VOL_NAME}-temp.dmg"
 DMG_FINAL="${VOL_NAME}.dmg"
 STAGING_DIR="./Install"
@@ -68,19 +69,18 @@ echo "|| Packaging App ||"
 echo "*******************"
 echo ""
 #package jar to app
-jar2app build/libs/BitcoinPrivateDesktopWallet-*.jar -n $APP_NAME  -i ./src/main/resources/images/btcp.icns
-
+jar2app build/libs/"${APP_NAME}"-*.jar -n "${APP_DISPLAY_NAME}"  -i ./src/main/resources/images/btcp.icns -b org.btcprivate.wallets.fullnode -v "${VERSION}" -s "${VERSION}"
 
 #add btcpd and btcp-cli into the required Contents folder of the App
-cp ./btcpd ./BitcoinPrivateDesktopWallet.app/Contents/btcpd
-cp ./btcp-cli ./BitcoinPrivateDesktopWallet.app/Contents/btcp-cli
+cp ./btcpd "./${APP_DISPLAY_NAME}.app/Contents/btcpd"
+cp ./btcp-cli "./${APP_DISPLAY_NAME}.app/Contents/btcp-cli"
 
-chmod +x ./BitcoinPrivateDesktopWallet.app/Contents/btcpd
-chmod +x ./BitcoinPrivateDesktopWallet.app/Contents/btcp-cli
+chmod +x "./${APP_DISPLAY_NAME}.app/Contents/btcpd"
+chmod +x "./${APP_DISPLAY_NAME}.app/Contents/btcp-cli"
 
 rm -rf "${STAGING_DIR}" "${DMG_TMP}" "${DMG_FINAL}"
 mkdir -p "${STAGING_DIR}"
-cp -rpf "${APP_NAME}.app" "${STAGING_DIR}"
+cp -rpf "${APP_DISPLAY_NAME}.app" "${STAGING_DIR}"
 
 # figure out how big our DMG needs to be
 #  assumes our contents are at least 5M!
@@ -128,7 +128,7 @@ echo '
            set arrangement of viewOptions to not arranged
            set icon size of viewOptions to 144
            set background picture of viewOptions to file ".background:'${DMG_BACKGROUND_IMG}'"
-           set position of item "'${APP_NAME}'.app" of container window to {205, 238}
+           set position of item "'${APP_DISPLAY_NAME}'.app" of container window to {205, 238}
            set position of item "Applications" of container window to {615, 238}
            close
            open
@@ -150,7 +150,7 @@ hdiutil convert "${DMG_TMP}" -format UDZO -imagekey zlib-level=9 -o "${DMG_FINAL
 # clean up
 rm -rf "${DMG_TMP}"
 rm -rf "${STAGING_DIR}"
-rm -rf "${APP_NAME}.app"
+# rm -rf "${APP_DISPLAY_NAME}.app"
 
 echo 'Done.'
  
