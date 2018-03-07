@@ -69,7 +69,9 @@ echo "|| Packaging App ||"
 echo "*******************"
 echo ""
 #package jar to app
-jar2app build/libs/"${APP_NAME}"-*.jar -n "${APP_DISPLAY_NAME}"  -i ./src/main/resources/images/btcp.icns -b org.btcprivate.wallets.fullnode -v "${VERSION}" -s "${VERSION}"
+jar2app build/libs/"${APP_NAME}"-*.jar  -i ./src/main/resources/images/btcp.icns -b org.btcprivate.wallets.fullnode -v "${VERSION}" -s "${VERSION}"
+mv "${APP_NAME}-${VERSION}.app" "${APP_DISPLAY_NAME}.app"
+
 
 #add btcpd and btcp-cli into the required Contents folder of the App
 cp ./btcpd "./${APP_DISPLAY_NAME}.app/Contents/btcpd"
