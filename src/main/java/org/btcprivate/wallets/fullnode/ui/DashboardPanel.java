@@ -90,9 +90,9 @@ public class DashboardPanel
         tempPanel.add(logoLabel);
         // TODO: use relative size
         JLabel btcpLabel = new JLabel(" Bitcoin Private Wallet ");
-        btcpLabel.setFont(new Font("Helvetica", Font.BOLD | Font.ITALIC, 28));
+        btcpLabel.setFont(new Font("Helvetica", Font.BOLD, 28));
         tempPanel.add(btcpLabel);
-        tempPanel.setToolTipText("Powered by Bitcoin Private");
+        tempPanel.setToolTipText("Bitcoin Private Full-Node GUI Wallet");
         balanceStatusPanel.add(tempPanel, BorderLayout.WEST);
         // TODO: use relative size - only!
 		/*
@@ -304,14 +304,14 @@ public class DashboardPanel
             return;
         }
 
-        String daemonStatus = "<span style=\"font-weight:bold\">RUNNING</span>";
+        String daemonStatus = "";
         if (daemonInfo.status != DAEMON_STATUS.RUNNING)
         {
-            daemonStatus = "<span style=\"color:red;font-weight:bold\">NOT RUNNING</span>";
+            daemonStatus = "<span style=\"color:red;font-weight:bold\">DAEMON NOT RUNNING</span>";
             System.out.print(daemonInfo.status);
         }
 
-        // TODO: Get the start date right after ZCash release - from first block!!!
+        // TODO: Get the start date right after ZClassic release - from first block!!!
         final Date startDate = new Date("06 Nov 2016 02:00:00 GMT");
         final Date nowDate = new Date(System.currentTimeMillis());
 
@@ -319,7 +319,7 @@ public class DashboardPanel
         long remainingTime = nowDate.getTime() - info.lastBlockDate.getTime();
 
         String percentage = "100";
-        if (remainingTime > 20 * 60 * 1000) // After 20 min we report 100% anyway
+        if (remainingTime > 20 * 60 * 1000) // TODO is this wrong? After 20 min we report 100% anyway
         {
             double dPercentage = 100d - (((double)remainingTime / (double) fullTime) * 100d);
             if (dPercentage < 0)
@@ -330,6 +330,7 @@ public class DashboardPanel
                 dPercentage = 100d;
             }
 
+            //TODO #.00 until 100%
             DecimalFormat df = new DecimalFormat("##0.##");
             percentage = df.format(dPercentage);
 
@@ -360,8 +361,8 @@ public class DashboardPanel
 
         String tick = "<span style=\"font-weight:bold;color:green\">" + tickSymbol + "</span>";
 
-        String netColor = "#808080";
-        if (info.numConnections > 6)
+        String netColor = "black"; //"#808080";
+        if (info.numConnections > 2)
         {
             netColor = "green";
         }else if (info.numConnections > 0)
@@ -369,15 +370,22 @@ public class DashboardPanel
             netColor = "black";
         }
 
+        String syncPercentageColor = "black";
+        if (percentage.toString() == "100")
+        {
+            syncPercentageColor = "green";
+        } else {
+            syncPercentageColor = "black";
+        }
+
+
         DateFormat formatter = DateFormat.getDateTimeInstance();
         String lastBlockDate = formatter.format(info.lastBlockDate);
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("<html>");
-        stringBuilder.append("Daemon status: ");
-        stringBuilder.append(daemonStatus);
-        stringBuilder.append(" - <span style=\"font-weight:bold;color:");
+        stringBuilder.append("<span style=\"font-weight:bold;color:");
         stringBuilder.append(netColor);
-        stringBuilder.append("\">");
+        stringBuilder.append("\"> ");
         if(info.numConnections == 1) {
             stringBuilder.append("1 connection</span>");
         }
@@ -387,20 +395,26 @@ public class DashboardPanel
         }else {
             stringBuilder.append("Looking for peers...</span>");
         }
-        stringBuilder.append("<br/>Blockchain sync: <span style=\"font-weight:bold\">");
+        stringBuilder.append("<br/><span style=\"font-weight:bold\">Sync &nbsp;-&nbsp;</span><span style=\"font-weight:bold;color:");
+        stringBuilder.append(syncPercentageColor);
+        stringBuilder.append("\">");
         stringBuilder.append(percentage);
-        stringBuilder.append("%</span>");
+        stringBuilder.append("%</span><br/>");
         if(percentage.equals("100")) {
+            /*
+            stringBuilder.append(tick);
             stringBuilder.append("<span style=\"color:green;margin-left: 40px\"> you ");
             stringBuilder.append("<span style=\"font-weight:bold\">are</span>");
             stringBuilder.append(" Bitcoin Private</span>");
             stringBuilder.append(tick);
+            */
         }
-        stringBuilder.append("<br/>(Latest block: ");
-        stringBuilder.append(lastBlockDate );
-        stringBuilder.append(", Height: ");
+        stringBuilder.append("<span style=\"font-weight:bold\">Block&nbsp;-&nbsp;");
         stringBuilder.append(info.lastBlockHeight.trim());
-        stringBuilder.append(")</span>");
+        stringBuilder.append("</span>");
+        stringBuilder.append(", mined ");
+        stringBuilder.append(lastBlockDate);
+        stringBuilder.append("</span>");
         String text =
                 stringBuilder.toString();
         this.daemonStatusLabel.setText(text);
@@ -435,11 +449,11 @@ public class DashboardPanel
 
         String text =
                 "<html><p text-align: right>" +
-                        "<span style=\"" + color1 + "\">Transparent (T) Balance: " +
+                        "<span style=\"" + color1 + "\">Transparent Balance (b1): " +
                         transparentUCBalance + " BTCP </span><br/> " +
-                        "<span style=\"" + color2 + "\">Private (Z) Balance: " +
+                        "<span style=\"" + color2 + "\">Private Balance (zk): " +
                         privateUCBalance + " BTCP </span><br/> " +
-                        "<span style=\"font-weight:bold;" + color3 + "\">Total: " +
+                        "<span style=\"" + color3 + "\">Total Balance: " +
                         totalUCBalance + " BTCP </span>"
                         + "</p></html>";
 
@@ -454,8 +468,8 @@ public class DashboardPanel
                     "Unconfirmed (unspendable) balance is being shown due to an<br/>" +
                     "ongoing transaction! Actual confirmed (spendable) balance is:<br/>" +
                     "<span style=\"font-size:5px\"><br/></span>" +
-                    "Transparent (T): " + transparentBalance + " BTCP<br/>" +
-                    "Private (Z): <span>" + privateBalance + " BTCP</span><br/>" +
+                    "Transparent: " + transparentBalance + " BTCP<br/>" +
+                    "Private: <span>" + privateBalance + " BTCP</span><br/>" +
                     "Total: <span style=\"font-weight:bold\">" + totalBalance + " BTCP</span>" +
                     "</html>";
         }
