@@ -215,7 +215,8 @@ public class CreateGroupDialog
 
         // There is no way (it seems) to find out what Z address was added - we need to
         // analyze which one it is.
-        // TODO: This relies that noone is importing keys at the same time!
+        // TODO: This relies that no-one is importing keys at the same time!
+        // remark Pega --> should not matter since single-threaded?
         Set<String> addressesBeforeAddition = new HashSet<String>();
         for (String address: this.caller.getWalletZAddresses())
         {
@@ -272,7 +273,6 @@ public class CreateGroupDialog
         } else
         {
             CreateGroupDialog.this.createdGroup = existingIdentity;
-            // TODO: Group was already added it seems - see if it can be made more reliable
             JOptionPane.showMessageDialog(
                     CreateGroupDialog.this,
                     "A messaging group for keyphrase:\n" +

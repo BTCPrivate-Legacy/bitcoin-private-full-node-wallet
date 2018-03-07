@@ -160,43 +160,33 @@ public class DashboardPanel
         this.timers.add(t);
 
         // Thread and timer to update the wallet balance
-        this.walletBalanceGatheringThread = new DataGatheringThread<WalletBalance>(
-                new DataGatheringThread.DataGatherer<WalletBalance>()
-                {
-                    public WalletBalance gatherData()
-                            throws Exception
-                    {
-                        long start = System.currentTimeMillis();
-                        WalletBalance balance = DashboardPanel.this.clientCaller.getWalletInfo();
-                        long end = System.currentTimeMillis();
+        this.walletBalanceGatheringThread = new DataGatheringThread<>(
+                () -> {
+                    long start = System.currentTimeMillis();
+                    WalletBalance balance = DashboardPanel.this.clientCaller.getWalletInfo();
+                    long end = System.currentTimeMillis();
 
-                        // TODO: move this call to a dedicated one-off gathering thread - this is the wrong place
-                        // it works but a better design is needed.
-                        if (DashboardPanel.this.walletIsEncrypted == null)
-                        {
-                            DashboardPanel.this.walletIsEncrypted = DashboardPanel.this.clientCaller.isWalletEncrypted();
-                        }
-
-                        Log.info("Gathering of dashboard wallet balance data done in " + (end - start) + "ms." );
-
-                        return balance;
+                    // TODO: move this call to a dedicated one-off gathering thread - this is the wrong place
+                    // it works but a better design is needed.
+                    if (DashboardPanel.this.walletIsEncrypted == null) {
+                        DashboardPanel.this.walletIsEncrypted = DashboardPanel.this.clientCaller.isWalletEncrypted();
                     }
+
+                    Log.info("Gathering of dashboard wallet balance data done in " + (end - start) + "ms.");
+
+                    return balance;
                 },
                 this.errorReporter, 8000, true);
         this.threads.add(this.walletBalanceGatheringThread);
 
-        ActionListener alWalletBalance = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e)
+        ActionListener alWalletBalance = e -> {
+            try
             {
-                try
-                {
-                    DashboardPanel.this.updateWalletStatusLabel();
-                } catch (Exception ex)
-                {
-                    Log.error("Unexpected error: ", ex);
-                    DashboardPanel.this.errorReporter.reportError(ex);
-                }
+                DashboardPanel.this.updateWalletStatusLabel();
+            } catch (Exception ex)
+            {
+                Log.error("Unexpected error: ", ex);
+                DashboardPanel.this.errorReporter.reportError(ex);
             }
         };
         Timer walletBalanceTimer =  new Timer(2000, alWalletBalance);
@@ -205,35 +195,26 @@ public class DashboardPanel
         this.timers.add(walletBalanceTimer);
 
         // Thread and timer to update the transactions table
-        this.transactionGatheringThread = new DataGatheringThread<String[][]>(
-                new DataGatheringThread.DataGatherer<String[][]>()
-                {
-                    public String[][] gatherData()
-                            throws Exception
-                    {
-                        long start = System.currentTimeMillis();
-                        String[][] data =  DashboardPanel.this.getTransactionsDataFromWallet();
-                        long end = System.currentTimeMillis();
-                        Log.info("Gathering of dashboard wallet transactions table data done in " + (end - start) + "ms." );
+        this.transactionGatheringThread = new DataGatheringThread<>(
+                () -> {
+                    long start = System.currentTimeMillis();
+                    String[][] data = DashboardPanel.this.getTransactionsDataFromWallet();
+                    long end = System.currentTimeMillis();
+                    Log.info("Gathering of dashboard wallet transactions table data done in " + (end - start) + "ms.");
 
-                        return data;
-                    }
+                    return data;
                 },
                 this.errorReporter, 20000);
         this.threads.add(this.transactionGatheringThread);
 
-        ActionListener alTransactions = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e)
+        ActionListener alTransactions = e -> {
+            try
             {
-                try
-                {
-                    DashboardPanel.this.updateWalletTransactionsTable();
-                } catch (Exception ex)
-                {
-                    Log.error("Unexpected error: ", ex);
-                    DashboardPanel.this.errorReporter.reportError(ex);
-                }
+                DashboardPanel.this.updateWalletTransactionsTable();
+            } catch (Exception ex)
+            {
+                Log.error("Unexpected error: ", ex);
+                DashboardPanel.this.errorReporter.reportError(ex);
             }
         };
         t = new Timer(5000, alTransactions);
@@ -241,48 +222,32 @@ public class DashboardPanel
         this.timers.add(t);
 
         // Thread and timer to update the network and blockchain details
-        this.netInfoGatheringThread = new DataGatheringThread<NetworkAndBlockchainInfo>(
-                new DataGatheringThread.DataGatherer<NetworkAndBlockchainInfo>()
-                {
-                    public NetworkAndBlockchainInfo gatherData()
-                            throws Exception
-                    {
-                        long start = System.currentTimeMillis();
-                        NetworkAndBlockchainInfo data =  DashboardPanel.this.clientCaller.getNetworkAndBlockchainInfo();
-                        long end = System.currentTimeMillis();
-                        Log.info("Gathering of network and blockchain info data done in " + (end - start) + "ms." );
+        this.netInfoGatheringThread = new DataGatheringThread<>(
+                () -> {
+                    long start = System.currentTimeMillis();
+                    NetworkAndBlockchainInfo data =  DashboardPanel.this.clientCaller.getNetworkAndBlockchainInfo();
+                    long end = System.currentTimeMillis();
+                    Log.info("Gathering of network and blockchain info data done in " + (end - start) + "ms." );
 
-                        return data;
-                    }
+                    return data;
                 },
                 this.errorReporter, 5000, true);
         this.threads.add(this.netInfoGatheringThread);
 
-        ActionListener alNetAndBlockchain = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e)
+        ActionListener alNetAndBlockchain = e -> {
+            try
             {
-                try
-                {
-                    DashboardPanel.this.updateStatusLabels();
-                } catch (Exception ex)
-                {
-                    Log.error("Unexpected error: ", ex);
-                    DashboardPanel.this.errorReporter.reportError(ex);
-                }
+                DashboardPanel.this.updateStatusLabels();
+            } catch (Exception ex)
+            {
+                Log.error("Unexpected error: ", ex);
+                DashboardPanel.this.errorReporter.reportError(ex);
             }
         };
         Timer netAndBlockchainTimer = new Timer(5000, alNetAndBlockchain);
         netAndBlockchainTimer.setInitialDelay(1000);
         netAndBlockchainTimer.start();
         this.timers.add(netAndBlockchainTimer);
-    }
-
-
-    // May be null!
-    public Integer getBlockchainPercentage()
-    {
-        return this.blockchainPercentage;
     }
 
     private void updateStatusLabels()

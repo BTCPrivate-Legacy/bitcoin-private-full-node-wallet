@@ -18,12 +18,11 @@ import java.io.IOException;
  * @author Ivan Vaklinov <ivan@vaklinov.com>
  */
 public class SingleKeyImportDialog
-        extends JDialog
-{
+        extends JDialog {
     protected boolean isOKPressed = false;
-    protected String  key    = null;
+    protected String key = null;
 
-    protected JLabel     keyLabel = null;
+    protected JLabel keyLabel = null;
     protected JTextField keyField = null;
 
     protected JLabel upperLabel;
@@ -38,8 +37,7 @@ public class SingleKeyImportDialog
     JButton okButton;
     JButton cancelButton;
 
-    public SingleKeyImportDialog(JFrame parent, BTCPClientCaller caller,SendCashPanel sendCashPanel,JTabbedPane parentTabs)
-    {
+    public SingleKeyImportDialog(JFrame parent, BTCPClientCaller caller, SendCashPanel sendCashPanel, JTabbedPane parentTabs) {
         super(parent);
         this.caller = caller;
 
@@ -101,20 +99,16 @@ public class SingleKeyImportDialog
         buttonPanel.add(cancelButton);
         this.getContentPane().add(buttonPanel, BorderLayout.SOUTH);
 
-        okButton.addActionListener(new ActionListener()
-        {
+        okButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 SingleKeyImportDialog.this.processOK();
             }
         });
 
-        cancelButton.addActionListener(new ActionListener()
-        {
+        cancelButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 SingleKeyImportDialog.this.setVisible(false);
                 SingleKeyImportDialog.this.dispose();
 
@@ -131,12 +125,10 @@ public class SingleKeyImportDialog
     }
 
 
-    protected void processOK()
-    {
+    protected void processOK() {
         final String key = SingleKeyImportDialog.this.keyField.getText();
 
-        if ((key == null) || (key.trim().length() <= 0))
-        {
+        if ((key == null) || (key.trim().length() <= 0)) {
             JOptionPane.showMessageDialog(
                     SingleKeyImportDialog.this.getParent(),
                     "Please enter a key.", "No Key Entered",
@@ -157,24 +149,20 @@ public class SingleKeyImportDialog
 
         SingleKeyImportDialog.this.keyField.setEditable(false);
 
-        new Thread(new Runnable()
-        {
+        new Thread(new Runnable() {
             @Override
-            public void run()
-            {
-                try
-                {
+            public void run() {
+                try {
                     String address = SingleKeyImportDialog.this.caller.importPrivateKey(key);
                     String addition = "";
 
-                    if (!Util.stringIsEmpty(address))
-                    {
+                    if (!Util.stringIsEmpty(address)) {
                         addition = " It corresponds to address:\n" + address;
-                    }else {
+                    } else {
 
                         address = getAddressForPrivateKey(key);
                         //still NULL if no balance, since looping over balances to get PKs and check a matching PK.
-                        if(Util.stringIsEmpty(address)) {
+                        if (Util.stringIsEmpty(address)) {
                             //show insufficient balance warning. let them know that they can still manually sweep later on should the blockchain not be synced 100% yet.
                             JOptionPane.showMessageDialog(
                                     SingleKeyImportDialog.this.getRootPane().getParent(),
@@ -199,14 +187,13 @@ public class SingleKeyImportDialog
                             "Successfully Imported Private Key",
                             JOptionPane.YES_NO_OPTION);
 
-                    if (doSweep == JOptionPane.YES_OPTION)
-                    {
+                    if (doSweep == JOptionPane.YES_OPTION) {
                         float txnFee = 0.0001f;
                         String sweepZ = SingleKeyImportDialog.this.caller.createNewAddress(true);
                         String stringBalance = SingleKeyImportDialog.this.caller.getBalanceForAddress(address);
                         //full amount minus default txn fee
                         float balance = Float.parseFloat(stringBalance);
-                        if(balance == 0 || balance <= txnFee) {
+                        if (balance == 0 || balance <= txnFee) {
                             //show insufficient balance warning. let them know that they can still manually sweep later on should the blockchain not be synced 100% yet.
                             JOptionPane.showMessageDialog(
                                     SingleKeyImportDialog.this.getRootPane().getParent(),
@@ -216,11 +203,10 @@ public class SingleKeyImportDialog
                                             + "\n\n"
                                             + " Your private key has only been imported.",
                                     "Insufficient Balance", JOptionPane.ERROR_MESSAGE);
-                        }
-                        else {
-                            float amount = balance-txnFee;
+                        } else {
+                            float amount = balance - txnFee;
 
-                            SingleKeyImportDialog.this.caller.sendCash(address, sweepZ,String.valueOf(amount), "", String.valueOf(txnFee));
+                            SingleKeyImportDialog.this.caller.sendCash(address, sweepZ, String.valueOf(amount), "", String.valueOf(txnFee));
                             JOptionPane.showMessageDialog(
                                     SingleKeyImportDialog.this.getRootPane().getParent(),
                                     String.valueOf(amount) + " was Swept from " + address + "\n"
@@ -230,8 +216,7 @@ public class SingleKeyImportDialog
                     }
 
 
-                } catch (Exception e)
-                {
+                } catch (Exception e) {
                     Log.error("An error occurred when importing private key", e);
 
                     JOptionPane.showMessageDialog(
@@ -241,8 +226,7 @@ public class SingleKeyImportDialog
                                     "Please ensure that btcpd is running, and the key is in the correct \n" +
                                     "form. Try again later.\n",
                             "Error Importing Private Key", JOptionPane.ERROR_MESSAGE);
-                } finally
-                {
+                } finally {
                     SingleKeyImportDialog.this.setVisible(false);
                     SingleKeyImportDialog.this.dispose();
                 }
@@ -253,27 +237,25 @@ public class SingleKeyImportDialog
                 String address = null;
                 try {
                     //if found, return
-                    if(address != null) return address;
+                    if (address != null) return address;
                     //else continue looking in other addresses
-                    for(String a: caller.getWalletZAddresses()) {
-                        if(caller.getZPrivateKey(a).equals(privKey)) {
+                    for (String a : caller.getWalletZAddresses()) {
+                        if (caller.getZPrivateKey(a).equals(privKey)) {
                             address = a;
                             break;
                         }
                     }
                     //if found, return
-                    if(address != null) return address;
-                    for(String a: caller.getWalletPublicAddressesWithUnspentOutputs()) {
-                        if(caller.getTPrivateKey(a).equals(privKey)) {
+                    if (address != null) return address;
+                    for (String a : caller.getWalletPublicAddressesWithUnspentOutputs()) {
+                        if (caller.getTPrivateKey(a).equals(privKey)) {
                             address = a;
                             break;
                         }
                     }
 
-
                 } catch (WalletCallException | IOException | InterruptedException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    Log.error("Error retrieving address for private key. Error: " + e.getMessage());
                 }
                 return address;
             }
@@ -281,14 +263,12 @@ public class SingleKeyImportDialog
     }
 
 
-    public boolean isOKPressed()
-    {
+    public boolean isOKPressed() {
         return this.isOKPressed;
     }
 
 
-    public String getKey()
-    {
+    public String getKey() {
         return this.key;
     }
 }

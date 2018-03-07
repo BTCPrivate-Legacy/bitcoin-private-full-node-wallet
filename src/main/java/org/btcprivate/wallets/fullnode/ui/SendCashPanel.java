@@ -398,7 +398,6 @@ public class SendCashPanel
         // Prevent accidental sending to non-BTCP addresses (as seems to be supported by daemon)
         if (!installationObserver.isOnTestNet())
         {
-            //TODO - BTCP
             if (!(destinationAddress.startsWith("zk") ||
                     destinationAddress.startsWith("b1") ||
                     destinationAddress.startsWith("bx")))

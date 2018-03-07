@@ -172,7 +172,6 @@ public class MessagingOptionsEditDialog
     private void addFormField(JPanel detailsPanel, String name, JComponent field) {
         JPanel tempPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 4, 2));
         JLabel tempLabel = new JLabel(name, JLabel.RIGHT);
-        // TODO: hard sizing of labels may not scale!
         final int width = new JLabel("Amount of BTCP to send with every message: ").getPreferredSize().width + 30;
         tempLabel.setPreferredSize(new Dimension(width, tempLabel.getPreferredSize().height));
         tempPanel.add(tempLabel);

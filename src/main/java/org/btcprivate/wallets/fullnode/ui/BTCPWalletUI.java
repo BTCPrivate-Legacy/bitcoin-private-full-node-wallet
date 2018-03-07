@@ -54,19 +54,35 @@ public class BTCPWalletUI extends JFrame {
     private MessagingPanel messagingPanel;
 
 
-    private static final String LOCAL_MSG_VERIFYING_PROVING_KEY = "LOCAL_MSG_VERIFYING_PROVING_KEY";
+    private static final String LOCAL_MSG_STARTING = "LOCAL_MSG_STARTING";
+    private static final String LOCAL_MSG_TAB_TRANSACTIONS = "LOCAL_MSG_TAB_TRANSACTIONS";
+    private static final String LOCAL_MSG_TAB_ADDRESSES = "LOCAL_MSG_TAB_ADDRESSES";
+    private static final String LOCAL_MSG_TAB_SEND = "LOCAL_MSG_TAB_SEND";
+    private static final String LOCAL_MSG_TAB_ADDRESS_BOOK = "LOCAL_MSG_TAB_ADDRESS_BOOK";
+    private static final String LOCAL_MSG_TAB_MSG = "LOCAL_MSG_TAB_MSG";
 
-    ResourceBundle bundle = ResourceBundle.getBundle("Messages");
+    //image resources
+    private static final String IMG_TAB_TRANSACTIONS = "images/overview.png";
+    private static final String IMG_TAB_ADDRESSES = "images/own-addresses.png";
+    private static final String IMG_TAB_SEND = "images/send.png";
+    private static final String IMG_TAB_ADDRESS_BOOK = "images/address-book.png";
+    private static final String IMG_TAB_MSG = "images/messaging.png";
+
+    ResourceBundle bundle = ResourceBundle.getBundle("btcpwalletui");
 
 
     JTabbedPane tabs;
 
-    public BTCPWalletUI(StartupProgressDialog progressDialog,String title)
+    private String local(String key){
+        return bundle.getString(key);
+    }
+
+    public BTCPWalletUI(StartupProgressDialog progressDialog, String title)
             throws IOException, InterruptedException, WalletCallException {
         super(title);
 
         if (progressDialog != null) {
-            progressDialog.setProgressText("Starting wallet GUI...");
+            progressDialog.setProgressText(bundle.getString(LOCAL_MSG_STARTING));
         }
 
         ClassLoader cl = this.getClass().getClassLoader();
@@ -89,21 +105,21 @@ public class BTCPWalletUI extends JFrame {
         tabs.setFont(newTabFont);
         BackupTracker backupTracker = new BackupTracker(this);
 
-        tabs.addTab("Transactions ",
-                new ImageIcon(cl.getResource("images/overview.png")),
+        tabs.addTab(local(LOCAL_MSG_TAB_TRANSACTIONS).concat(" "),
+                new ImageIcon(cl.getResource(IMG_TAB_TRANSACTIONS)),
                 dashboard = new DashboardPanel(this, installationObserver, clientCaller,
                         errorReporter, backupTracker));
-        tabs.addTab("My Addresses ",
-                new ImageIcon(cl.getResource("images/own-addresses.png")),
+        tabs.addTab(local(LOCAL_MSG_TAB_ADDRESSES),
+                new ImageIcon(cl.getResource(IMG_TAB_ADDRESSES)),
                 addresses = new AddressesPanel(this, clientCaller, errorReporter));
-        tabs.addTab("Send BTCP ",
-                new ImageIcon(cl.getResource("images/send.png")),
+        tabs.addTab(local(LOCAL_MSG_TAB_SEND),
+                new ImageIcon(cl.getResource(IMG_TAB_SEND)),
                 sendPanel = new SendCashPanel(clientCaller, errorReporter, installationObserver, backupTracker));
-        tabs.addTab("Address Book ",
-                new ImageIcon(cl.getResource("images/address-book.png")),
+        tabs.addTab(local(LOCAL_MSG_TAB_ADDRESS_BOOK),
+                new ImageIcon(cl.getResource(IMG_TAB_ADDRESS_BOOK)),
                 addressBookPanel = new AddressBookPanel(sendPanel, tabs));
-        tabs.addTab("Messaging ",
-                new ImageIcon(cl.getResource("images/messaging.png")),
+        tabs.addTab(local(LOCAL_MSG_TAB_MSG),
+                new ImageIcon(cl.getResource(IMG_TAB_MSG)),
                 messagingPanel = new MessagingPanel(this, sendPanel, tabs, clientCaller, errorReporter));
         contentPane.add(tabs);
 
@@ -137,38 +153,13 @@ public class BTCPWalletUI extends JFrame {
         JMenu wallet = new JMenu("Wallet");
         wallet.setMnemonic(KeyEvent.VK_W);
 
-		/*
-         * Disabled since there is no way of importing the wallet so does not make sense for Avg. Joe to export
-		 */
-		/*
-		 * wallet.add(menuItemBackup = new JMenuItem("Backup", KeyEvent.VK_B));
-		 * menuItemBackup.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, accelaratorKeyMask));
-		 */
 
-        //comment out since was disabled in the first place
-        //wallet.add(menuItemEncrypt = new JMenuItem("Encrypt", KeyEvent.VK_E));
-        //menuItemEncrypt.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, accelaratorKeyMask));
-		/*
-		 * disable since importing in BULK gives these issues:
-		 * https://github.com/zcash/zcash/issues/2486
-		 * https://github.com/zcash/zcash/issues/2524
-		 */
-
-		/*
-		wallet.add(menuItemExportKeys = new JMenuItem("Export Private Keys", KeyEvent.VK_K));
-		menuItemExportKeys.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_K, accelaratorKeyMask));
-		wallet.add(menuItemImportKeys = new JMenuItem("Import Private Keys", KeyEvent.VK_I));
-		menuItemImportKeys.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I, accelaratorKeyMask));
-		 */
         wallet.add(menuItemShowPrivateKey = new JMenuItem("View One Private Key", KeyEvent.VK_P));
         menuItemShowPrivateKey.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, accelaratorKeyMask));
         wallet.add(menuItemImportOnePrivateKey = new JMenuItem("Import One Private Key", KeyEvent.VK_N));
         menuItemImportOnePrivateKey.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, accelaratorKeyMask));
 
-		/*
-		 * wallet.add(menuItemExportToArizen = new JMenuItem("Export to Arizen wallet...", KeyEvent.VK_A));
-		 * menuItemExportToArizen.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, accelaratorKeyMask));
-		 */
+
         mb.add(wallet);
 
         JMenu messaging = new JMenu("Messaging");
@@ -198,129 +189,60 @@ public class BTCPWalletUI extends JFrame {
 
         mb.add(messaging);
 
-        // TODO: Temporarily disable encryption until further notice - Oct 24 2016
-        //menuItemEncrypt.setEnabled(false);
-
         this.setJMenuBar(mb);
 
         // Add listeners etc.
         menuItemExit.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        BTCPWalletUI.this.exitProgram();
-                    }
-                }
+                e -> BTCPWalletUI.this.exitProgram()
         );
 
         menuItemAbout.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        try {
-                            AboutDialog ad = new AboutDialog(BTCPWalletUI.this);
-                            ad.setVisible(true);
-                        } catch (UnsupportedEncodingException uee) {
-                            Log.error("Unexpected error: ", uee);
-                            BTCPWalletUI.this.errorReporter.reportError(uee);
-                        }
+                e -> {
+                    try {
+                        AboutDialog ad = new AboutDialog(BTCPWalletUI.this);
+                        ad.setVisible(true);
+                    } catch (UnsupportedEncodingException uee) {
+                        Log.error("Unexpected error: ", uee);
+                        BTCPWalletUI.this.errorReporter.reportError(uee);
                     }
                 }
         );
         menuItemShowPrivateKey.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        BTCPWalletUI.this.walletOps.showPrivateKey();
-                    }
-                }
+                e -> BTCPWalletUI.this.walletOps.showPrivateKey()
         );
 
         menuItemImportOnePrivateKey.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        BTCPWalletUI.this.walletOps.importSinglePrivateKey();
-                    }
-                }
+                e -> BTCPWalletUI.this.walletOps.importSinglePrivateKey()
         );
 
         menuItemOwnIdentity.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        BTCPWalletUI.this.messagingPanel.openOwnIdentityDialog();
-                    }
-                }
+                e -> BTCPWalletUI.this.messagingPanel.openOwnIdentityDialog()
         );
 
         menuItemExportOwnIdentity.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        BTCPWalletUI.this.messagingPanel.exportOwnIdentity();
-                    }
-                }
+                e -> BTCPWalletUI.this.messagingPanel.exportOwnIdentity()
         );
 
         menuItemImportContactIdentity.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        BTCPWalletUI.this.messagingPanel.importContactIdentity();
-                    }
-                }
+                e -> BTCPWalletUI.this.messagingPanel.importContactIdentity()
         );
 
         menuItemAddMessagingGroup.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        BTCPWalletUI.this.messagingPanel.addMessagingGroup();
-                    }
-                }
+                e -> BTCPWalletUI.this.messagingPanel.addMessagingGroup()
         );
 
         menuItemRemoveContactIdentity.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        BTCPWalletUI.this.messagingPanel.removeSelectedContact();
-                    }
-                }
+                e -> BTCPWalletUI.this.messagingPanel.removeSelectedContact()
         );
 
         menuItemMessagingOptions.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        BTCPWalletUI.this.messagingPanel.openOptionsDialog();
-                    }
-                }
+                e -> BTCPWalletUI.this.messagingPanel.openOptionsDialog()
         );
 
         menuItemShareFileViaIPFS.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        BTCPWalletUI.this.messagingPanel.shareFileViaIPFS();
-                    }
-                }
+                e -> BTCPWalletUI.this.messagingPanel.shareFileViaIPFS()
         );
 
-		/*
-		 * menuItemExportToArizen.addActionListener(
-
-				new ActionListener()
-				{
-					@Override
-					public void actionPerformed(ActionEvent e)
-					{
-						BTCPWalletUI.this.walletOps.exportToArizenWallet();
-					}
-				}
-				);
-		 */
 
         // Close operation
         this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -332,37 +254,35 @@ public class BTCPWalletUI extends JFrame {
         });
 
         // Show initial message
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    String userDir = OSUtil.getSettingsDirectory();
-                    File warningFlagFile = new File(userDir + File.separator + "initialInfoShown_0.75.flag");
-                    if (warningFlagFile.exists()) {
-                        return;
-                    } else {
-                        warningFlagFile.createNewFile();
-                    }
-
-                } catch (IOException ioe) {
-					/* TODO: report exceptions to the user */
-                    Log.error("Unexpected error: ", ioe);
+        SwingUtilities.invokeLater(() -> {
+            try {
+                String userDir = OSUtil.getSettingsDirectory();
+                File warningFlagFile = new File(userDir + File.separator + "initialInfoShown_0.75.flag");
+                if (warningFlagFile.exists()) {
+                    return;
+                } else {
+                    warningFlagFile.createNewFile();
                 }
 
-                JOptionPane.showMessageDialog(
-                        BTCPWalletUI.this.getRootPane().getParent(),
-                        "The Bitcoin Private Full-Node Desktop Wallet is currently considered experimental. Use of this software\n" +
-                                "comes at your own risk! Be sure to read the list of known issues and limitations\n" +
-                                "at this page: https://github.com/BTCPrivate/bitcoin-private-full-node-wallet\n\n" +
-                                "THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n" +
-                                "IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n" +
-                                "FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n" +
-                                "AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n" +
-                                "LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n" +
-                                "OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN\n" +
-                                "THE SOFTWARE.\n\n" +
-                                "(This message will only be shown once per release)",
-                        "Disclaimer", JOptionPane.INFORMATION_MESSAGE);
+            } catch (IOException ioe) {
+                /* TODO: report exceptions to the user */
+                Log.error("Unexpected error: ", ioe);
             }
+
+            JOptionPane.showMessageDialog(
+                    BTCPWalletUI.this.getRootPane().getParent(),
+                    "The Bitcoin Private Full-Node Desktop Wallet is currently considered experimental. Use of this software\n" +
+                            "comes at your own risk! Be sure to read the list of known issues and limitations\n" +
+                            "at this page: https://github.com/BTCPrivate/bitcoin-private-full-node-wallet\n\n" +
+                            "THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n" +
+                            "IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n" +
+                            "FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n" +
+                            "AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n" +
+                            "LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n" +
+                            "OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN\n" +
+                            "THE SOFTWARE.\n\n" +
+                            "(This message will only be shown once per release)",
+                    "Disclaimer", JOptionPane.INFORMATION_MESSAGE);
         });
 
         // Finally dispose of the progress dialog
@@ -480,7 +400,7 @@ public class BTCPWalletUI extends JFrame {
             initialClientCaller = null;
 
             // Main GUI is created here
-            BTCPWalletUI ui = new BTCPWalletUI(startupBar,title);
+            BTCPWalletUI ui = new BTCPWalletUI(startupBar, title);
             ui.setVisible(true);
 
         } catch (InstallationDetectionException ide) {
