@@ -400,15 +400,6 @@ public class DashboardPanel
         stringBuilder.append("\">");
         stringBuilder.append(percentage);
         stringBuilder.append("%</span><br/>");
-        if(percentage.equals("100")) {
-            /*
-            stringBuilder.append(tick);
-            stringBuilder.append("<span style=\"color:green;margin-left: 40px\"> you ");
-            stringBuilder.append("<span style=\"font-weight:bold\">are</span>");
-            stringBuilder.append(" Bitcoin Private</span>");
-            stringBuilder.append(tick);
-            */
-        }
         stringBuilder.append("<span style=\"font-weight:bold\">Block&nbsp;-&nbsp;");
         stringBuilder.append(info.lastBlockHeight.trim());
         stringBuilder.append("</span>");

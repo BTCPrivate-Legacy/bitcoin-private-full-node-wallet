@@ -1,5 +1,7 @@
 package org.btcprivate.wallets.fullnode.daemon;
 
+import org.btcprivate.wallets.fullnode.util.Log;
+
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -7,31 +9,27 @@ import java.io.Reader;
 
 
 /**
- * Executes a command and retruns the result.
+ * Executes a command and retruns sthe result.
  *
  * @author Ivan Vaklinov <ivan@vaklinov.com>
  */
-public class CommandExecutor
-{
+public class CommandExecutor {
     private String args[];
 
     public CommandExecutor(String args[])
-            throws IOException
-    {
+            throws IOException {
         this.args = args;
     }
 
 
     public Process startChildProcess()
-            throws IOException
-    {
+            throws IOException {
         return Runtime.getRuntime().exec(args);
     }
 
 
     public String execute()
-            throws IOException, InterruptedException
-    {
+            throws IOException, InterruptedException {
         final StringBuffer result = new StringBuffer();
 
         Runtime rt = Runtime.getRuntime();
@@ -42,44 +40,28 @@ public class CommandExecutor
         final Reader err = new InputStreamReader(proc.getErrorStream());
 
         Thread inThread = new Thread(
-                new Runnable()
-                {
-                    @Override
-                    public void run()
-                    {
-                        try
-                        {
-                            int c;
-                            while ((c = in.read()) != -1)
-                            {
-                                result.append((char)c);
-                            }
-                        } catch (IOException ioe)
-                        {
-                            // TODO: log or handle the exception
+                () -> {
+                    try {
+                        int c;
+                        while ((c = in.read()) != -1) {
+                            result.append((char) c);
                         }
+                    } catch (IOException ioe) {
+                        Log.error("Error while executing command on daemon. Command attempted: " + args + ". Error: " + ioe.getMessage());
                     }
                 }
         );
         inThread.start();
 
-        Thread errThread =  new Thread(
-                new Runnable()
-                {
-                    @Override
-                    public void run()
-                    {
-                        try
-                        {
-                            int c;
-                            while ((c = err.read()) != -1)
-                            {
-                                result.append((char)c);
-                            }
-                        } catch (IOException ioe)
-                        {
-                            // TODO: log or handle the exception
+        Thread errThread = new Thread(
+                () -> {
+                    try {
+                        int c;
+                        while ((c = err.read()) != -1) {
+                            result.append((char) c);
                         }
+                    } catch (IOException ioe) {
+                        Log.error("Error while executing command on daemon. Command attempted: " + args + ". Error: " + ioe.getMessage());
                     }
                 }
         );
