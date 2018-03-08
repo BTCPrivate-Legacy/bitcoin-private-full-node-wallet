@@ -8,6 +8,9 @@ import java.lang.reflect.Method;
 import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Locale;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 
 /**
  * Utilities - generally reusable across classes.
@@ -17,6 +20,22 @@ import java.security.NoSuchAlgorithmException;
 @SuppressWarnings({"unchecked", "deprecated"})
 public class Util
 {
+
+    public static ResourceBundle bundle;
+
+
+    public static String local(String key) {
+        if (bundle == null) {
+            try {
+                Locale locale = Locale.getDefault();
+                bundle = ResourceBundle.getBundle("btcpwalletui",locale);
+            }catch(MissingResourceException mre){
+                Locale locale = Locale.ENGLISH;
+                bundle = ResourceBundle.getBundle("btcpwalletui",locale);
+            }
+        }
+        return bundle.getString(key);
+    }
     // Compares two string arrays (two dimensional).
     public static boolean arraysAreDifferent(String ar1[][], String ar2[][])
     {

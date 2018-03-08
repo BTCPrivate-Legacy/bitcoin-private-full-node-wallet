@@ -8,11 +8,8 @@ import org.btcprivate.wallets.fullnode.daemon.BTCPInstallationObserver.DAEMON_ST
 import org.btcprivate.wallets.fullnode.daemon.BTCPInstallationObserver.DaemonInfo;
 import org.btcprivate.wallets.fullnode.daemon.BTCPInstallationObserver.InstallationDetectionException;
 import org.btcprivate.wallets.fullnode.messaging.MessagingPanel;
-import org.btcprivate.wallets.fullnode.util.BackupTracker;
-import org.btcprivate.wallets.fullnode.util.Log;
-import org.btcprivate.wallets.fullnode.util.OSUtil;
+import org.btcprivate.wallets.fullnode.util.*;
 import org.btcprivate.wallets.fullnode.util.OSUtil.OS_TYPE;
-import org.btcprivate.wallets.fullnode.util.StatusUpdateErrorReporter;
 
 import javax.swing.*;
 import javax.swing.UIManager.LookAndFeelInfo;
@@ -68,21 +65,15 @@ public class BTCPWalletUI extends JFrame {
     private static final String IMG_TAB_ADDRESS_BOOK = "images/address-book.png";
     private static final String IMG_TAB_MSG = "images/messaging.png";
 
-    ResourceBundle bundle = ResourceBundle.getBundle("btcpwalletui");
-
-
     JTabbedPane tabs;
 
-    private String local(String key){
-        return bundle.getString(key);
-    }
 
     public BTCPWalletUI(StartupProgressDialog progressDialog, String title)
             throws IOException, InterruptedException, WalletCallException {
         super(title);
 
         if (progressDialog != null) {
-            progressDialog.setProgressText(bundle.getString(LOCAL_MSG_STARTING));
+            progressDialog.setProgressText(Util.local(LOCAL_MSG_STARTING));
         }
 
         ClassLoader cl = this.getClass().getClassLoader();
@@ -105,20 +96,20 @@ public class BTCPWalletUI extends JFrame {
         tabs.setFont(newTabFont);
         BackupTracker backupTracker = new BackupTracker(this);
 
-        tabs.addTab(local(LOCAL_MSG_TAB_TRANSACTIONS).concat(" "),
+        tabs.addTab(Util.local(LOCAL_MSG_TAB_TRANSACTIONS).concat(" "),
                 new ImageIcon(cl.getResource(IMG_TAB_TRANSACTIONS)),
                 dashboard = new DashboardPanel(this, installationObserver, clientCaller,
                         errorReporter, backupTracker));
-        tabs.addTab(local(LOCAL_MSG_TAB_ADDRESSES),
+        tabs.addTab(Util.local(LOCAL_MSG_TAB_ADDRESSES),
                 new ImageIcon(cl.getResource(IMG_TAB_ADDRESSES)),
                 addresses = new AddressesPanel(this, clientCaller, errorReporter));
-        tabs.addTab(local(LOCAL_MSG_TAB_SEND),
+        tabs.addTab(Util.local(LOCAL_MSG_TAB_SEND),
                 new ImageIcon(cl.getResource(IMG_TAB_SEND)),
                 sendPanel = new SendCashPanel(clientCaller, errorReporter, installationObserver, backupTracker));
-        tabs.addTab(local(LOCAL_MSG_TAB_ADDRESS_BOOK),
+        tabs.addTab(Util.local(LOCAL_MSG_TAB_ADDRESS_BOOK),
                 new ImageIcon(cl.getResource(IMG_TAB_ADDRESS_BOOK)),
                 addressBookPanel = new AddressBookPanel(sendPanel, tabs));
-        tabs.addTab(local(LOCAL_MSG_TAB_MSG),
+        tabs.addTab(Util.local(LOCAL_MSG_TAB_MSG),
                 new ImageIcon(cl.getResource(IMG_TAB_MSG)),
                 messagingPanel = new MessagingPanel(this, sendPanel, tabs, clientCaller, errorReporter));
         contentPane.add(tabs);

@@ -25,6 +25,7 @@ import javax.xml.bind.DatatypeConverter;
 import org.btcprivate.wallets.fullnode.ui.StartupProgressDialog;
 import org.btcprivate.wallets.fullnode.util.OSUtil;
 import org.btcprivate.wallets.fullnode.util.OSUtil.*;
+import org.btcprivate.wallets.fullnode.util.Util;
 
 
 /**
@@ -42,8 +43,6 @@ public class ProvingKeyFetcher {
     private static final String LOCAL_MSG_DOWNLOADING_PROVING_KEY = "LOCAL_MSG_DOWNLOADING_PROVING_KEY";
     private static final String LOCAL_MSG_VERIFYING_PROVING_KEY = "LOCAL_MSG_VERIFYING_PROVING_KEY";
 
-
-    ResourceBundle bundle = ResourceBundle.getBundle("Messages");
 
     public void fetchIfMissing(StartupProgressDialog parent) throws IOException {
         try {
@@ -85,7 +84,7 @@ public class ProvingKeyFetcher {
             return;
         }
 
-        JOptionPane.showMessageDialog(parent,bundle.getString(LOCAL_MSG_PROVINGKEY_DOWNLOAD_REQURED));
+        JOptionPane.showMessageDialog(parent, Util.local(LOCAL_MSG_PROVINGKEY_DOWNLOAD_REQURED));
 
         parent.setProgressText(LOCAL_MSG_DOWNLOADING_PROVING_KEY);
         provingKeyFile.delete();
