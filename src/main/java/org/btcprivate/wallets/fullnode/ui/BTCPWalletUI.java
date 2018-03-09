@@ -83,7 +83,7 @@ public class BTCPWalletUI extends JFrame {
         // Build content
         tabs = new JTabbedPane();
         Font oldTabFont = tabs.getFont();
-        Font newTabFont = new Font(oldTabFont.getName(), Font.BOLD | Font.ITALIC, oldTabFont.getSize() * 57 / 50);
+        Font newTabFont = new Font(oldTabFont.getName(), Font.BOLD, oldTabFont.getSize() * 57 / 50);
         tabs.setFont(newTabFont);
         BackupTracker backupTracker = new BackupTracker(this);
 
