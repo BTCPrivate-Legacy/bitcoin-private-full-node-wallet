@@ -14,18 +14,16 @@ https://github.com/BTCPrivate/bitcoin-private-full-node-wallet/releases
 ![Bitcoin Private Desktop Wallet](https://github.com/BTCPrivate/bitcoin-private-full-node-wallet/raw/master/docs/WalletPreviewWin.png "Bitcoin Private Desktop Wallet")
 
 
-#### WARNING: Careful with 'watch-only' imports! They will appear in 'addresses', but ***do not*** receive funds to them because you have not fully imported the private key! This UX issue will be fixed.
+#### WARNING: Be careful when using this software! It is highly experimental.
+#### Always test with small amounts first! It is your responsibility to properly handle your private keys!
 
-
-## Building, Installing, and Running the Wallet
-
-*To run the Bitcoin Private Full-Node Desktop Wallet from source, you need to have [BitcoinPrivate](https://github.com/BTCPrivate/BitcoinPrivate) built and ready to go. Effectively, this means having a copy of `btcpd` and `btcp-cli` in the .jar's directory.*
+---
 
 #### For best security, it is recommended to build the entire Bitcoin Private wallet by yourself, directly from GitHub.
 
-##### 1. Operating System and Tools
+##### 1 - Operating System and Tools
 
-   You will need Git, Java (JDK7 or later), and Ant.  
+   You will need Git & Java (JDK7 or later)
 
    **MacOS -**
 
@@ -41,7 +39,7 @@ https://github.com/BTCPrivate/bitcoin-private-full-node-wallet/releases
    ```
    The name of the JDK package (`java-1.8.0-openjdk`) may vary depending on the Linux system, so look around if name `java-1.8.0-openjdk` can't be found or doesn't work.
 
-   Commands `git`, `java`, `javac`, `ant` need to be runnable from command line
+   Commands `git`, `java`, `javac` need to be runnable from command line
    before proceeding with build.
 
 ##### 2 - Building from Source Code
@@ -52,42 +50,37 @@ https://github.com/BTCPrivate/bitcoin-private-full-node-wallet/releases
    ```
    Enter:
    ```
-   cd bitcoin-private-full-node-wallet/
+   cd bitcoin-private-full-node-wallet
    ```
    Build:
    ```
-   ant -buildfile ./src/build/build.xml
+   ./gradlew clean fatJar
    ```
-   This may take a few seconds. When it finishes, you will now see `build/jars/BitcoinPrivateDesktopWallet.jar`.
+   This may take a few seconds. When it finishes, you will now see `build/libs/BitcoinPrivateDesktopWallet-VERSION.jar`.
 
    You need to make this file executable:
    ```
-   chmod u+x ./build/jars/BitcoinPrivateDesktopWallet.jar
+   chmod u+x build/libs/BitcoinPrivateDesktopWallet-VERSION.jar
    ```
-   At this point the build process is finished! The final product is the GUI Wallet Java JAR: `build/jars/BitcoinPrivateDesktopWallet.jar`
-
-##### 3. Installing the Base Wallet ([BitcoinPrivate](https://github.com/BTCPrivate/BitcoinPrivate))
-
-Once you've built Bitcoin Private from source code, `btcpd` and `btcp-cli` will appear in `~/BitcoinPrivate/src`.
-
-You will need to copy them beside the jar, and rename them to `btcpd` and `btcp-cli`:
-
-```
-cp ~/BitcoinPrivate/src/btcpd build/jars/btcpd
-cp ~/BitcoinPrivate/src/btcp-cli build/jars/btcp-cli
-```
-
-You can now run the Desktop GUI Wallet:
-
-```
-java -jar build/jars/BitcoinPrivateDesktopWallet.jar
-```
-
-Or just double-click it!
+   Copy the daemon and cli from the [Bitcoin Private CLI Wallet](https://github.com/BTCPrivate/BitcoinPrivate) beside the .jar:
+   ```
+   cp ~/BitcoinPrivate/src/btcpd build/libs/btcpd
+   cp ~/BitcoinPrivate/src/btcp-cli build/libs/btcp-cli
+   ```
+   At this point the build process is finished! The final product is the GUI Wallet Java JAR: `build/libs/BitcoinPrivateDesktopWallet-VERSION.jar`
 
 
-If you are using Ubuntu or another Linux, you may need to
-right-click `BitcoinPrivateDesktopWallet.jar` file and choose "Open with OpenJDK 8 Runtime".
+   You can now run the Desktop GUI Wallet:
+
+   ```
+   java -jar build/libs/BitcoinPrivateDesktopWallet-VERSION.jar
+   ```
+
+   Or just double-click it!
+
+
+   If you are using Ubuntu or another Linux, you may need to
+   right-click `BitcoinPrivateDesktopWallet-VERSION.jar` file and choose "Open with OpenJDK 8 Runtime".
 
 
 ### `btcprivate.conf`
