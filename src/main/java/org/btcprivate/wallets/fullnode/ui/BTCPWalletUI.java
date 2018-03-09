@@ -42,7 +42,6 @@ public class BTCPWalletUI extends JFrame {
     private JMenuItem menuItemAddMessagingGroup;
     private JMenuItem menuItemRemoveContactIdentity;
     private JMenuItem menuItemMessagingOptions;
-    private JMenuItem menuItemShareFileViaIPFS;
 
     private DashboardPanel dashboard;
     private AddressesPanel addresses;
@@ -57,6 +56,25 @@ public class BTCPWalletUI extends JFrame {
     private static final String LOCAL_MSG_TAB_SEND = "LOCAL_MSG_TAB_SEND";
     private static final String LOCAL_MSG_TAB_ADDRESS_BOOK = "LOCAL_MSG_TAB_ADDRESS_BOOK";
     private static final String LOCAL_MSG_TAB_MSG = "LOCAL_MSG_TAB_MSG";
+    private static final String SUFFIX_TESTNET = " [TESTNET] ";
+    private static final String LOCAL_MENU_MAIN ="LOCAL_MENU_MAIN";
+    private static final String LOCAL_MENU_ABOUT = "LOCAL_MENU_ABOUT";
+    private static final String LOCAL_MENU_QUIT = "LOCAL_MENU_QUIT";
+    private static final String LOCAL_MENU_WALLET = "LOCAL_MENU_WALLET";
+    private static final String LOCAL_MENU_VIEW_PK = "LOCAL_MENU_VIEW_PK";
+    private static final String LOCAL_MENU_IMPORT_PK = "LOCAL_MENU_IMPORT_PK";
+    private static final String LOCAL_MENU_MSG = "LOCAL_MENU_MSG";
+    private static final String LOCAL_MENU_MY_ID = "LOCAL_MENU_MY_ID";
+    private static final String LOCAL_MENU_EXPORT_ID = "LOCAL_MENU_EXPORT_ID";
+    private static final String LOCAL_MENU_IMPORT_CONTACT = "LOCAL_MENU_IMPORT_CONTACT";
+    private static final String LOCAL_MENU_REMOVE_CONTACT = "LOCAL_MENU_REMOVE_CONTACT";
+    private static final String LOCAL_MENU_OPTIONS = "LOCAL_MENU_OPTIONS";
+    private static final String LOCAL_MSG_INITIAL_DISCLAIMER = "LOCAL_MSG_INITIAL_DISCLAIMER";
+    private static final String LOCAL_MSG_TITLE_DISCLAIMER = "LOCAL_MSG_TITLE_DISCLAIMER";
+    private static final String LOCAL_MSG_EXITING = "LOCAL_MSG_EXITING";
+    private static final String LOCAL_MSG_UI_TITLE = "LOCAL_MSG_UI_TITLE";
+    private static final String LOCAL_MSG_DAEMON_ERROR = "LOCAL_MSG_DAEMON_ERROR";
+    private static final String LOCAL_MSG_DAEMON_ERROR_TITLE = "LOCAL_MSG_DAEMON_ERROR_TITLE";
 
     //image resources
     private static final String IMG_TAB_TRANSACTIONS = "images/overview.png";
@@ -64,6 +82,7 @@ public class BTCPWalletUI extends JFrame {
     private static final String IMG_TAB_SEND = "images/send.png";
     private static final String IMG_TAB_ADDRESS_BOOK = "images/address-book.png";
     private static final String IMG_TAB_MSG = "images/messaging.png";
+    private static final String IMG_BTCP_ICON = "images/btcp-200.png";
 
     JTabbedPane tabs;
 
@@ -78,7 +97,7 @@ public class BTCPWalletUI extends JFrame {
 
         ClassLoader cl = this.getClass().getClassLoader();
 
-        this.setIconImage(new ImageIcon(cl.getResource("images/btcp-200.png")).getImage());
+        this.setIconImage(new ImageIcon(cl.getResource(IMG_BTCP_ICON)).getImage());
         Container contentPane = this.getContentPane();
 
         errorReporter = new StatusUpdateErrorReporter(this);
@@ -86,7 +105,7 @@ public class BTCPWalletUI extends JFrame {
         clientCaller = new BTCPClientCaller(OSUtil.getProgramDirectory());
 
         if (installationObserver.isOnTestNet()) {
-            this.setTitle(this.getTitle() + " [TESTNET]");
+            this.setTitle(this.getTitle() + SUFFIX_TESTNET);
         }
 
         // Build content
@@ -131,52 +150,42 @@ public class BTCPWalletUI extends JFrame {
 
         // Build menu
         JMenuBar mb = new JMenuBar();
-        JMenu file = new JMenu("Main");
+        JMenu file = new JMenu(LOCAL_MENU_MAIN);
         file.setMnemonic(KeyEvent.VK_M);
         int accelaratorKeyMask = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
-        file.add(menuItemAbout = new JMenuItem("About", KeyEvent.VK_T));
+        file.add(menuItemAbout = new JMenuItem(LOCAL_MENU_ABOUT, KeyEvent.VK_T));
         menuItemAbout.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_T, accelaratorKeyMask));
         file.addSeparator();
-        file.add(menuItemExit = new JMenuItem("Quit", KeyEvent.VK_Q));
+        file.add(menuItemExit = new JMenuItem(LOCAL_MENU_QUIT, KeyEvent.VK_Q));
         menuItemExit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, accelaratorKeyMask));
         mb.add(file);
 
-        JMenu wallet = new JMenu("Wallet");
+        JMenu wallet = new JMenu(LOCAL_MENU_WALLET);
         wallet.setMnemonic(KeyEvent.VK_W);
 
 
-        wallet.add(menuItemShowPrivateKey = new JMenuItem("View One Private Key", KeyEvent.VK_P));
+        wallet.add(menuItemShowPrivateKey = new JMenuItem(LOCAL_MENU_VIEW_PK, KeyEvent.VK_P));
         menuItemShowPrivateKey.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, accelaratorKeyMask));
-        wallet.add(menuItemImportOnePrivateKey = new JMenuItem("Import One Private Key", KeyEvent.VK_N));
+        wallet.add(menuItemImportOnePrivateKey = new JMenuItem(LOCAL_MENU_IMPORT_PK, KeyEvent.VK_N));
         menuItemImportOnePrivateKey.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, accelaratorKeyMask));
 
 
         mb.add(wallet);
 
-        JMenu messaging = new JMenu("Messaging");
+        JMenu messaging = new JMenu(LOCAL_MENU_MSG);
         messaging.setMnemonic(KeyEvent.VK_S);
-        messaging.add(menuItemOwnIdentity = new JMenuItem("My Identity", KeyEvent.VK_D));
+        messaging.add(menuItemOwnIdentity = new JMenuItem(LOCAL_MENU_MY_ID, KeyEvent.VK_D));
         menuItemOwnIdentity.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D, accelaratorKeyMask));
-        messaging.add(menuItemExportOwnIdentity = new JMenuItem("Export My Identity", KeyEvent.VK_X));
+        messaging.add(menuItemExportOwnIdentity = new JMenuItem(LOCAL_MENU_EXPORT_ID, KeyEvent.VK_X));
         menuItemExportOwnIdentity.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, accelaratorKeyMask));
 
-        messaging.add(menuItemImportContactIdentity = new JMenuItem("Import Contact", KeyEvent.VK_Y));
+        messaging.add(menuItemImportContactIdentity = new JMenuItem(LOCAL_MENU_IMPORT_CONTACT, KeyEvent.VK_Y));
         menuItemImportContactIdentity.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Y, accelaratorKeyMask));
-        messaging.add(menuItemRemoveContactIdentity = new JMenuItem("Remove Contact", KeyEvent.VK_R));
+        messaging.add(menuItemRemoveContactIdentity = new JMenuItem(LOCAL_MENU_REMOVE_CONTACT, KeyEvent.VK_R));
         menuItemRemoveContactIdentity.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, accelaratorKeyMask));
 
-        messaging.add(menuItemAddMessagingGroup = new JMenuItem("Create Group", KeyEvent.VK_G));
-        menuItemAddMessagingGroup.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_G, accelaratorKeyMask));
-
-        messaging.add(menuItemMessagingOptions = new JMenuItem("Options", KeyEvent.VK_O));
+        messaging.add(menuItemMessagingOptions = new JMenuItem(LOCAL_MENU_OPTIONS, KeyEvent.VK_O));
         menuItemMessagingOptions.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, accelaratorKeyMask));
-
-        JMenu shareFileVia = new JMenu("Share file via:");
-        shareFileVia.setMnemonic(KeyEvent.VK_V);
-        // TODO: uncomment this for IPFS integration
-        //messaging.add(shareFileVia);
-        shareFileVia.add(menuItemShareFileViaIPFS = new JMenuItem("IPFS", KeyEvent.VK_F));
-        menuItemShareFileViaIPFS.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, accelaratorKeyMask));
 
         mb.add(messaging);
 
@@ -230,11 +239,6 @@ public class BTCPWalletUI extends JFrame {
                 e -> BTCPWalletUI.this.messagingPanel.openOptionsDialog()
         );
 
-        menuItemShareFileViaIPFS.addActionListener(
-                e -> BTCPWalletUI.this.messagingPanel.shareFileViaIPFS()
-        );
-
-
         // Close operation
         this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         this.addWindowListener(new WindowAdapter() {
@@ -262,18 +266,8 @@ public class BTCPWalletUI extends JFrame {
 
             JOptionPane.showMessageDialog(
                     BTCPWalletUI.this.getRootPane().getParent(),
-                    "The Bitcoin Private Full-Node Desktop Wallet is currently considered experimental. Use of this software\n" +
-                            "comes at your own risk! Be sure to read the list of known issues and limitations\n" +
-                            "at this page: https://github.com/BTCPrivate/bitcoin-private-full-node-wallet\n\n" +
-                            "THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n" +
-                            "IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n" +
-                            "FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n" +
-                            "AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n" +
-                            "LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n" +
-                            "OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN\n" +
-                            "THE SOFTWARE.\n\n" +
-                            "(This message will only be shown once per release)",
-                    "Disclaimer", JOptionPane.INFORMATION_MESSAGE);
+                    LOCAL_MSG_INITIAL_DISCLAIMER,
+                    LOCAL_MSG_TITLE_DISCLAIMER, JOptionPane.INFORMATION_MESSAGE);
         });
 
         // Finally dispose of the progress dialog
@@ -283,13 +277,10 @@ public class BTCPWalletUI extends JFrame {
 
         // Notify the messaging TAB that it is being selected - every time
         tabs.addChangeListener(
-                new ChangeListener() {
-                    @Override
-                    public void stateChanged(ChangeEvent e) {
-                        JTabbedPane tabs = (JTabbedPane) e.getSource();
-                        if (tabs.getSelectedIndex() == 4) {
-                            BTCPWalletUI.this.messagingPanel.tabSelected();
-                        }
+                e -> {
+                    JTabbedPane tabs = (JTabbedPane) e.getSource();
+                    if (tabs.getSelectedIndex() == 4) {
+                        BTCPWalletUI.this.messagingPanel.tabSelected();
                     }
                 }
         );
@@ -297,7 +288,7 @@ public class BTCPWalletUI extends JFrame {
     }
 
     public void exitProgram() {
-        Log.info("Exiting...");
+        Log.info(LOCAL_MSG_EXITING);
 
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
@@ -315,7 +306,7 @@ public class BTCPWalletUI extends JFrame {
     public static void main(String argv[])
             throws IOException {
 
-        String title = "Bitcoin Private Desktop GUI Wallet ";
+        String title = LOCAL_MSG_UI_TITLE;
         title = title.concat(VERSION);
         try {
             OS_TYPE os = OSUtil.getOSType();
@@ -411,10 +402,8 @@ public class BTCPWalletUI extends JFrame {
                     (wce.getMessage().indexOf("error code: -28") != -1)) {
                 JOptionPane.showMessageDialog(
                         null,
-                        "It appears that btcpd has been started but is not ready to accept wallet\n" +
-                                "connections. It is still loading the wallet and blockchain. Please try\n" +
-                                "restarting this program.",
-                        "Daemon Error",
+                        LOCAL_MSG_DAEMON_ERROR,
+                        LOCAL_MSG_DAEMON_ERROR_TITLE,
                         JOptionPane.ERROR_MESSAGE);
             } else {
                 JOptionPane.showMessageDialog(

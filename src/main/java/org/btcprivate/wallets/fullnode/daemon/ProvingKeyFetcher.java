@@ -15,8 +15,6 @@ import java.net.URLConnection;
 import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ResourceBundle;
-import java.util.logging.Logger;
 
 import javax.swing.JOptionPane;
 import javax.swing.ProgressMonitorInputStream;
