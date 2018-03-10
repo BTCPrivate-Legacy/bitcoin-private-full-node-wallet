@@ -9,6 +9,7 @@ import org.btcprivate.wallets.fullnode.util.OSUtil;
 import org.btcprivate.wallets.fullnode.util.OSUtil.*;
 import org.btcprivate.wallets.fullnode.util.StatusUpdateErrorReporter;
 import org.btcprivate.wallets.fullnode.util.Util;
+import org.omg.CORBA.INVALID_ACTIVITY;
 
 import java.awt.BorderLayout;
 import java.awt.Cursor;
@@ -58,7 +59,23 @@ public class AddressesPanel
 
     // Table of validated addresses with their validation result. An invalid or watch-only address should not be shown
     // and should be remembered as invalid here
-    private Map<String, Boolean> validationMap = new HashMap<String, Boolean>();
+    private Map<String, Boolean> validationMap = new HashMap<>();
+
+    private static final String LOCAL_MENU_NEW_B_ADDRESS = "LOCAL_MENU_NEW_B_ADDRESS";
+    private static final String LOCAL_MENU_NEW_Z_ADDRESS = "LOCAL_MENU_NEW_Z_ADDRESS";
+    private static final String LOCAL_MENU_REFRESH = "LOCAL_MENU_REFRESH";
+    private static final String LOCAL_MENU_BALANCE = "LOCAL_MENU_BALANCE";
+    private static final String LOCAL_MENU_IS_CONFIRMED = "LOCAL_MENU_IS_CONFIRMED";
+    private static final String LOCAL_MENU_ADDRESS = "LOCAL_MENU_ADDRESS";
+
+    private static final String LOCAL_MSG_WARN_BLOCK_TIME = "LOCAL_MSG_WARN_BLOCK_TIME";
+    private static final String LOCAL_MSG_ADDRESS_CREATED = "LOCAL_MSG_ADDRESS_CREATED";
+    private static final String LOCAL_MSG_ADDRESS_CREATED_TITLE = "LOCAL_MSG_ADDRESS_CREATED_TITLE";
+    private static final String LOCAL_MSG_YES = "LOCAL_MSG_YES";
+    private static final String LOCAL_MSG_NO = "LOCAL_MSG_NO";
+    private static final String LOCAL_MSG_INVALID_OR_WO_ADDRESS = "LOCAL_MSG_INVALID_OR_WO_ADDRESS";
+    private static final String LOCAL_MSG_INVALID_OR_WO_ADDRESS_DETAIL = "LOCAL_MSG_INVALID_OR_WO_ADDRESS_DETAIL";
+    private static final String LOCAL_MSG_INVALID_OR_WO_ADDRESS_TITLE = "LOCAL_MSG_INVALID_OR_WO_ADDRESS_TITLE";
 
 
     public AddressesPanel(JFrame parentFrame, BTCPClientCaller clientCaller, StatusUpdateErrorReporter errorReporter)
@@ -80,12 +97,12 @@ public class AddressesPanel
         buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 3, 3));
         buttonPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 
-        JButton newTAddressButton = new JButton("New T (Transparent) address");
+        JButton newTAddressButton = new JButton(LOCAL_MENU_NEW_B_ADDRESS);
         buttonPanel.add(newTAddressButton);
-        JButton newZAddressButton = new JButton("New Z (Private) address");
+        JButton newZAddressButton = new JButton(LOCAL_MENU_NEW_Z_ADDRESS);
         buttonPanel.add(newZAddressButton);
         buttonPanel.add(new JLabel("           "));
-        JButton refreshButton = new JButton("Refresh");
+        JButton refreshButton = new JButton(LOCAL_MENU_REFRESH);
         buttonPanel.add(refreshButton);
 
         addressesPanel.add(buttonPanel, BorderLayout.SOUTH);
@@ -101,45 +118,33 @@ public class AddressesPanel
         warningPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
         JLabel warningL = new JLabel(
                 "<html><span style=\"font-size:0.8em;\">" +
-                        "* If the balance of an address is flagged as not confirmed, the address is currently taking " +
-                        "part in a transaction. The shown balance then is the expected value it will have when " +
-                        "the transaction is confirmed. " +
-                        "The average confirmation time is 2.5 min." +
+                        "* " +
+                        LOCAL_MSG_WARN_BLOCK_TIME +
                         "</span>");
         warningPanel.add(warningL, BorderLayout.NORTH);
         addressesPanel.add(warningPanel, BorderLayout.NORTH);
 
         // Thread and timer to update the address/balance table
-        this.balanceGatheringThread = new DataGatheringThread<String[][]>(
-                new DataGatheringThread.DataGatherer<String[][]>()
-                {
-                    public String[][] gatherData()
-                            throws Exception
-                    {
-                        long start = System.currentTimeMillis();
-                        String[][] data = AddressesPanel.this.getAddressBalanceDataFromWallet();
-                        long end = System.currentTimeMillis();
-                        Log.info("Gathering of address/balance table data done in " + (end - start) + "ms." );
+        this.balanceGatheringThread = new DataGatheringThread<>(
+                () -> {
+                    long start = System.currentTimeMillis();
+                    String[][] data = AddressesPanel.this.getAddressBalanceDataFromWallet();
+                    long end = System.currentTimeMillis();
+                    Log.info("Gathering of address/balance table data done in " + (end - start) + "ms." );
 
-                        return data;
-                    }
+                    return data;
                 },
                 this.errorReporter, 25000);
         this.threads.add(this.balanceGatheringThread);
 
-        ActionListener alBalances = new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
+        ActionListener alBalances = e -> {
+            try
             {
-                try
-                {
-                    AddressesPanel.this.updateWalletAddressBalanceTableAutomated();
-                } catch (Exception ex)
-                {
-                    Log.error("Unexpected error: ", ex);
-                    AddressesPanel.this.errorReporter.reportError(ex);
-                }
+                AddressesPanel.this.updateWalletAddressBalanceTableAutomated();
+            } catch (Exception ex)
+            {
+                Log.error("Unexpected error: ", ex);
+                AddressesPanel.this.errorReporter.reportError(ex);
             }
         };
         Timer t = new Timer(5000, alBalances);
@@ -147,48 +152,32 @@ public class AddressesPanel
         this.timers.add(t);
 
         // Button actions
-        refreshButton.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
+        refreshButton.addActionListener(e -> {
+            Cursor oldCursor = null;
+            try
             {
-                Cursor oldCursor = null;
-                try
+                // TODO: dummy progress bar ... maybe
+                oldCursor = AddressesPanel.this.getCursor();
+                AddressesPanel.this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+
+                AddressesPanel.this.updateWalletAddressBalanceTableInteractive();
+
+                AddressesPanel.this.setCursor(oldCursor);
+            } catch (Exception ex)
+            {
+                if (oldCursor != null)
                 {
-                    // TODO: dummy progress bar ... maybe
-                    oldCursor = AddressesPanel.this.getCursor();
-                    AddressesPanel.this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-
-                    AddressesPanel.this.updateWalletAddressBalanceTableInteractive();
-
                     AddressesPanel.this.setCursor(oldCursor);
-                } catch (Exception ex)
-                {
-                    if (oldCursor != null)
-                    {
-                        AddressesPanel.this.setCursor(oldCursor);
-                    }
-
-                    Log.error("Unexpected error: ", ex);
-                    AddressesPanel.this.errorReporter.reportError(ex, false);
                 }
+
+                Log.error("Unexpected error: ", ex);
+                AddressesPanel.this.errorReporter.reportError(ex, false);
             }
         });
 
-        newTAddressButton.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
-                createNewAddress(false);
-            }
-        });
+        newTAddressButton.addActionListener(e -> createNewAddress(false));
 
-        newZAddressButton.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
-                createNewAddress(true);
-            }
-        });
+        newZAddressButton.addActionListener(e -> createNewAddress(true));
 
     }
 
@@ -236,21 +225,10 @@ public class AddressesPanel
                 this.clientCaller.lockWallet();
             }
 
-            String backupMessage = "";
-            if (isZAddress)
-            {
-                backupMessage =
-                        "\n\nIt is necessary to back up the wallet after creating a new Z address. The wallet needs\n" +
-                                "to be backed up to a safe location that can survive any data loss on the PC where the wallet\n" +
-                                "is currenly located. Not backing up the wallet may result in loss of funds in case of data\n" +
-                                "loss on the current PC. To backup the wallet, use menu option: Wallet >> Backup\n";
-            }
-
             JOptionPane.showMessageDialog(
                     this.getRootPane().getParent(),
-                    "A new " + (isZAddress ? "Z (Private)" : "T (Transparent)")
-                            + " address has been created successfully:\n" + address + backupMessage,
-                    "Address created", JOptionPane.INFORMATION_MESSAGE);
+                    LOCAL_MSG_ADDRESS_CREATED + address,
+                    LOCAL_MSG_ADDRESS_CREATED_TITLE, JOptionPane.INFORMATION_MESSAGE);
 
             this.updateWalletAddressBalanceTableInteractive();
         } catch (Exception e)
@@ -313,7 +291,7 @@ public class AddressesPanel
     private JTable createAddressBalanceTable(String rowData[][])
             throws WalletCallException, IOException, InterruptedException
     {
-        String columnNames[] = { "Balance", "Confirmed?", "Address" };
+        String columnNames[] = {LOCAL_MENU_BALANCE,LOCAL_MENU_IS_CONFIRMED, LOCAL_MENU_ADDRESS};
         JTable table = new AddressTable(rowData, columnNames, this.clientCaller);
         table.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
         table.getColumnModel().getColumn(0).setPreferredWidth(160);
@@ -383,12 +361,10 @@ public class AddressesPanel
                 {
                     JOptionPane.showMessageDialog(
                             this.parentFrame,
-                            "An invalid or watch-only address exists in the wallet:" + "\n" +
+                            LOCAL_MSG_INVALID_OR_WO_ADDRESS + ":\n" +
                                     address + "\n\n" +
-                                    "The GUI wallet software cannot operate properly with addresses that are invalid or\n" +
-                                    "exist in the wallet as watch-only addresses. Do NOT use this address as a destination\n" +
-                                    "address for payment operations!",
-                            "ERROR: invalid or watch-only address exists!",
+                                    LOCAL_MSG_INVALID_OR_WO_ADDRESS_DETAIL,
+                            LOCAL_MSG_INVALID_OR_WO_ADDRESS_TITLE,
                             JOptionPane.ERROR_MESSAGE);
                 }
             }
@@ -397,7 +373,7 @@ public class AddressesPanel
             if (watchOnlyOrInvalid)
             {
                 Log.error("The following address is invalid or a watch-only address: {0}. It will not be displayed!", address);
-                addressToDisplay = "<INVALID OR WATCH-ONLY ADDRESS> !!!";
+                addressToDisplay = LOCAL_MSG_INVALID_OR_WO_ADDRESS;
             }
             // End of check for invalid/watch only addresses
 
@@ -410,7 +386,7 @@ public class AddressesPanel
             addressBalances[i++] = new String[]
                     {
                             balanceToShow,
-                            isConfirmed ? ("Yes " + confirmed) : ("No  " + notConfirmed),
+                            isConfirmed ? (LOCAL_MSG_YES + " " + confirmed) : (LOCAL_MSG_NO + " " + notConfirmed),
                             addressToDisplay
                     };
         }
@@ -426,7 +402,7 @@ public class AddressesPanel
             addressBalances[i++] = new String[]
                     {
                             balanceToShow,
-                            isConfirmed ? ("Yes " + confirmed) : ("No  " + notConfirmed),
+                            isConfirmed ? (LOCAL_MSG_YES + " " + confirmed) : (LOCAL_MSG_YES + " " + notConfirmed),
                             address
                     };
         }

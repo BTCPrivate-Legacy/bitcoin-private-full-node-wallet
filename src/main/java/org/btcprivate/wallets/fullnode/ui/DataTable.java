@@ -31,6 +31,14 @@ public class DataTable
 
     protected JPopupMenu popupMenu;
 
+    private static final String LOCAL_MSG_COPY_VALUE = "LOCAL_MSG_COPY_VALUE";
+    private static final String LOCAL_MSG_EXPORT_TO_CSV = "LOCAL_MSG_EXPORT_TO_CSV";
+    private static final String LOCAL_MSG_UNEXP_ERROR_EXPORT_CSV = "LOCAL_MSG_UNEXP_ERROR_EXPORT_CSV";
+    private static final String LOCAL_MSG_UNEXP_ERROR_EXPORT_CSV_TITLE = "LOCAL_MSG_UNEXP_ERROR_EXPORT_CSV_TITLE";
+    private static final String LOCAL_MSG_UNEXP_ERROR_EXPORT_CSV_SUCCESS = "LOCAL_MSG_UNEXP_ERROR_EXPORT_CSV_SUCCESS";
+    private static final String LOCAL_MSG_UNEXP_ERROR_EXPORT_CSV_SUCCESS_TITLE = "LOCAL_MSG_UNEXP_ERROR_EXPORT_CSV_SUCCESS_TITLE";
+
+
     public DataTable(final Object[][] rowData, final Object[] columnNames)
     {
         super(rowData, columnNames);
@@ -41,52 +49,36 @@ public class DataTable
         this.setRowHeight(new Double(comp.getPreferredSize().getHeight()).intValue() + 2);
 
         popupMenu = new JPopupMenu();
-        int accelaratorKeyMask = Toolkit.getDefaultToolkit ().getMenuShortcutKeyMask();
-
-        JMenuItem copy = new JMenuItem("Copy value");
+        JMenuItem copy = new JMenuItem(LOCAL_MSG_COPY_VALUE);
         popupMenu.add(copy);
-        //copy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, accelaratorKeyMask));
-        copy.addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
+        copy.addActionListener(e -> {
+            if ((lastRow >= 0) && (lastColumn >= 0))
             {
-                if ((lastRow >= 0) && (lastColumn >= 0))
-                {
-                    String text = DataTable.this.getValueAt(lastRow, lastColumn).toString();
+                String text = DataTable.this.getValueAt(lastRow, lastColumn).toString();
 
-                    Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-                    clipboard.setContents(new StringSelection(text), null);
-                } else
-                {
-                    // Log perhaps
-                }
+                Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+                clipboard.setContents(new StringSelection(text), null);
+            } else
+            {
+                // Log perhaps
             }
         });
 
 
-        JMenuItem exportToCSV = new JMenuItem("Export data to CSV");
+        JMenuItem exportToCSV = new JMenuItem(LOCAL_MSG_EXPORT_TO_CSV);
         popupMenu.add(exportToCSV);
-        //exportToCSV.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, accelaratorKeyMask));
-        exportToCSV.addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
+        exportToCSV.addActionListener(e -> {
+            try
             {
-                try
-                {
-                    DataTable.this.exportToCSV();
-                } catch (Exception ex)
-                {
-                    Log.error("Unexpected error: ", ex);
-                    // TODO: better error handling
-                    JOptionPane.showMessageDialog(
-                            DataTable.this.getRootPane().getParent(),
-                            "An unexpected error occurred when exporting data to a CSV file.\n" +
-                                    "\n" +
-                                    ex.getMessage(),
-                            "Error Exporting CSV", JOptionPane.ERROR_MESSAGE);
-                }
+                DataTable.this.exportToCSV();
+            } catch (Exception ex)
+            {
+                Log.error("Unexpected error: ", ex);
+                JOptionPane.showMessageDialog(
+                        DataTable.this.getRootPane().getParent(),
+                        LOCAL_MSG_UNEXP_ERROR_EXPORT_CSV+"\n\n" +
+                                ex.getMessage(),
+                        LOCAL_MSG_UNEXP_ERROR_EXPORT_CSV_TITLE, JOptionPane.ERROR_MESSAGE);
             }
         });
 
@@ -123,19 +115,6 @@ public class DataTable
                 }
             }
         });
-
-//        this.addKeyListener(new KeyAdapter()
-//		{
-//			@Override
-//			public void keyTyped(KeyEvent e)
-//			{
-//				if (e.getKeyCode() == KeyEvent.VK_CONTEXT_MENU)
-//				{
-//					System.out.println("Context menu invoked...");;
-//					popupMenu.show(e.getComponent(), e.getComponent().getX(), e.getComponent().getY());
-//				}
-//			}
-//		});
     }
 
 
@@ -155,7 +134,7 @@ public class DataTable
         final String ENCODING = "UTF-8";
 
         JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Export Data to CSV File");
+        fileChooser.setDialogTitle(LOCAL_MSG_EXPORT_TO_CSV);
         fileChooser.setFileFilter(new FileNameExtensionFilter("CSV Files (*.csv)", "csv"));
 
         int result = fileChooser.showSaveDialog(this.getRootPane().getParent());
@@ -206,9 +185,8 @@ public class DataTable
 
         JOptionPane.showMessageDialog(
                 this.getRootPane().getParent(),
-                "The data has been successfully exported as a CSV:\n" +
+                LOCAL_MSG_UNEXP_ERROR_EXPORT_CSV_SUCCESS + ": \n" +
                         f.getCanonicalPath(),
-                "Export Successful", JOptionPane.INFORMATION_MESSAGE);
+                LOCAL_MSG_UNEXP_ERROR_EXPORT_CSV_SUCCESS_TITLE, JOptionPane.INFORMATION_MESSAGE);
     }
 }
-

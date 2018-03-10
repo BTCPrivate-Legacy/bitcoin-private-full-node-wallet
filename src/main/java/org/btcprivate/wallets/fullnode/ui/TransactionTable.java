@@ -25,6 +25,10 @@ import java.util.Map.Entry;
  * @author Ivan Vaklinov <ivan@vaklinov.com>
  */
 public class TransactionTable extends DataTable {
+
+    private static final String LOCAL_MENU
+    private static final String LOCAL_MSG
+
     public TransactionTable(final Object[][] rowData, final Object[] columnNames, final JFrame parent,
                             final BTCPClientCaller caller, final BTCPInstallationObserver installationObserver) {
         super(rowData, columnNames);

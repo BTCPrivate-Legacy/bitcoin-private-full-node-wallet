@@ -24,6 +24,7 @@ import org.btcprivate.wallets.fullnode.ui.StartupProgressDialog;
 import org.btcprivate.wallets.fullnode.util.OSUtil;
 import org.btcprivate.wallets.fullnode.util.OSUtil.*;
 import org.btcprivate.wallets.fullnode.util.Util;
+import static org.btcprivate.wallets.fullnode.util.Util.*;
 
 
 /**
@@ -34,19 +35,25 @@ import org.btcprivate.wallets.fullnode.util.Util;
 public class ProvingKeyFetcher {
 
     private static final int PROVING_KEY_SIZE = 910173851;
-    private static final String SHA256 = "8bc20a7f013b2b58970cddd2e7ea028975c88ae7ceb9259a5344a16bc2c0eef7";
-    private static final String pathURL = "https://storage.googleapis.com/btcp-sprout-key/sprout-proving.key";
+
+
+
+
+
 
     private static final String LOCAL_MSG_PROVINGKEY_DOWNLOAD_REQURED = "LOCAL_MSG_PROVINGKEY_DOWNLOAD_REQURED";
     private static final String LOCAL_MSG_DOWNLOADING_PROVING_KEY = "LOCAL_MSG_DOWNLOADING_PROVING_KEY";
     private static final String LOCAL_MSG_VERIFYING_PROVING_KEY = "LOCAL_MSG_VERIFYING_PROVING_KEY";
+    private static final String LOCAL_MSG_NO_PROVING_KEY = "LOCAL_MSG_NO_PROVING_KEY";
+    private static final String LOCAL_MSG_VERIFYING_DOWNLOADED_PROVING_KEY = "LOCAL_MSG_VERIFYING_DOWNLOADED_PROVING_KEY";
+    private static final String LOCAL_MSG_VERIFYING_DOWNLOADED_PROVING_KEY_FAILED = "LOCAL_MSG_VERIFYING_DOWNLOADED_PROVING_KEY_FAILED";
 
 
     public void fetchIfMissing(StartupProgressDialog parent) throws IOException {
         try {
             verifyOrFetch(parent);
         } catch (InterruptedIOException iox) {
-            JOptionPane.showMessageDialog(parent, "The Bitcoin Private wallet cannot proceed without a proving key.");
+            JOptionPane.showMessageDialog(parent, LOCAL_MSG_NO_PROVING_KEY);
             System.exit(-3);
         }
     }
@@ -63,14 +70,14 @@ public class ProvingKeyFetcher {
         }
 
         // verifying key is small, always copy it
-        File verifyingKeyFile = new File(zCashParams, "sprout-verifying.key");
+        File verifyingKeyFile = new File(zCashParams, VERIFYING_KEY_FILE);
         FileOutputStream fos = new FileOutputStream(verifyingKeyFile);
-        InputStream is = ProvingKeyFetcher.class.getClassLoader().getResourceAsStream("keys/sprout-verifying.key");
+        InputStream is = ProvingKeyFetcher.class.getClassLoader().getResourceAsStream(VERIFYING_KEY_FILE_SOURCE);
         copy(is, fos);
         fos.close();
         is = null;
 
-        File provingKeyFile = new File(zCashParams, "sprout-proving.key");
+        File provingKeyFile = new File(zCashParams, PROVING_KEY_FILE);
         provingKeyFile = provingKeyFile.getCanonicalFile();
         if (!provingKeyFile.exists()) {
             needsFetch = true;
@@ -87,13 +94,13 @@ public class ProvingKeyFetcher {
         parent.setProgressText(LOCAL_MSG_DOWNLOADING_PROVING_KEY);
         provingKeyFile.delete();
         OutputStream os = new BufferedOutputStream(new FileOutputStream(provingKeyFile));
-        URL keyURL = new URL(pathURL);
+        URL keyURL = new URL(PROVING_KEY_PATH_URL);
         URLConnection urlc = keyURL.openConnection();
         urlc.setRequestProperty("User-Agent", "Wget/1.17.1 (linux-gnu)");
 
         try {
             is = urlc.getInputStream();
-            ProgressMonitorInputStream pmis = new ProgressMonitorInputStream(parent, "Downloading proving key", is);
+            ProgressMonitorInputStream pmis = new ProgressMonitorInputStream(parent, LOCAL_MSG_DOWNLOADING_PROVING_KEY, is);
             pmis.getProgressMonitor().setMaximum(PROVING_KEY_SIZE);
             pmis.getProgressMonitor().setMillisToPopup(10);
 
@@ -105,9 +112,9 @@ public class ProvingKeyFetcher {
             } catch (IOException ignore) {
             }
         }
-        parent.setProgressText("Verifying downloaded proving key...");
+        parent.setProgressText(LOCAL_MSG_VERIFYING_DOWNLOADED_PROVING_KEY);
         if (!checkSHA256(provingKeyFile, parent)) {
-            JOptionPane.showMessageDialog(parent, "Failed to download proving key properly. Cannot continue!");
+            JOptionPane.showMessageDialog(parent, LOCAL_MSG_VERIFYING_DOWNLOADED_PROVING_KEY_FAILED);
             System.exit(-4);
         }
     }
@@ -117,10 +124,10 @@ public class ProvingKeyFetcher {
         File zCashParams = null;
 
         if (ost == OS_TYPE.WINDOWS) {
-            zCashParams = new File(System.getenv("APPDATA") + "/ZcashParams");
+            zCashParams = new File(System.getenv(WINDOWS_ENV_FOLDER) + OSX_WINDOWS_ZCASH_KEY_FOLDER);
         } else if (ost == OS_TYPE.MAC_OS) {
             File userHome = new File(System.getProperty("user.home"));
-            zCashParams = new File(userHome, "Library/Application Support/ZcashParams");
+            zCashParams = new File(userHome, OSX_ENV_FOLDER + OSX_WINDOWS_ZCASH_KEY_FOLDER);
         }
 
         zCashParams = zCashParams.getCanonicalFile();
@@ -152,7 +159,7 @@ public class ProvingKeyFetcher {
             byte[] temp = new byte[0x1 << 13];
             while (dis.read(temp) >= 0) ;
             byte[] digest = sha256.digest();
-            return SHA256.equalsIgnoreCase(DatatypeConverter.printHexBinary(digest));
+            return PROVING_KEY_SHA256.equalsIgnoreCase(DatatypeConverter.printHexBinary(digest));
         }
     }
 }

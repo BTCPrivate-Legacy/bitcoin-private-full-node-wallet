@@ -52,42 +52,85 @@ import org.btcprivate.wallets.fullnode.util.StatusUpdateErrorReporter;
  * @author Ivan Vaklinov <ivan@vaklinov.com>
  */
 public class SendCashPanel
-        extends WalletTabPanel
-{
-    private BTCPClientCaller         clientCaller;
+        extends WalletTabPanel {
+    private BTCPClientCaller clientCaller;
     private StatusUpdateErrorReporter errorReporter;
     private BTCPInstallationObserver installationObserver;
-    private BackupTracker             backupTracker;
+    private BackupTracker backupTracker;
 
-    private JComboBox  balanceAddressCombo     = null;
-    private JPanel     comboBoxParentPanel     = null;
-    private String[][] lastAddressBalanceData  = null;
-    private String[]   comboBoxItems           = null;
+    private JComboBox balanceAddressCombo = null;
+    private JPanel comboBoxParentPanel = null;
+    private String[][] lastAddressBalanceData = null;
+    private String[] comboBoxItems = null;
     private DataGatheringThread<String[][]> addressBalanceGatheringThread = null;
 
     private JTextField destinationAddressField = null;
-    private JTextField destinationAmountField  = null;
-    private JTextField destinationMemoField    = null;
-    private JTextField transactionFeeField     = null;
+    private JTextField destinationAmountField = null;
+    private JTextField destinationMemoField = null;
+    private JTextField transactionFeeField = null;
 
-    private JButton    sendButton              = null;
+    private JButton sendButton = null;
 
-    private JPanel       operationStatusPanel        = null;
-    private JLabel       operationStatusLabel        = null;
+    private JPanel operationStatusPanel = null;
+    private JLabel operationStatusLabel = null;
     private JProgressBar operationStatusProhgressBar = null;
-    private Timer        operationStatusTimer        = null;
-    private String       operationStatusID           = null;
-    private int          operationStatusCounter      = 0;
+    private Timer operationStatusTimer = null;
+    private String operationStatusID = null;
+    private int operationStatusCounter = 0;
+
+    private static final String LOCAL_MSG_SEND_BTCP_FROM = "LOCAL_MSG_SEND_BTCP_FROM";
+    private static final String LOCAL_MSG_SEND_BTCP_ONLY_CONFIRMED = "LOCAL_MSG_SEND_BTCP_ONLY_CONFIRMED";
+    private static final String LOCAL_MSG_TXN_DESTINATION = "LOCAL_MSG_TXN_DESTINATION";
+    private static final String LOCAL_MSG_MEMO_OPT = "LOCAL_MSG_MEMO_OPT";
+    private static final String LOCAL_MSG_MEMO_OPT_DETAIL = "LOCAL_MSG_MEMO_OPT_DETAIL";
+    private static final String LOCAL_MSG_AMOUNT_TO_SEND = "LOCAL_MSG_AMOUNT_TO_SEND";
+    private static final String LOCAL_MSG_TXN_FEE = "LOCAL_MSG_TXN_FEE";
+    private static final String LOCAL_MSG_ACTION_SEND = "LOCAL_MSG_ACTION_SEND";
+    private static final String LOCAL_MSG_SEND_CHANGE = "LOCAL_MSG_SEND_CHANGE";
+    private static final String LOCAL_MSG_LAST_OPERATION_STATUS = "LOCAL_MSG_LAST_OPERATION_STATUS";
+    private static final String LOCAL_MSG_PROGRESS = "LOCAL_MSG_PROGRESS";
+    private static final String LOCAL_MSG_ERROR_SENDING_1 = "LOCAL_MSG_ERROR_SENDING_1";
+    private static final String LOCAL_MSG_ERROR_SENDING_2 = "LOCAL_MSG_ERROR_SENDING_2";
+    private static final String LOCAL_MSG_ERROR_SENDING_TITLE = "LOCAL_MSG_ERROR_SENDING_TITLE";
+    private static final String LOCAL_MSG_PASTE_ADDRESS = "LOCAL_MSG_PASTE_ADDRESS";
+    private static final String LOCAL_MSG_NO_FUNDS = "LOCAL_MSG_NO_FUNDS";
+    private static final String LOCAL_MSG_NO_FUNDS_DETAIL = "LOCAL_MSG_NO_FUNDS_DETAIL";
+    private static final String LOCAL_MSG_SELECT_SOURCE_ADDR = "LOCAL_MSG_SELECT_SOURCE_ADDR";
+    private static final String LOCAL_MSG_SELECT_SOURCE_ADDR_DETAIL = "LOCAL_MSG_SELECT_SOURCE_ADDR_DETAIL";
+    private static final String LOCAL_MSG_ERROR_FROM_SHORT = "LOCAL_MSG_ERROR_FROM_SHORT";
+    private static final String LOCAL_MSG_ERROR_FROM_LONG = "LOCAL_MSG_ERROR_FROM_LONG";
+    private static final String LOCAL_MSG_ERROR_TO_SHORT = "LOCAL_MSG_ERROR_TO_SHORT";
+    private static final String LOCAL_MSG_ERROR_TO_LONG = "LOCAL_MSG_ERROR_TO_LONG";
+    private static final String LOCAL_MSG_ERROR_TO_MISSING = "LOCAL_MSG_ERROR_TO_MISSING";
+    private static final String LOCAL_MSG_ERROR_SEND_PREFIX_1 = "LOCAL_MSG_ERROR_SEND_PREFIX_1";
+    private static final String LOCAL_MSG_ERROR_SEND_PREFIX_2 = "LOCAL_MSG_ERROR_SEND_PREFIX_2";
+    private static final String LOCAL_MSG_ERROR_SEND_PREFIX_TITLE = "LOCAL_MSG_ERROR_SEND_PREFIX_TITLE";
+    private static final String LOCAL_MSG_ERROR_SEND_AMOUNT_MISSING = "LOCAL_MSG_ERROR_SEND_AMOUNT_MISSING";
+    private static final String LOCAL_MSG_ERROR_SEND_AMOUNT_INVALID = "LOCAL_MSG_ERROR_SEND_AMOUNT_INVALID";
+    private static final String LOCAL_MSG_ERROR_SEND_NO_TXN_FEE = "LOCAL_MSG_ERROR_SEND_NO_TXN_FEE";
+    private static final String LOCAL_MSG_ERROR_SEND_TXN_FEE_INVALID = "LOCAL_MSG_ERROR_SEND_TXN_FEE_INVALID";
+    private static final String LOCAL_MSG_ERROR_SEND_PARAMS_INCORRECT = "LOCAL_MSG_ERROR_SEND_PARAMS_INCORRECT";
+    private static final String LOCAL_MSG_IN_PROGRESS = "LOCAL_MSG_IN_PROGRESS";
+    private static final String LOCAL_MSG_SUCCESSFUL = "LOCAL_MSG_SUCCESSFUL";
+    private static final String LOCAL_MSG_COPY_TXN_ID = "LOCAL_MSG_COPY_TXN_ID";
+    private static final String LOCAL_MSG_VIEW_ON_EXPLORER = "LOCAL_MSG_VIEW_ON_EXPLORER";
+    private static final String LOCAL_MSG_OK = "LOCAL_MSG_OK";
+    private static final String LOCAL_MSG_SEND_SUCCESS_TITLE = "LOCAL_MSG_SEND_SUCCESS_TITLE";
+    private static final String LOCAL_MSG_SEND_SUCCESS_TXN_ID = "LOCAL_MSG_SEND_SUCCESS_TXN_ID";
+    private static final String LOCAL_MSG_SEND_SUCCESS_SENDER = "LOCAL_MSG_SEND_SUCCESS_SENDER";
+    private static final String LOCAL_MSG_SEND_SUCCESS_RECIPIENT = "LOCAL_MSG_SEND_SUCCESS_RECIPIENT";
+    private static final String LOCAL_MSG_SEND_ERROR_1 = "LOCAL_MSG_SEND_ERROR_1";
+    private static final String LOCAL_MSG_SEND_ERROR_2 = "LOCAL_MSG_SEND_ERROR_2";
+    private static final String LOCAL_MSG_SEND_ERROR_TITLE = "LOCAL_MSG_SEND_ERROR_TITLE";
 
 
     public SendCashPanel(BTCPClientCaller clientCaller,
                          StatusUpdateErrorReporter errorReporter,
                          BTCPInstallationObserver installationObserver,
                          BackupTracker backupTracker)
-            throws IOException, InterruptedException, WalletCallException
-    {
-        this.timers = new ArrayList<Timer>();
-        this.threads = new ArrayList<DataGatheringThread<?>>();
+            throws IOException, InterruptedException, WalletCallException {
+        this.timers = new ArrayList<>();
+        this.threads = new ArrayList<>();
 
         this.clientCaller = clientCaller;
         this.errorReporter = errorReporter;
@@ -103,14 +146,14 @@ public class SendCashPanel
         sendCashPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 
         JPanel tempPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-        tempPanel.add(new JLabel("Send BTCP from:       "));
+        tempPanel.add(new JLabel(LOCAL_MSG_SEND_BTCP_FROM + ":       "));
         tempPanel.add(new JLabel(
                 "<html><span style=\"font-size:0.8em;\">" +
-                        "* Only addresses with a confirmed balance are shown as sources for sending!" +
+                        LOCAL_MSG_SEND_BTCP_ONLY_CONFIRMED +
                         "</span>  "));
         sendCashPanel.add(tempPanel);
 
-        balanceAddressCombo = new JComboBox<>(new String[] { "" });
+        balanceAddressCombo = new JComboBox<>(new String[]{""});
         comboBoxParentPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
         comboBoxParentPanel.add(balanceAddressCombo);
         sendCashPanel.add(comboBoxParentPanel);
@@ -120,7 +163,7 @@ public class SendCashPanel
         sendCashPanel.add(dividerLabel);
 
         tempPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-        tempPanel.add(new JLabel("Destination address:"));
+        tempPanel.add(new JLabel(LOCAL_MSG_TXN_DESTINATION + ":"));
         sendCashPanel.add(tempPanel);
 
         destinationAddressField = new JTextField(73);
@@ -133,10 +176,10 @@ public class SendCashPanel
         sendCashPanel.add(dividerLabel);
 
         tempPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-        tempPanel.add(new JLabel("Memo (optional):     "));
+        tempPanel.add(new JLabel(LOCAL_MSG_MEMO_OPT + "     "));
         tempPanel.add(new JLabel(
                 "<html><span style=\"font-size:0.8em;\">" +
-                        "* Memo may be specified only if the destination is a Z (Private) address!" +
+                        LOCAL_MSG_MEMO_OPT_DETAIL +
                         "</span>  "));
         sendCashPanel.add(tempPanel);
 
@@ -152,7 +195,7 @@ public class SendCashPanel
         // Construct a more complex panel for the amount and transaction fee
         JPanel amountAndFeePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
         JPanel amountPanel = new JPanel(new BorderLayout());
-        amountPanel.add(new JLabel("Amount to send:"), BorderLayout.NORTH);
+        amountPanel.add(new JLabel(LOCAL_MSG_AMOUNT_TO_SEND + ":"), BorderLayout.NORTH);
         tempPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
         tempPanel.add(destinationAmountField = new JTextField(13));
         destinationAmountField.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -160,7 +203,7 @@ public class SendCashPanel
         amountPanel.add(tempPanel, BorderLayout.SOUTH);
 
         JPanel feePanel = new JPanel(new BorderLayout());
-        feePanel.add(new JLabel("Transaction fee:"), BorderLayout.NORTH);
+        feePanel.add(new JLabel(LOCAL_MSG_TXN_FEE + ":"), BorderLayout.NORTH);
         tempPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
         tempPanel.add(transactionFeeField = new JTextField(13));
         transactionFeeField.setText("0.0001"); // Default value
@@ -177,7 +220,7 @@ public class SendCashPanel
         sendCashPanel.add(dividerLabel);
 
         tempPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-        tempPanel.add(sendButton = new JButton("Send   \u27A4\u27A4\u27A4"));
+        tempPanel.add(sendButton = new JButton(LOCAL_MSG_ACTION_SEND + "   \u27A4\u27A4\u27A4"));
         sendCashPanel.add(tempPanel);
 
         dividerLabel = new JLabel("   ");
@@ -188,11 +231,7 @@ public class SendCashPanel
         warningPanel.setLayout(new BorderLayout(7, 3));
         JLabel warningL = new JLabel(
                 "<html><span style=\"font-size:0.8em;\">" +
-                        " * When sending BTCP from a T (Transparent) address, the remaining unspent balance is sent to another " +
-                        "auto-generated T address. When sending from a Z (Private) address, the remaining unspent balance remains with " +
-                        "the Z address. In both cases, the original sending address cannot be used for sending again until the " +
-                        "transaction is confirmed. The address is temporarily removed from the list! Freshly mined coins may only "+
-                        "be sent to a Z (Private) address." +
+                        LOCAL_MSG_SEND_CHANGE +
                         "</span>");
         warningPanel.add(warningL, BorderLayout.NORTH);
         sendCashPanel.add(warningPanel);
@@ -207,7 +246,7 @@ public class SendCashPanel
         operationStatusPanel.setLayout(new BoxLayout(operationStatusPanel, BoxLayout.Y_AXIS));
 
         tempPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-        tempPanel.add(new JLabel("Last operation status: "));
+        tempPanel.add(new JLabel(LOCAL_MSG_LAST_OPERATION_STATUS + ": "));
         tempPanel.add(operationStatusLabel = new JLabel("N/A"));
         operationStatusPanel.add(tempPanel);
 
@@ -216,7 +255,7 @@ public class SendCashPanel
         operationStatusPanel.add(dividerLabel);
 
         tempPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-        tempPanel.add(new JLabel("Progress: "));
+        tempPanel.add(new JLabel(LOCAL_MSG_PROGRESS + ": "));
         tempPanel.add(operationStatusProhgressBar = new JProgressBar(0, 200));
         operationStatusProhgressBar.setPreferredSize(new Dimension(250, 17));
         operationStatusPanel.add(tempPanel);
@@ -226,66 +265,45 @@ public class SendCashPanel
         operationStatusPanel.add(dividerLabel);
 
         // Wire the buttons
-        sendButton.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
-                try
-                {
-                    SendCashPanel.this.sendCash();
-                } catch (Exception ex)
-                {
-                    Log.error("Unexpected error: ", ex);
+        sendButton.addActionListener(e -> {
+            try {
+                SendCashPanel.this.sendCash();
+            } catch (Exception ex) {
+                Log.error("Unexpected error: ", ex);
 
-                    String errMessage = "";
-                    if (ex instanceof WalletCallException)
-                    {
-                        errMessage = ((WalletCallException)ex).getMessage().replace(",", ",\n");
-                    }
-
-                    JOptionPane.showMessageDialog(
-                            SendCashPanel.this.getRootPane().getParent(),
-                            "An error occurred when sending BTCP:\n" +
-                                    errMessage + "\n\n" +
-                                    "Please check that the Bitcoin Private daemon is running and\n" +
-                                    "the sending parameters are correct.\n",
-                            "Error Sending BTCP", JOptionPane.ERROR_MESSAGE);
+                String errMessage = "";
+                if (ex instanceof WalletCallException) {
+                    errMessage = ex.getMessage().replace(",", ",\n");
                 }
+
+                JOptionPane.showMessageDialog(
+                        SendCashPanel.this.getRootPane().getParent(),
+                        LOCAL_MSG_ERROR_SENDING_1 + ":\n" +
+                                errMessage + "\n\n" +
+                                LOCAL_MSG_ERROR_SENDING_2 + "\n",
+                        LOCAL_MSG_ERROR_SENDING_TITLE, JOptionPane.ERROR_MESSAGE);
             }
         });
 
         // Update the balances via timer and data gathering thread
-        this.addressBalanceGatheringThread = new DataGatheringThread<String[][]>(
-                new DataGatheringThread.DataGatherer<String[][]>()
-                {
-                    public String[][] gatherData()
-                            throws Exception
-                    {
-                        long start = System.currentTimeMillis();
-                        String[][] data = SendCashPanel.this.getAddressPositiveBalanceDataFromWallet();
-                        long end = System.currentTimeMillis();
-                        Log.info("Gathering of address/balance table data done in " + (end - start) + "ms." );
+        this.addressBalanceGatheringThread = new DataGatheringThread<>(
+                () -> {
+                    long start = System.currentTimeMillis();
+                    String[][] data = SendCashPanel.this.getAddressPositiveBalanceDataFromWallet();
+                    long end = System.currentTimeMillis();
+                    Log.info("Gathering of address/balance table data done in " + (end - start) + "ms.");
 
-                        return data;
-                    }
+                    return data;
                 },
                 this.errorReporter, 10000, true);
         this.threads.add(addressBalanceGatheringThread);
 
-        ActionListener alBalancesUpdater = new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                try
-                {
-                    // TODO: if the user has opened the combo box - this closes it (maybe fix)
-                    SendCashPanel.this.updateWalletAddressPositiveBalanceComboBox();
-                } catch (Exception ex)
-                {
-                    Log.error("Unexpected error: ", ex);
-                    SendCashPanel.this.errorReporter.reportError(ex);
-                }
+        ActionListener alBalancesUpdater = e -> {
+            try {
+                SendCashPanel.this.updateWalletAddressPositiveBalanceComboBox();
+            } catch (Exception ex) {
+                Log.error("Unexpected error: ", ex);
+                SendCashPanel.this.errorReporter.reportError(ex);
             }
         };
         Timer timerBalancesUpdater = new Timer(15000, alBalancesUpdater);
@@ -294,75 +312,53 @@ public class SendCashPanel
         this.timers.add(timerBalancesUpdater);
 
         // Add a popup menu to the destination address field - for convenience
-        JMenuItem paste = new JMenuItem("Paste address");
+        JMenuItem paste = new JMenuItem(LOCAL_MSG_PASTE_ADDRESS);
         final JPopupMenu popupMenu = new JPopupMenu();
         popupMenu.add(paste);
-        paste.addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                try
-                {
-                    String address = (String)Toolkit.getDefaultToolkit().getSystemClipboard().
-                            getData(DataFlavor.stringFlavor);
-                    if ((address != null) && (address.trim().length() > 0))
-                    {
-                        SendCashPanel.this.destinationAddressField.setText(address);
-                    }
-                } catch (Exception ex)
-                {
-                    Log.error("Unexpected error", ex);
-                    // TODO: clipboard exception handling - do it better
-                    // java.awt.datatransfer.UnsupportedFlavorException: Unicode String
-                    //SendCashPanel.this.errorReporter.reportError(ex);
+        paste.addActionListener(e -> {
+            try {
+                String address = (String) Toolkit.getDefaultToolkit().getSystemClipboard().
+                        getData(DataFlavor.stringFlavor);
+                if ((address != null) && (address.trim().length() > 0)) {
+                    SendCashPanel.this.destinationAddressField.setText(address);
                 }
+            } catch (Exception ex) {
+                Log.error("Unexpected error", ex);
             }
         });
 
-        this.destinationAddressField.addMouseListener(new MouseAdapter()
-        {
-            public void mousePressed(MouseEvent e)
-            {
-                if ((!e.isConsumed()) && e.isPopupTrigger())
-                {
+        this.destinationAddressField.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent e) {
+                if ((!e.isConsumed()) && e.isPopupTrigger()) {
                     popupMenu.show(e.getComponent(), e.getPoint().x, e.getPoint().y);
                     e.consume();
-                };
+                }
+                ;
             }
 
-            public void mouseReleased(MouseEvent e)
-            {
-                if ((!e.isConsumed()) && e.isPopupTrigger())
-                {
+            public void mouseReleased(MouseEvent e) {
+                if ((!e.isConsumed()) && e.isPopupTrigger()) {
                     mousePressed(e);
                 }
             }
         });
-
     }
 
-
     private void sendCash()
-            throws WalletCallException, IOException, InterruptedException
-    {
-        if (balanceAddressCombo.getItemCount() <= 0)
-        {
+            throws WalletCallException, IOException, InterruptedException {
+        if (balanceAddressCombo.getItemCount() <= 0) {
             JOptionPane.showMessageDialog(
                     SendCashPanel.this.getRootPane().getParent(),
-                    "There are no addresses with a positive balance to send\n" +
-                            "BTCP from!",
-                    "No Funds Available", JOptionPane.ERROR_MESSAGE);
+                    LOCAL_MSG_NO_FUNDS_DETAIL,
+                    LOCAL_MSG_NO_FUNDS, JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        if (this.balanceAddressCombo.getSelectedIndex() < 0)
-        {
+        if (this.balanceAddressCombo.getSelectedIndex() < 0) {
             JOptionPane.showMessageDialog(
                     SendCashPanel.this.getRootPane().getParent(),
-                    "Please select a source address with a current positive\n" +
-                            "balance to send BTCP from!",
-                    "Select Source Address", JOptionPane.ERROR_MESSAGE);
+                    LOCAL_MSG_SELECT_SOURCE_ADDR_DETAIL,
+                    LOCAL_MSG_SELECT_SOURCE_ADDR, JOptionPane.ERROR_MESSAGE);
             return;
         }
 
@@ -375,41 +371,34 @@ public class SendCashPanel
         // Verify general correctness.
         String errorMessage = null;
 
-        if ((sourceAddress == null) || (sourceAddress.trim().length() <= 20))
-        {
-            errorMessage = "Source address is invalid; it is too short or missing.";
-        } else if (sourceAddress.length() > 512)
-        {
-            errorMessage = "Source address is invalid; it is too long.";
+        if ((sourceAddress == null) || (sourceAddress.trim().length() <= 20)) {
+            errorMessage = LOCAL_MSG_ERROR_FROM_SHORT;
+        } else if (sourceAddress.length() > 512) {
+            errorMessage = LOCAL_MSG_ERROR_FROM_LONG;
         }
 
         // TODO: full address validation
-        if ((destinationAddress == null) || (destinationAddress.trim().length() <= 0))
-        {
-            errorMessage = "Destination address is invalid; it is missing.";
-        } else if (destinationAddress.trim().length() <= 20)
-        {
-            errorMessage = "Destination address is invalid; it is too short.";
-        } else if (destinationAddress.length() > 512)
-        {
-            errorMessage = "Destination address is invalid; it is too long.";
+        if ((destinationAddress == null) || (destinationAddress.trim().length() <= 0)) {
+            errorMessage = LOCAL_MSG_ERROR_TO_MISSING;
+        } else if (destinationAddress.trim().length() <= 20) {
+            errorMessage = LOCAL_MSG_ERROR_TO_SHORT;
+        } else if (destinationAddress.length() > 512) {
+            errorMessage = LOCAL_MSG_ERROR_TO_LONG;
         }
 
         // Prevent accidental sending to non-BTCP addresses (as seems to be supported by daemon)
-        if (!installationObserver.isOnTestNet())
-        {
+        if (!installationObserver.isOnTestNet()) {
             if (!(destinationAddress.startsWith("zk") ||
                     destinationAddress.startsWith("b1") ||
-                    destinationAddress.startsWith("bx")))
-            {
-                Object[] options = { "OK" };
+                    destinationAddress.startsWith("bx"))) {
+                Object[] options = {"OK"};
 
                 JOptionPane.showOptionDialog(
                         SendCashPanel.this.getRootPane().getParent(),
-                        "The destination address to send BTCP to:\n" +
-                                destinationAddress + "\n"+
-                                "does not appear to be a valid BTCP address. BTCP addresses start with b1, bx or zk!",
-                        "Destination Address Invalid",
+                        LOCAL_MSG_ERROR_SEND_PREFIX_1 + ":\n" +
+                                destinationAddress + "\n" +
+                                LOCAL_MSG_ERROR_SEND_PREFIX_2,
+                        LOCAL_MSG_ERROR_SEND_PREFIX_TITLE,
                         JOptionPane.DEFAULT_OPTION,
                         JOptionPane.ERROR_MESSAGE,
                         null,
@@ -420,52 +409,41 @@ public class SendCashPanel
             }
         }
 
-        if ((amount == null) || (amount.trim().length() <= 0))
-        {
-            errorMessage = "Amount to send is invalid; it is missing.";
-        } else
-        {
-            try
-            {
+        if ((amount == null) || (amount.trim().length() <= 0)) {
+            errorMessage = LOCAL_MSG_ERROR_SEND_AMOUNT_MISSING;
+        } else {
+            try {
                 double d = Double.valueOf(amount);
-            } catch (NumberFormatException nfe)
-            {
-                errorMessage = "Amount to send is invalid; it is not a number.";
+            } catch (NumberFormatException nfe) {
+                errorMessage = LOCAL_MSG_ERROR_SEND_AMOUNT_INVALID;
             }
         }
 
-        if ((fee == null) || (fee.trim().length() <= 0))
-        {
-            errorMessage = "Transaction fee is invalid; it is missing.";
-        } else
-        {
-            try
-            {
-                double d = Double.valueOf(fee);
-            } catch (NumberFormatException nfe)
-            {
-                errorMessage = "Transaction fee is invalid; it is not a number.";
+        if ((fee == null) || (fee.trim().length() <= 0)) {
+            errorMessage = LOCAL_MSG_ERROR_SEND_NO_TXN_FEE;
+        } else {
+            try {
+                Double.valueOf(fee);
+            } catch (NumberFormatException nfe) {
+                errorMessage = LOCAL_MSG_ERROR_SEND_TXN_FEE_INVALID;
             }
         }
 
 
-        if (errorMessage != null)
-        {
+        if (errorMessage != null) {
             JOptionPane.showMessageDialog(
                     SendCashPanel.this.getRootPane().getParent(),
-                    errorMessage, "Sending parameters are incorrect", JOptionPane.ERROR_MESSAGE);
+                    errorMessage, LOCAL_MSG_ERROR_SEND_PARAMS_INCORRECT, JOptionPane.ERROR_MESSAGE);
             return;
         }
 
         // Check for encrypted wallet
         final boolean bEncryptedWallet = this.clientCaller.isWalletEncrypted();
-        if (bEncryptedWallet)
-        {
-            PasswordDialog pd = new PasswordDialog((JFrame)(SendCashPanel.this.getRootPane().getParent()));
+        if (bEncryptedWallet) {
+            PasswordDialog pd = new PasswordDialog((JFrame) (SendCashPanel.this.getRootPane().getParent()));
             pd.setVisible(true);
 
-            if (!pd.isOKPressed())
-            {
+            if (!pd.isOKPressed()) {
                 return;
             }
 
@@ -476,8 +454,7 @@ public class SendCashPanel
         operationStatusID = this.clientCaller.sendCash(sourceAddress, destinationAddress, amount, memo, fee);
 
         // Make sure the keypool has spare addresses
-        if ((this.backupTracker.getNumTransactionsSinceLastBackup() % 5) == 0)
-        {
+        if ((this.backupTracker.getNumTransactionsSinceLastBackup() % 5) == 0) {
             this.clientCaller.keypoolRefill(100);
         }
 
@@ -491,84 +468,67 @@ public class SendCashPanel
 
         // Start a data gathering thread specific to the operation being executed - this is done is a separate
         // thread since the server responds more slowly during JoinSPlits and this blocks he GUI somewhat.
-        final DataGatheringThread<Boolean> opFollowingThread = new DataGatheringThread<Boolean>(
-                new DataGatheringThread.DataGatherer<Boolean>()
-                {
-                    public Boolean gatherData()
-                            throws Exception
-                    {
-                        long start = System.currentTimeMillis();
-                        Boolean result = clientCaller.isSendingOperationComplete(operationStatusID);
-                        long end = System.currentTimeMillis();
-                        Log.info("Checking for operation " + operationStatusID + " status done in " + (end - start) + "ms." );
+        final DataGatheringThread<Boolean> opFollowingThread = new DataGatheringThread<>(
+                () -> {
+                    long start = System.currentTimeMillis();
+                    Boolean result = clientCaller.isSendingOperationComplete(operationStatusID);
+                    long end = System.currentTimeMillis();
+                    Log.info("Checking for operation " + operationStatusID + " status done in " + (end - start) + "ms.");
 
-                        return result;
-                    }
+                    return result;
                 },
                 this.errorReporter, 2000, true);
 
         // Start a timer to update the progress of the operation
         operationStatusCounter = 0;
-        operationStatusTimer = new Timer(2000, new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                try
-                {
-                    // TODO: Handle errors in case of restarted server while wallet is sending ...
-                    Boolean opComplete = opFollowingThread.getLastData();
+        operationStatusTimer = new Timer(2000, e -> {
+            try {
+                // TODO: Handle errors in case of restarted server while wallet is sending ...
+                Boolean opComplete = opFollowingThread.getLastData();
 
-                    if ((opComplete != null) && opComplete.booleanValue())
-                    {
-                        // End the special thread used to follow the operation
-                        opFollowingThread.setSuspended(true);
+                if ((opComplete != null) && opComplete.booleanValue()) {
+                    // End the special thread used to follow the operation
+                    opFollowingThread.setSuspended(true);
 
-                        SendCashPanel.this.reportCompleteOperationToTheUser(
-                                amount, sourceAddress, destinationAddress);
+                    SendCashPanel.this.reportCompleteOperationToTheUser(
+                            amount, sourceAddress, destinationAddress);
 
-                        // Lock the wallet again
-                        if (bEncryptedWallet)
-                        {
-                            SendCashPanel.this.clientCaller.lockWallet();
-                        }
-
-                        // Restore controls etc.
-                        operationStatusCounter = 0;
-                        operationStatusID      = null;
-                        operationStatusTimer.stop();
-                        operationStatusTimer = null;
-                        operationStatusProhgressBar.setValue(0);
-
-                        sendButton.setEnabled(true);
-                        balanceAddressCombo.setEnabled(true);
-                        destinationAddressField.setEnabled(true);
-                        destinationAmountField.setEnabled(true);
-                        transactionFeeField.setEnabled(true);
-                        destinationMemoField.setEnabled(true);
-                    } else
-                    {
-                        // Update the progress
-                        operationStatusLabel.setText(
-                                "<html><span style=\"color:orange;font-weight:bold\">IN PROGRESS</span></html>");
-                        operationStatusCounter += 2;
-                        int progress = 0;
-                        if (operationStatusCounter <= 100)
-                        {
-                            progress = operationStatusCounter;
-                        } else
-                        {
-                            progress = 100 + (((operationStatusCounter - 100) * 6) / 10);
-                        }
-                        operationStatusProhgressBar.setValue(progress);
+                    // Lock the wallet again
+                    if (bEncryptedWallet) {
+                        SendCashPanel.this.clientCaller.lockWallet();
                     }
 
-                    SendCashPanel.this.repaint();
-                } catch (Exception ex)
-                {
-                    Log.error("Unexpected error: ", ex);
-                    SendCashPanel.this.errorReporter.reportError(ex);
+                    // Restore controls etc.
+                    operationStatusCounter = 0;
+                    operationStatusID = null;
+                    operationStatusTimer.stop();
+                    operationStatusTimer = null;
+                    operationStatusProhgressBar.setValue(0);
+
+                    sendButton.setEnabled(true);
+                    balanceAddressCombo.setEnabled(true);
+                    destinationAddressField.setEnabled(true);
+                    destinationAmountField.setEnabled(true);
+                    transactionFeeField.setEnabled(true);
+                    destinationMemoField.setEnabled(true);
+                } else {
+                    // Update the progress
+                    operationStatusLabel.setText(
+                            "<html><span style=\"color:orange;font-weight:bold\">" + LOCAL_MSG_IN_PROGRESS + "</span></html>");
+                    operationStatusCounter += 2;
+                    int progress = 0;
+                    if (operationStatusCounter <= 100) {
+                        progress = operationStatusCounter;
+                    } else {
+                        progress = 100 + (((operationStatusCounter - 100) * 6) / 10);
+                    }
+                    operationStatusProhgressBar.setValue(progress);
                 }
+
+                SendCashPanel.this.repaint();
+            } catch (Exception ex) {
+                Log.error("Unexpected error: ", ex);
+                SendCashPanel.this.errorReporter.reportError(ex);
             }
         });
         operationStatusTimer.setInitialDelay(0);
@@ -576,31 +536,27 @@ public class SendCashPanel
     }
 
 
-    public void prepareForSending(String address)
-    {
+    public void prepareForSending(String address) {
         destinationAddressField.setText(address);
     }
 
 
     private void updateWalletAddressPositiveBalanceComboBox()
-            throws WalletCallException, IOException, InterruptedException
-    {
+            throws WalletCallException, IOException, InterruptedException {
         String[][] newAddressBalanceData = this.addressBalanceGatheringThread.getLastData();
 
         // The data may be null if nothing is yet obtained
-        if (newAddressBalanceData == null)
-        {
+        if (newAddressBalanceData == null) {
             return;
         }
 
         lastAddressBalanceData = newAddressBalanceData;
 
         comboBoxItems = new String[lastAddressBalanceData.length];
-        for (int i = 0; i < lastAddressBalanceData.length; i++)
-        {
+        for (int i = 0; i < lastAddressBalanceData.length; i++) {
             // Do numeric formatting or else we may get 1.1111E-5
             comboBoxItems[i] =
-                    new DecimalFormat("########0.00######").format(Double.valueOf(lastAddressBalanceData[i][0]))  +
+                    new DecimalFormat("########0.00######").format(Double.valueOf(lastAddressBalanceData[i][0])) +
                             " - " + lastAddressBalanceData[i][1];
         }
 
@@ -611,8 +567,7 @@ public class SendCashPanel
         comboBoxParentPanel.add(balanceAddressCombo);
         if ((balanceAddressCombo.getItemCount() > 0) &&
                 (selectedIndex >= 0) &&
-                (balanceAddressCombo.getItemCount() > selectedIndex))
-        {
+                (balanceAddressCombo.getItemCount() > selectedIndex)) {
             balanceAddressCombo.setSelectedIndex(selectedIndex);
         }
         balanceAddressCombo.setEnabled(isEnabled);
@@ -623,24 +578,21 @@ public class SendCashPanel
 
 
     private String[][] getAddressPositiveBalanceDataFromWallet()
-            throws WalletCallException, IOException, InterruptedException
-    {
+            throws WalletCallException, IOException, InterruptedException {
         // Z Addresses - they are OK
         String[] zAddresses = clientCaller.getWalletZAddresses();
 
         // T Addresses created inside wallet that may be empty
         String[] tAddresses = this.clientCaller.getWalletAllPublicAddresses();
         Set<String> tStoredAddressSet = new HashSet<>();
-        for (String address : tAddresses)
-        {
+        for (String address : tAddresses) {
             tStoredAddressSet.add(address);
         }
 
         // T addresses with unspent outputs (even if not GUI created)...
         String[] tAddressesWithUnspentOuts = this.clientCaller.getWalletPublicAddressesWithUnspentOutputs();
         Set<String> tAddressSetWithUnspentOuts = new HashSet<>();
-        for (String address : tAddressesWithUnspentOuts)
-        {
+        for (String address : tAddressesWithUnspentOuts) {
             tAddressSetWithUnspentOuts.add(address);
         }
 
@@ -653,11 +605,9 @@ public class SendCashPanel
 
         int count = 0;
 
-        for (String address : tAddressesCombined)
-        {
+        for (String address : tAddressesCombined) {
             String balance = this.clientCaller.getBalanceForAddress(address);
-            if (Double.valueOf(balance) > 0)
-            {
+            if (Double.valueOf(balance) > 0) {
                 tempAddressBalances[count++] = new String[]
                         {
                                 balance, address
@@ -665,11 +615,9 @@ public class SendCashPanel
             }
         }
 
-        for (String address : zAddresses)
-        {
+        for (String address : zAddresses) {
             String balance = this.clientCaller.getBalanceForAddress(address);
-            if (Double.valueOf(balance) > 0)
-            {
+            if (Double.valueOf(balance) > 0) {
                 tempAddressBalances[count++] = new String[]
                         {
                                 balance, address
@@ -685,42 +633,36 @@ public class SendCashPanel
 
 
     private void reportCompleteOperationToTheUser(String amount, String sourceAddress, String destinationAddress)
-            throws InterruptedException, WalletCallException, IOException, URISyntaxException
-    {
-        if (clientCaller.isCompletedOperationSuccessful(operationStatusID))
-        {
+            throws InterruptedException, WalletCallException, IOException, URISyntaxException {
+        if (clientCaller.isCompletedOperationSuccessful(operationStatusID)) {
             operationStatusLabel.setText(
-                    "<html><span style=\"color:green;font-weight:bold\">SUCCESSFUL</span></html>");
+                    "<html><span style=\"color:green;font-weight:bold\">" + LOCAL_MSG_SUCCESSFUL + "</span></html>");
             String TXID = clientCaller.getSuccessfulOperationTXID(operationStatusID);
 
-            Object[] options = { "OK", "Copy transaction ID", "View on the blockchain" };
+            Object[] options = {LOCAL_MSG_OK, LOCAL_MSG_COPY_TXN_ID, LOCAL_MSG_VIEW_ON_EXPLORER};
 
             int option = JOptionPane.showOptionDialog(
                     SendCashPanel.this.getRootPane().getParent(),
-                    "Succesfully sent " + amount + " BTCP from address: \n" +
-                            sourceAddress + "\n" +
-                            "to address: \n" +
+                     amount + " " + LOCAL_MSG_SEND_SUCCESS_SENDER+": \n" +
+                            sourceAddress + "\n" + LOCAL_MSG_SEND_SUCCESS_RECIPIENT +": \n" +
                             destinationAddress + "\n\n" +
-                            "Transaction ID: " + TXID,
-                    "BTCP sent successfully",
+                             LOCAL_MSG_SEND_SUCCESS_TXN_ID + ": " + TXID,
+                    LOCAL_MSG_SEND_SUCCESS_TITLE,
                     JOptionPane.DEFAULT_OPTION,
                     JOptionPane.INFORMATION_MESSAGE,
                     null,
                     options,
                     options[0]);
 
-            if (option == 1)
-            {
+            if (option == 1) {
                 // Copy the transaction ID to clipboard
                 Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
                 clipboard.setContents(new StringSelection(TXID), null);
-            } else if (option == 2)
-            {
+            } else if (option == 2) {
                 // Open block explorer
                 Log.info("Transaction ID for block explorer is: " + TXID);
                 String urlPrefix = "https://explorer.btcprivate.org/tx/";
-                if (installationObserver.isOnTestNet())
-                {
+                if (installationObserver.isOnTestNet()) {
                     urlPrefix = "https://testnet.btcprivate.org/tx/";
                 }
                 Desktop.getDesktop().browse(new URL(urlPrefix + TXID).toURI());
@@ -728,19 +670,16 @@ public class SendCashPanel
 
             // Call the backup tracker - to remind the user
             this.backupTracker.handleNewTransaction();
-        } else
-        {
+        } else {
             String errorMessage = clientCaller.getOperationFinalErrorMessage(operationStatusID);
             operationStatusLabel.setText(
                     "<html><span style=\"color:red;font-weight:bold\">ERROR: " + errorMessage + "</span></html>");
 
             JOptionPane.showMessageDialog(
                     SendCashPanel.this.getRootPane().getParent(),
-                    "An error occurred when sending BTCP:\n" +
-                            errorMessage + "\n\n" +
-                            "Please check that the sending parameters are correct, and try again.\n",
-                    "Error Sending BTCP", JOptionPane.ERROR_MESSAGE);
-
+                    LOCAL_MSG_SEND_ERROR_1 + ":\n" +
+                            errorMessage + "\n\n" + LOCAL_MSG_SEND_ERROR_2,
+                    LOCAL_MSG_SEND_ERROR_TITLE, JOptionPane.ERROR_MESSAGE);
         }
     }
 }

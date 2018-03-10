@@ -41,6 +41,9 @@ public class WalletOperations {
     private StatusUpdateErrorReporter errorReporter;
     private BackupTracker backupTracker;
 
+    private static final String LOCAL_MENU
+    private static final String LOCAL_MSG
+
 
     public WalletOperations(BTCPWalletUI parent,
                             JTabbedPane tabs,
@@ -132,7 +135,7 @@ public class WalletOperations {
 
     public void importSinglePrivateKey() {
         try {
-            SingleKeyImportDialog kd = new SingleKeyImportDialog(this.parent, this.clientCaller, this.sendCash, this.tabs);
+            SingleKeyImportDialog kd = new SingleKeyImportDialog(this.parent, this.clientCaller);
             kd.setVisible(true);
 
         } catch (Exception ex) {

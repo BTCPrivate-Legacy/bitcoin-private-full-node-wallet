@@ -49,6 +49,9 @@ public class StartupProgressDialog extends JFrame {
 
     private final BTCPClientCaller clientCaller;
 
+    private static final String LOCAL_MENU
+    private static final String LOCAL_MSG
+
     public StartupProgressDialog(BTCPClientCaller clientCaller)
     {
         this.clientCaller = clientCaller;
