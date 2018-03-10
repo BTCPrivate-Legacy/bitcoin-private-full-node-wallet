@@ -3,6 +3,7 @@ package org.btcprivate.wallets.fullnode.ui;
 
 import org.btcprivate.wallets.fullnode.util.Log;
 import org.btcprivate.wallets.fullnode.util.OSUtil;
+import org.btcprivate.wallets.fullnode.util.Util;
 
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
@@ -29,22 +30,22 @@ public class AddressBookPanel extends JPanel {
 
     private static final String ADDRESS_BOOK_FILE = "addressBook.csv";
 
-    private static final String LOCAL_MENU_NEW_CONTACT = "LOCAL_MENU_NEW_CONTACT";
-    private static final String LOCAL_MENU_SEND_BTCP = "LOCAL_MENU_SEND_BTCP";
-    private static final String LOCAL_MENU_COPY_ADDRESS_TO_CLIPBOARD = "LOCAL_MENU_COPY_ADDRESS_TO_CLIPBOARD";
-    private static final String LOCAL_MENU_DELETE_CONTACT = "LOCAL_MENU_DELETE_CONTACT";
-    private static final String LOCAL_MENU_COLUMN_NAME = "LOCAL_MENU_COLUMN_NAME";
-    private static final String LOCAL_MENU_COLUMN_ADDRESS ="LOCAL_MENU_COLUMN_ADDRESS";
+    private static final String LOCAL_MENU_NEW_CONTACT = Util.local("LOCAL_MENU_NEW_CONTACT");
+    private static final String LOCAL_MENU_SEND_BTCP = Util.local("LOCAL_MENU_SEND_BTCP");
+    private static final String LOCAL_MENU_COPY_ADDRESS_TO_CLIPBOARD = Util.local("LOCAL_MENU_COPY_ADDRESS_TO_CLIPBOARD");
+    private static final String LOCAL_MENU_DELETE_CONTACT = Util.local("LOCAL_MENU_DELETE_CONTACT");
+    private static final String LOCAL_MENU_COLUMN_NAME = Util.local("LOCAL_MENU_COLUMN_NAME");
+    private static final String LOCAL_MENU_COLUMN_ADDRESS =Util.local("LOCAL_MENU_COLUMN_ADDRESS");
 
-    private static final String LOCAL_MSG_ADDRESS_BOOK_CORRUPT = "LOCAL_MSG_ADDRESS_BOOK_CORRUPT";
-    private static final String LOCAL_MSG_INPUT_CONTACT_NAME = "LOCAL_MSG_INPUT_CONTACT_NAME";
-    private static final String LOCAL_MSG_CREATE_CONTACT_STEP_1 = "LOCAL_MSG_CREATE_CONTACT_STEP_1";
-    private static final String LOCAL_MSG_CREATE_CONTACT_STEP_2 = "LOCAL_MSG_CREATE_CONTACT_STEP_2";
-    private static final String LOCAL_MSG_INPUT_CONTACT_ADDRESS = "LOCAL_MSG_INPUT_CONTACT_ADDRESS";
-    private static final String LOCAL_MSG_SEND_BTCP = "LOCAL_MSG_SEND_BTCP";
-    private static final String LOCAL_MSG_DELETE_CONJUGATED = "LOCAL_MSG_DELETE_CONJUGATED";
-    private static final String LOCAL_MSG_FROM_CONTACTS = "LOCAL_MSG_FROM_CONTACTS";
-    private static final String LOCAL_MSG_DELETE_CONTACT = "LOCAL_MSG_DELETE_CONTACT";
+    private static final String LOCAL_MSG_ADDRESS_BOOK_CORRUPT = Util.local("LOCAL_MSG_ADDRESS_BOOK_CORRUPT");
+    private static final String LOCAL_MSG_INPUT_CONTACT_NAME = Util.local("LOCAL_MSG_INPUT_CONTACT_NAME");
+    private static final String LOCAL_MSG_CREATE_CONTACT_STEP_1 = Util.local("LOCAL_MSG_CREATE_CONTACT_STEP_1");
+    private static final String LOCAL_MSG_CREATE_CONTACT_STEP_2 = Util.local("LOCAL_MSG_CREATE_CONTACT_STEP_2");
+    private static final String LOCAL_MSG_INPUT_CONTACT_ADDRESS = Util.local("LOCAL_MSG_INPUT_CONTACT_ADDRESS");
+    private static final String LOCAL_MSG_SEND_BTCP = Util.local("LOCAL_MSG_SEND_BTCP");
+    private static final String LOCAL_MSG_DELETE_CONJUGATED = Util.local("LOCAL_MSG_DELETE_CONJUGATED");
+    private static final String LOCAL_MSG_FROM_CONTACTS = Util.local("LOCAL_MSG_FROM_CONTACTS");
+    private static final String LOCAL_MSG_DELETE_CONTACT = Util.local("LOCAL_MSG_DELETE_CONTACT");
 
 
     private static class AddressBookEntry {

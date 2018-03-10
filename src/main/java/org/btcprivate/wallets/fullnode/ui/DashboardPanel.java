@@ -56,30 +56,29 @@ public class DashboardPanel
 
     private static final String small_icon_resource = "images/btcp-44.png";
 
-    private static final String LOCAL_MSG_BTCP_WALLET_TITLE = "LOCAL_MSG_BTCP_WALLET_TITLE";
-    private static final String LOCAL_MSG_BTCP_WALLET_TOOLTIP = "LOCAL_MSG_BTCP_WALLET_TOOLTIP";
-    private static final String LOCAL_MSG_DAEMON_SINGLE_CONNECTION = "LOCAL_MSG_DAEMON_SINGLE_CONNECTION";
-    private static final String LOCAL_MSG_DAEMON_CONNECTIONS = "LOCAL_MSG_DAEMON_CONNECTIONS";
-
-    private static final String LOCAL_MSG_LOOKING_PEERS = "LOCAL_MSG_LOOKING_PEERS";
-    private static final String LOCAL_MSG_T_BALANCE = "LOCAL_MSG_T_BALANCE";
-    private static final String LOCAL_MSG_Z_BALANCE = "LOCAL_MSG_Z_BALANCE";
-    private static final String LOCAL_MSG_TOTAL_BALANCE = "LOCAL_MSG_TOTAL_BALANCE";
-    private static final String LOCAL_MSG_YES = "LOCAL_MSG_YES";
-    private static final String LOCAL_MSG_NO = "LOCAL_MSG_NO";
-    private static final String LOCAL_MSG_IMMATURE = "LOCAL_MSG_IMMATURE";
-    private static final String LOCAL_MSG_IN = "LOCAL_MSG_IN";
-    private static final String LOCAL_MSG_OUT = "LOCAL_MSG_OUT";
-    private static final String LOCAL_MSG_MINED = "LOCAL_MSG_MINED";
-    private static final String LOCAL_MSG_TXN_TYPE = "LOCAL_MSG_TXN_TYPE";
-    private static final String LOCAL_MSG_TXN_DIRECTION = "LOCAL_MSG_TXN_DIRECTION";
-    private static final String LOCAL_MSG_TXN_IS_CONFIRMED = "LOCAL_MSG_TXN_IS_CONFIRMED";
-    private static final String LOCAL_MSG_TXN_AMOUNT = "LOCAL_MSG_TXN_AMOUNT";
-    private static final String LOCAL_MSG_TXN_DATE = "LOCAL_MSG_TXN_DATE";
-    private static final String LOCAL_MSG_TXN_DESTINATION = "LOCAL_MSG_TXN_DESTINATION";
-    private static final String LOCAL_MSG_UNCONFIRMED_TOOLTIP = "LOCAL_MSG_UNCONFIRMED_TOOLTIP";
-    private static final String LOCAL_MSG_UNCONFIRMED_TOOLTIP_B = "LOCAL_MSG_UNCONFIRMED_TOOLTIP_B";
-    private static final String LOCAL_MSG_UNCONFIRMED_TOOLTIP_Z = "LOCAL_MSG_UNCONFIRMED_TOOLTIP_Z";
+    private static final String LOCAL_MSG_BTCP_WALLET_TITLE = Util.local("LOCAL_MSG_BTCP_WALLET_TITLE");
+    private static final String LOCAL_MSG_BTCP_WALLET_TOOLTIP = Util.local("LOCAL_MSG_BTCP_WALLET_TOOLTIP");
+    private static final String LOCAL_MSG_DAEMON_SINGLE_CONNECTION = Util.local("LOCAL_MSG_DAEMON_SINGLE_CONNECTION");
+    private static final String LOCAL_MSG_DAEMON_CONNECTIONS = Util.local("LOCAL_MSG_DAEMON_CONNECTIONS");
+    private static final String LOCAL_MSG_LOOKING_PEERS = Util.local("LOCAL_MSG_LOOKING_PEERS");
+    private static final String LOCAL_MSG_T_BALANCE = Util.local("LOCAL_MSG_T_BALANCE");
+    private static final String LOCAL_MSG_Z_BALANCE = Util.local("LOCAL_MSG_Z_BALANCE");
+    private static final String LOCAL_MSG_TOTAL_BALANCE = Util.local("LOCAL_MSG_TOTAL_BALANCE");
+    private static final String LOCAL_MSG_YES = Util.local("LOCAL_MSG_YES");
+    private static final String LOCAL_MSG_NO = Util.local("LOCAL_MSG_NO");
+    private static final String LOCAL_MSG_IMMATURE = Util.local("LOCAL_MSG_IMMATURE");
+    private static final String LOCAL_MSG_IN = Util.local("LOCAL_MSG_IN");
+    private static final String LOCAL_MSG_OUT = Util.local("LOCAL_MSG_OUT");
+    private static final String LOCAL_MSG_MINED = Util.local("LOCAL_MSG_MINED");
+    private static final String LOCAL_MSG_TXN_TYPE = Util.local("LOCAL_MSG_TXN_TYPE");
+    private static final String LOCAL_MSG_TXN_DIRECTION = Util.local("LOCAL_MSG_TXN_DIRECTION");
+    private static final String LOCAL_MSG_TXN_IS_CONFIRMED = Util.local("LOCAL_MSG_TXN_IS_CONFIRMED");
+    private static final String LOCAL_MSG_TXN_AMOUNT = Util.local("LOCAL_MSG_TXN_AMOUNT");
+    private static final String LOCAL_MSG_TXN_DATE = Util.local("LOCAL_MSG_TXN_DATE");
+    private static final String LOCAL_MSG_TXN_DESTINATION = Util.local("LOCAL_MSG_TXN_DESTINATION");
+    private static final String LOCAL_MSG_UNCONFIRMED_TOOLTIP = Util.local("LOCAL_MSG_UNCONFIRMED_TOOLTIP");
+    private static final String LOCAL_MSG_UNCONFIRMED_TOOLTIP_B = Util.local("LOCAL_MSG_UNCONFIRMED_TOOLTIP_B");
+    private static final String LOCAL_MSG_UNCONFIRMED_TOOLTIP_Z = Util.local("LOCAL_MSG_UNCONFIRMED_TOOLTIP_Z");
 
     private static final String daemon_txn_receive = "receive";
     private static final String daemon_txn_send = "send";

@@ -49,8 +49,8 @@ public class SingleKeyImportDialog
     private static final String LOCAL_MSG_IMPORT_SUCCESS_DETAIL_1 = Util.local("LOCAL_MSG_IMPORT_SUCCESS_DETAIL_1");
     private static final String LOCAL_MSG_IMPORT_SUCCESS_DETAIL_2 = Util.local("LOCAL_MSG_IMPORT_SUCCESS_DETAIL_2");
     private static final String LOCAL_MSG_IMPORT_SUCCESS_DETAIL_TITLE = Util.local("LOCAL_MSG_IMPORT_SUCCESS_DETAIL_TITLE");
-    private static final String LOCAL_MSG_IMPORT_SUCCESS_DETAIL_NO_SWEEP= Util.local("LOCAL_MSG_IMPORT_SUCCESS_DETAIL_NO_SWEEP");
-    private static final String LOCAL_MSG_SWEEP_SUCCESS= Util.local("LOCAL_MSG_SWEEP_SUCCESS");
+    private static final String LOCAL_MSG_IMPORT_SUCCESS_DETAIL_NO_SWEEP = Util.local("LOCAL_MSG_IMPORT_SUCCESS_DETAIL_NO_SWEEP");
+    private static final String LOCAL_MSG_SWEEP_SUCCESS = Util.local("LOCAL_MSG_SWEEP_SUCCESS");
     private static final String LOCAL_MSG_SWEEP_FROM = Util.local("LOCAL_MSG_SWEEP_FROM");
     private static final String LOCAL_MSG_SWEEP_TO = Util.local("LOCAL_MSG_SWEEP_TO");
     private static final String LOCAL_MSG_SWEEP_ERROR = Util.local("LOCAL_MSG_SWEEP_ERROR");
@@ -93,7 +93,7 @@ public class SingleKeyImportDialog
         tempPanel = new JPanel(new BorderLayout(0, 0));
         tempPanel.add(this.lowerLabel = new JLabel(
                         "<html><span style=\"font-weight:bold\">" +
-                                LOCAL_MSG_WARNING":</span>" + LOCAL_MSG_IMPORT_PK_WARNING + "</html>"),
+                                LOCAL_MSG_WARNING + ":</span>" + LOCAL_MSG_IMPORT_PK_WARNING + "</html>"),
                 BorderLayout.CENTER);
         controlsPanel.add(tempPanel);
 
@@ -185,7 +185,7 @@ public class SingleKeyImportDialog
 
                     int doSweep = JOptionPane.showConfirmDialog(
                             SingleKeyImportDialog.this,
-                            LOCAL_MSG_IMPORT_SUCCESS_DETAIL_1":\n" +
+                            LOCAL_MSG_IMPORT_SUCCESS_DETAIL_1 + ":\n" +
                                     key + "\n"
                                     + addition
                                     + "\n\n"
@@ -211,8 +211,8 @@ public class SingleKeyImportDialog
                             SingleKeyImportDialog.this.caller.sendCash(address, sweepZ, String.valueOf(amount), "", String.valueOf(txnFee));
                             JOptionPane.showMessageDialog(
                                     SingleKeyImportDialog.this.getRootPane().getParent(),
-                                    LOCAL_MSG_SWEEP_SUCCESS + ": " +String.valueOf(amount) + "BTCP" + LOCAL_MSG_SWEEP_FROM + address + "\n"
-                                            + " " +LOCAL_MSG_SWEEP_TO + " " + sweepZ,
+                                    LOCAL_MSG_SWEEP_SUCCESS + ": " + String.valueOf(amount) + "BTCP" + LOCAL_MSG_SWEEP_FROM + address + "\n"
+                                            + " " + LOCAL_MSG_SWEEP_TO + " " + sweepZ,
                                     LOCAL_MSG_SWEEP_SUCCESS, JOptionPane.INFORMATION_MESSAGE);
                         }
                     }
@@ -223,7 +223,7 @@ public class SingleKeyImportDialog
 
                     JOptionPane.showMessageDialog(
                             SingleKeyImportDialog.this.getRootPane().getParent(),
-                            LOCAL_MSG_SWEEP_ERROR_DETAIL_1 +":\n" +
+                            LOCAL_MSG_SWEEP_ERROR_DETAIL_1 + ":\n" +
                                     e.getClass().getName() + ":\n" + e.getMessage() + "\n\n" +
                                     LOCAL_MSG_SWEEP_ERROR_DETAIL_2,
                             LOCAL_MSG_SWEEP_ERROR, JOptionPane.ERROR_MESSAGE);

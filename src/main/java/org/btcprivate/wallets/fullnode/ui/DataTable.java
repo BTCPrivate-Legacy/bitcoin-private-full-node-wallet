@@ -1,6 +1,7 @@
 package org.btcprivate.wallets.fullnode.ui;
 
 import org.btcprivate.wallets.fullnode.util.Log;
+import org.btcprivate.wallets.fullnode.util.Util;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -31,12 +32,12 @@ public class DataTable
 
     protected JPopupMenu popupMenu;
 
-    private static final String LOCAL_MSG_COPY_VALUE = "LOCAL_MSG_COPY_VALUE";
-    private static final String LOCAL_MSG_EXPORT_TO_CSV = "LOCAL_MSG_EXPORT_TO_CSV";
-    private static final String LOCAL_MSG_UNEXP_ERROR_EXPORT_CSV = "LOCAL_MSG_UNEXP_ERROR_EXPORT_CSV";
-    private static final String LOCAL_MSG_UNEXP_ERROR_EXPORT_CSV_TITLE = "LOCAL_MSG_UNEXP_ERROR_EXPORT_CSV_TITLE";
-    private static final String LOCAL_MSG_UNEXP_ERROR_EXPORT_CSV_SUCCESS = "LOCAL_MSG_UNEXP_ERROR_EXPORT_CSV_SUCCESS";
-    private static final String LOCAL_MSG_UNEXP_ERROR_EXPORT_CSV_SUCCESS_TITLE = "LOCAL_MSG_UNEXP_ERROR_EXPORT_CSV_SUCCESS_TITLE";
+    private static final String LOCAL_MSG_COPY_VALUE = Util.local("LOCAL_MSG_COPY_VALUE");
+    private static final String LOCAL_MSG_EXPORT_TO_CSV = Util.local("LOCAL_MSG_EXPORT_TO_CSV");
+    private static final String LOCAL_MSG_UNEXP_ERROR_EXPORT_CSV = Util.local("LOCAL_MSG_UNEXP_ERROR_EXPORT_CSV");
+    private static final String LOCAL_MSG_UNEXP_ERROR_EXPORT_CSV_TITLE = Util.local("LOCAL_MSG_UNEXP_ERROR_EXPORT_CSV_TITLE");
+    private static final String LOCAL_MSG_UNEXP_ERROR_EXPORT_CSV_SUCCESS = Util.local("LOCAL_MSG_UNEXP_ERROR_EXPORT_CSV_SUCCESS");
+    private static final String LOCAL_MSG_UNEXP_ERROR_EXPORT_CSV_SUCCESS_TITLE = Util.local("LOCAL_MSG_UNEXP_ERROR_EXPORT_CSV_SUCCESS_TITLE");
 
 
     public DataTable(final Object[][] rowData, final Object[] columnNames)

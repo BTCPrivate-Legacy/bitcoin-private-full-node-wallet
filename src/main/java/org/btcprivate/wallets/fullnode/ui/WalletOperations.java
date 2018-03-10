@@ -32,41 +32,25 @@ import org.btcprivate.wallets.fullnode.util.Util;
 public class WalletOperations {
     private BTCPWalletUI parent;
     private JTabbedPane tabs;
-    private DashboardPanel dashboard;
-    private SendCashPanel sendCash;
     private AddressesPanel addresses;
 
-    private BTCPInstallationObserver installationObserver;
     private BTCPClientCaller clientCaller;
     private StatusUpdateErrorReporter errorReporter;
-    private BackupTracker backupTracker;
-
-    private static final String LOCAL_MENU
-    private static final String LOCAL_MSG
 
 
     public WalletOperations(BTCPWalletUI parent,
                             JTabbedPane tabs,
-                            DashboardPanel dashboard,
                             AddressesPanel addresses,
-                            SendCashPanel sendCash,
-
-                            BTCPInstallationObserver installationObserver,
                             BTCPClientCaller clientCaller,
-                            StatusUpdateErrorReporter errorReporter,
-                            BackupTracker backupTracker)
+                            StatusUpdateErrorReporter errorReporter)
             throws IOException, InterruptedException, WalletCallException {
         this.parent = parent;
         this.tabs = tabs;
-        this.dashboard = dashboard;
         this.addresses = addresses;
-        this.sendCash = sendCash;
 
-        this.installationObserver = installationObserver;
         this.clientCaller = clientCaller;
         this.errorReporter = errorReporter;
 
-        this.backupTracker = backupTracker;
     }
 
     public void showPrivateKey() {
@@ -95,7 +79,7 @@ public class WalletOperations {
             // Check for encrypted wallet
             final boolean bEncryptedWallet = this.clientCaller.isWalletEncrypted();
             if (bEncryptedWallet) {
-                PasswordDialog pd = new PasswordDialog((JFrame) (this.parent));
+                PasswordDialog pd = new PasswordDialog((this.parent));
                 pd.setVisible(true);
 
                 if (!pd.isOKPressed()) {

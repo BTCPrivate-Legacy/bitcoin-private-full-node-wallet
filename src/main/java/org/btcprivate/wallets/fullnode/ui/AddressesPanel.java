@@ -2,19 +2,17 @@ package org.btcprivate.wallets.fullnode.ui;
 
 
 import org.btcprivate.wallets.fullnode.daemon.BTCPClientCaller;
-import org.btcprivate.wallets.fullnode.daemon.BTCPClientCaller.*;
+import org.btcprivate.wallets.fullnode.daemon.BTCPClientCaller.WalletCallException;
 import org.btcprivate.wallets.fullnode.daemon.DataGatheringThread;
 import org.btcprivate.wallets.fullnode.util.Log;
 import org.btcprivate.wallets.fullnode.util.OSUtil;
-import org.btcprivate.wallets.fullnode.util.OSUtil.*;
+import org.btcprivate.wallets.fullnode.util.OSUtil.OS_TYPE;
 import org.btcprivate.wallets.fullnode.util.StatusUpdateErrorReporter;
 import org.btcprivate.wallets.fullnode.util.Util;
-import org.omg.CORBA.INVALID_ACTIVITY;
 
-import java.awt.BorderLayout;
-import java.awt.Cursor;
-import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
+import javax.swing.*;
+import javax.swing.border.EtchedBorder;
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -22,17 +20,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.Timer;
-import javax.swing.border.EtchedBorder;
 
 
 
@@ -61,21 +48,20 @@ public class AddressesPanel
     // and should be remembered as invalid here
     private Map<String, Boolean> validationMap = new HashMap<>();
 
-    private static final String LOCAL_MENU_NEW_B_ADDRESS = "LOCAL_MENU_NEW_B_ADDRESS";
-    private static final String LOCAL_MENU_NEW_Z_ADDRESS = "LOCAL_MENU_NEW_Z_ADDRESS";
-    private static final String LOCAL_MENU_REFRESH = "LOCAL_MENU_REFRESH";
-    private static final String LOCAL_MENU_BALANCE = "LOCAL_MENU_BALANCE";
-    private static final String LOCAL_MENU_IS_CONFIRMED = "LOCAL_MENU_IS_CONFIRMED";
-    private static final String LOCAL_MENU_ADDRESS = "LOCAL_MENU_ADDRESS";
-
-    private static final String LOCAL_MSG_WARN_BLOCK_TIME = "LOCAL_MSG_WARN_BLOCK_TIME";
-    private static final String LOCAL_MSG_ADDRESS_CREATED = "LOCAL_MSG_ADDRESS_CREATED";
-    private static final String LOCAL_MSG_ADDRESS_CREATED_TITLE = "LOCAL_MSG_ADDRESS_CREATED_TITLE";
-    private static final String LOCAL_MSG_YES = "LOCAL_MSG_YES";
-    private static final String LOCAL_MSG_NO = "LOCAL_MSG_NO";
-    private static final String LOCAL_MSG_INVALID_OR_WO_ADDRESS = "LOCAL_MSG_INVALID_OR_WO_ADDRESS";
-    private static final String LOCAL_MSG_INVALID_OR_WO_ADDRESS_DETAIL = "LOCAL_MSG_INVALID_OR_WO_ADDRESS_DETAIL";
-    private static final String LOCAL_MSG_INVALID_OR_WO_ADDRESS_TITLE = "LOCAL_MSG_INVALID_OR_WO_ADDRESS_TITLE";
+    private static final String LOCAL_MENU_NEW_B_ADDRESS = Util.local("LOCAL_MENU_NEW_B_ADDRESS");
+    private static final String LOCAL_MENU_NEW_Z_ADDRESS = Util.local("LOCAL_MENU_NEW_Z_ADDRESS");
+    private static final String LOCAL_MENU_REFRESH = Util.local("LOCAL_MENU_REFRESH");
+    private static final String LOCAL_MENU_BALANCE = Util.local("LOCAL_MENU_BALANCE");
+    private static final String LOCAL_MENU_IS_CONFIRMED = Util.local("LOCAL_MENU_IS_CONFIRMED");
+    private static final String LOCAL_MENU_ADDRESS = Util.local("LOCAL_MENU_ADDRESS");
+    private static final String LOCAL_MSG_WARN_BLOCK_TIME = Util.local("LOCAL_MSG_WARN_BLOCK_TIME");
+    private static final String LOCAL_MSG_ADDRESS_CREATED = Util.local("LOCAL_MSG_ADDRESS_CREATED");
+    private static final String LOCAL_MSG_ADDRESS_CREATED_TITLE = Util.local("LOCAL_MSG_ADDRESS_CREATED_TITLE");
+    private static final String LOCAL_MSG_YES = Util.local("LOCAL_MSG_YES");
+    private static final String LOCAL_MSG_NO = Util.local("LOCAL_MSG_NO");
+    private static final String LOCAL_MSG_INVALID_OR_WO_ADDRESS = Util.local("LOCAL_MSG_INVALID_OR_WO_ADDRESS");
+    private static final String LOCAL_MSG_INVALID_OR_WO_ADDRESS_DETAIL = Util.local("LOCAL_MSG_INVALID_OR_WO_ADDRESS_DETAIL");
+    private static final String LOCAL_MSG_INVALID_OR_WO_ADDRESS_TITLE = Util.local("LOCAL_MSG_INVALID_OR_WO_ADDRESS_TITLE");
 
 
     public AddressesPanel(JFrame parentFrame, BTCPClientCaller clientCaller, StatusUpdateErrorReporter errorReporter)

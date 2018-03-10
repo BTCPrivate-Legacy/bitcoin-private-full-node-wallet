@@ -19,11 +19,11 @@ import java.awt.datatransfer.StringSelection;
 public class AddressTable
         extends DataTable {
 
-    private static final String LOCAL_MENU_GET_PK = "LOCAL_MENU_GET_PK";
-    private static final String LOCAL_MENU_PK_INFO_1 = "LOCAL_MENU_PK_INFO_1";
-    private static final String LOCAL_MENU_PK_INFO_2 = "LOCAL_MENU_PK_INFO_2";
-    private static final String LOCAL_MENU_PK_INFO_3 = "LOCAL_MENU_PK_INFO_3";
-    private static final String LOCAL_MSG_ERROR_GET_PK = "LOCAL_MSG_ERROR_GET_PK";
+    private static final String LOCAL_MENU_GET_PK = Util.local("LOCAL_MENU_GET_PK");
+    private static final String LOCAL_MENU_PK_INFO_1 = Util.local("LOCAL_MENU_PK_INFO_1");
+    private static final String LOCAL_MENU_PK_INFO_2 = Util.local("LOCAL_MENU_PK_INFO_2");
+    private static final String LOCAL_MENU_PK_INFO_3 = Util.local("LOCAL_MENU_PK_INFO_3");
+    private static final String LOCAL_MSG_ERROR_GET_PK = Util.local("LOCAL_MSG_ERROR_GET_PK");
 
     public AddressTable(final Object[][] rowData, final Object[] columnNames,
                         final BTCPClientCaller caller) {
