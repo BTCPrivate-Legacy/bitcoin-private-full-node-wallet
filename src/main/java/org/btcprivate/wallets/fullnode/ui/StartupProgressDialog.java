@@ -173,7 +173,7 @@ public class StartupProgressDialog extends JFrame {
                             daemonProcess.destroy();
                         }
 
-                        if (end - start > 1 * 60 * 1000)
+                        if (end - start > 30 * 1000)
                         {
                             break;
                         }
