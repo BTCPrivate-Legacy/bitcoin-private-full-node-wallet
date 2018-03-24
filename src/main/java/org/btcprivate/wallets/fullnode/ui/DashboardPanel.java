@@ -443,9 +443,9 @@ public class DashboardPanel
         String privateUCBalance = df.format(balance.privateUnconfirmedBalance);
         String totalUCBalance = df.format(balance.totalUnconfirmedBalance);
 
-        String color1 = transparentBalance.equals(transparentUCBalance) ? "" : "color:#cc3300;";
-        String color2 = privateBalance.equals(privateUCBalance)         ? "" : "color:#cc3300;";
-        String color3 = totalBalance.equals(totalUCBalance)             ? "" : "color:#cc3300;";
+        String color1 = transparentBalance.equals(transparentUCBalance) ? "" : "color:#999999;";
+        String color2 = privateBalance.equals(privateUCBalance)         ? "" : "color:#999999;";
+        String color3 = totalBalance.equals(totalUCBalance)             ? "" : "color:#999999;";
 
         String text =
                 "<html><p text-align: right>" +
