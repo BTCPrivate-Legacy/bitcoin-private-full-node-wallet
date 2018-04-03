@@ -26,6 +26,14 @@ public class BTCPClientCaller {
         public double totalUnconfirmedBalance;
     }
 
+    public static class ShieldCoinbaseResponse {
+        public String operationid;
+        public int shieldedUTXOs;
+        public double shieldedValue;
+        public int remainingUTXOs;
+        public double remainingValue;
+    }
+
 
     public static class NetworkAndBlockchainInfo {
         public int numConnections;
@@ -631,6 +639,30 @@ public class BTCPClientCaller {
         return jsonError.getString("message", "ERROR!");
     }
 
+	public synchronized ShieldCoinbaseResponse shieldCoinbase(String from, String to)
+            throws WalletCallException, IOException, InterruptedException {
+        JsonObject objResponse = this.executeCommandAndGetJsonObject(
+                "z_shieldcoinbase", wrapStringParameter(from),
+                        wrapStringParameter(to));
+
+		ShieldCoinbaseResponse shieldCoinbaseResponse = new ShieldCoinbaseResponse();
+		shieldCoinbaseResponse.operationid = objResponse.getString("operationid", null);
+		shieldCoinbaseResponse.shieldedUTXOs = objResponse.getInt("shieldedUTXOs", -1);
+		if (shieldCoinbaseResponse.shieldedUTXOs == -1) {
+			shieldCoinbaseResponse.shieldedUTXOs = objResponse.getInt("shieldingUTXOs", -1);
+		}
+		shieldCoinbaseResponse.shieldedValue = objResponse.getDouble("shieldedValue", -1);
+		if (shieldCoinbaseResponse.shieldedValue == -1) {
+			shieldCoinbaseResponse.shieldedValue = objResponse.getDouble("shieldingValue", -1);
+		}
+		shieldCoinbaseResponse.remainingUTXOs = objResponse.getInt("remainingUTXOs", -1);
+		shieldCoinbaseResponse.remainingValue = objResponse.getDouble("remainingValue", -1);
+        if (shieldCoinbaseResponse.shieldedValue != -1) {
+            return shieldCoinbaseResponse;
+        } else {
+            throw new WalletCallException("Unexpected z_shieldcoinbase response from wallet: " + objResponse.toString());
+        }
+    }
 
     public synchronized NetworkAndBlockchainInfo getNetworkAndBlockchainInfo()
             throws WalletCallException, IOException, InterruptedException {
@@ -853,7 +885,12 @@ public class BTCPClientCaller {
 
     private JsonObject executeCommandAndGetJsonObject(String command1, String command2)
             throws WalletCallException, IOException, InterruptedException {
-        JsonValue response = this.executeCommandAndGetJsonValue(command1, command2);
+        return this.executeCommandAndGetJsonObject(command1, command2, null);
+    }
+
+    private JsonObject executeCommandAndGetJsonObject(String command1, String command2, String command3)
+            throws WalletCallException, IOException, InterruptedException {
+        JsonValue response = this.executeCommandAndGetJsonValue(command1, command2, command3);
 
         if (response.isObject()) {
             return response.asObject();
