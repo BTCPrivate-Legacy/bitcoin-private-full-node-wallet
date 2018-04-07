@@ -121,7 +121,7 @@ public class AddressTable
     }
     
     protected JMenuItem instantiateShieldAllCoinbaseMenuItem() {
-        JMenuItem shieldAllCoinbaseFundsMenuItem = new JMenuItem("Shield all coinbase to this z-address");
+        JMenuItem shieldAllCoinbaseFundsMenuItem = new JMenuItem("Shield all coinbases to this z-address");
         //obtainPrivateKey.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, accelaratorKeyMask));
         
         shieldAllCoinbaseFundsMenuItem.addActionListener(new ActionListener()
@@ -166,7 +166,7 @@ public class AddressTable
                         JOptionPane.showMessageDialog(
                                 AddressTable.this.getRootPane().getParent(),
                                 "Coinbase funds in the amount of " + shieldCoinbaseResponse.shieldedValue + " BTCP from " + shieldCoinbaseResponse.shieldedUTXOs + " UTXO" + (shieldCoinbaseResponse.shieldedUTXOs == 1 ? "" : "s") + " were shielded to the following z-address:\n" + address + "\nPlease Refresh to update balances.\n",
-                                "Shield All Coinbase", JOptionPane.INFORMATION_MESSAGE);
+                                "Shield All Coinbases", JOptionPane.INFORMATION_MESSAGE);
 
 						// TODO: trigger refresh of window
 
@@ -177,7 +177,7 @@ public class AddressTable
                                 AddressTable.this.getRootPane().getParent(),
                                 "Error:" + "\n" +
                                         ex.getMessage() + "\n\n",
-                                "Error in shielding all coinbase!",
+                                "Error in shielding all coinbases!",
                                 JOptionPane.ERROR_MESSAGE);
                     }
                 } else
