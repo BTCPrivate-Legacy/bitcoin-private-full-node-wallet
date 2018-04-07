@@ -28,9 +28,9 @@ public class DataTable
 {
     protected int lastRow = -1;
     protected int lastColumn = -1;
-
+    
     protected JPopupMenu popupMenu;
-
+    
     public DataTable(final Object[][] rowData, final Object[] columnNames)
     {
         super(rowData, columnNames);
@@ -43,53 +43,8 @@ public class DataTable
         popupMenu = new JPopupMenu();
         int accelaratorKeyMask = Toolkit.getDefaultToolkit ().getMenuShortcutKeyMask();
 
-        JMenuItem copy = new JMenuItem("Copy value");
-        popupMenu.add(copy);
-        //copy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, accelaratorKeyMask));
-        copy.addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                if ((lastRow >= 0) && (lastColumn >= 0))
-                {
-                    String text = DataTable.this.getValueAt(lastRow, lastColumn).toString();
-
-                    Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-                    clipboard.setContents(new StringSelection(text), null);
-                } else
-                {
-                    // Log perhaps
-                }
-            }
-        });
-
-
-        JMenuItem exportToCSV = new JMenuItem("Export data to CSV");
-        popupMenu.add(exportToCSV);
-        //exportToCSV.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, accelaratorKeyMask));
-        exportToCSV.addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                try
-                {
-                    DataTable.this.exportToCSV();
-                } catch (Exception ex)
-                {
-                    Log.error("Unexpected error: ", ex);
-                    // TODO: better error handling
-                    JOptionPane.showMessageDialog(
-                            DataTable.this.getRootPane().getParent(),
-                            "An unexpected error occurred when exporting data to a CSV file.\n" +
-                                    "\n" +
-                                    ex.getMessage(),
-                            "Error Exporting CSV", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        });
-
+        popupMenu.add(instantiateCopyMenuItem());
+        popupMenu.add(instantiateExportToCSVMenuItem());
 
         this.addMouseListener(new MouseAdapter()
         {
@@ -106,7 +61,7 @@ public class DataTable
                         table.changeSelection(lastRow, lastColumn, false, false);
                     }
 
-                    popupMenu.show(e.getComponent(), e.getPoint().x, e.getPoint().y);
+                    getPopupMenu(lastRow, lastColumn).show(e.getComponent(), e.getPoint().x, e.getPoint().y);
                     e.consume();
                 } else
                 {
@@ -147,7 +102,60 @@ public class DataTable
         return false;
     }
 
+	protected JPopupMenu getPopupMenu(int row, int column) 
+	{
+		return popupMenu;
+	}
+	
+	protected JMenuItem instantiateCopyMenuItem() {
+		JMenuItem menuItem = new JMenuItem("Copy value");
+        //copy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, accelaratorKeyMask));
+        menuItem.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                if ((lastRow >= 0) && (lastColumn >= 0))
+                {
+                    String text = DataTable.this.getValueAt(lastRow, lastColumn).toString();
 
+                    Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+                    clipboard.setContents(new StringSelection(text), null);
+                } else
+                {
+                    // Log perhaps
+                }
+            }
+        });
+        return menuItem;
+	}
+	
+	protected JMenuItem instantiateExportToCSVMenuItem() {
+        JMenuItem menuItem = new JMenuItem("Export data to CSV");
+        //exportToCSV.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, accelaratorKeyMask));
+        menuItem.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                try
+                {
+                    DataTable.this.exportToCSV();
+                } catch (Exception ex)
+                {
+                    Log.error("Unexpected error: ", ex);
+                    // TODO: better error handling
+                    JOptionPane.showMessageDialog(
+                            DataTable.this.getRootPane().getParent(),
+                            "An unexpected error occurred when exporting data to a CSV file.\n" +
+                                    "\n" +
+                                    ex.getMessage(),
+                            "Error Exporting CSV", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+		return menuItem;
+	}
     // Exports the table data to a CSV file
     private void exportToCSV()
             throws IOException
