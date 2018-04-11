@@ -8,7 +8,7 @@
 # set up your app name, version number, and background image file name
 APP_NAME="BitcoinPrivateDesktopWallet"
 APP_DISPLAY_NAME="Bitcoin Private Desktop Wallet"
-VERSION="1.0.2"
+VERSION="1.0.3"
 APP_EXE="${APP_DISPLAY_NAME}.app/Contents/MacOS/JavaAppLauncher"
 VOL_NAME="${APP_NAME}_${VERSION}"
 DMG_TMP="${VOL_NAME}-temp.dmg"
@@ -41,6 +41,18 @@ else
   rm -rf jar2app
 fi
 
+#fetch + install dylibbundler
+if [ -e /usr/local/bin/dylibbundler ]
+then
+    echo "dylibbundler already installed - OK"
+else
+	git clone https://github.com/auriamg/macdylibbundler
+	cd macdylibbundler
+	sudo make install
+  cd ..
+  rm -rf macdylibbundler
+fi
+
 if [ ! -e ./btcpd ]
 then
 	echo "please provide btcpd in the root directory"
@@ -70,15 +82,36 @@ echo "*******************"
 echo ""
 #package jar to app
 jar2app build/libs/"${APP_NAME}"-*.jar  -i ./src/main/resources/images/btcp.icns -b org.btcprivate.wallets.fullnode -v "${VERSION}" -s "${VERSION}"
-mv "${APP_NAME}-${VERSION}.app" "${APP_DISPLAY_NAME}.app"
+mv "${APP_NAME}-*.app" "${APP_DISPLAY_NAME}.app"
 
+#create copies for link modification
+cp ./btcpd ./btcpd-dylib
+cp ./btcp-cli ./btcp-cli-dylib
 
-#add btcpd and btcp-cli into the required Contents folder of the App
-cp ./btcpd "./${APP_DISPLAY_NAME}.app/Contents/btcpd"
-cp ./btcp-cli "./${APP_DISPLAY_NAME}.app/Contents/btcp-cli"
+#ensure permissions allow for execution
+chmod +x "./btcpd-dylib"
+chmod +x "./btcp-cli-dylib"
 
-chmod +x "./${APP_DISPLAY_NAME}.app/Contents/btcpd"
-chmod +x "./${APP_DISPLAY_NAME}.app/Contents/btcp-cli"
+echo ""
+echo "**********************************"
+echo "|| Statically linking libraries ||"
+echo "**********************************"
+echo ""
+
+#statically build required libraries
+dylibbundler -od -b -x "./btcpd-dylib" \
+                    -x "./btcp-cli-dylib" \
+                    -d "./libs" \
+                    -p @executable_path/libs
+
+#add btcpd, btcp-cli, and libs into the required Contents folder of the App
+cp ./btcpd-dylib "./${APP_DISPLAY_NAME}.app/Contents/btcpd"
+cp ./btcp-cli-dylib "./${APP_DISPLAY_NAME}.app/Contents/btcp-cli"
+cp -R ./libs "./${APP_DISPLAY_NAME}.app/Contents/libs"
+
+#remove modified copies
+rm ./btcpd-dylib
+rm ./btcp-cli-dylib
 
 rm -rf "${STAGING_DIR}" "${DMG_TMP}" "${DMG_FINAL}"
 mkdir -p "${STAGING_DIR}"
