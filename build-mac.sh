@@ -82,7 +82,7 @@ echo "*******************"
 echo ""
 #package jar to app
 jar2app build/libs/"${APP_NAME}"-*.jar  -i ./src/main/resources/images/btcp.icns -b org.btcprivate.wallets.fullnode -v "${VERSION}" -s "${VERSION}"
-mv "${APP_NAME}-*.app" "${APP_DISPLAY_NAME}.app"
+mv "${APP_NAME}"-*.app "${APP_DISPLAY_NAME}.app"
 
 #create copies for link modification
 cp ./btcpd ./btcpd-dylib
