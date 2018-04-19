@@ -378,24 +378,6 @@ public class SendCashPanel
         // Z Addresses are 95 chars (zk)
         // base58check encoded
 
-        String errorMessage = null;
-
-        if ((sourceAddress == null) || (sourceAddress.trim().length() < 35))
-        {
-            errorMessage = "'From' address is invalid; it is too short or missing.";
-        } else if (sourceAddress.trim().length() > 95)
-        {
-            errorMessage = "'From' address is invalid; it is too long.";
-        }
-
-        if ((destinationAddress == null) || (destinationAddress.trim().length() < 35))
-        {
-            errorMessage = "Destination address is invalid; it is too short or missing.";
-        } else if (destinationAddress.trim().length() > 95)
-        {
-            errorMessage = "Destination address is invalid; it is too long.";
-        }
-
         // Prevent accidental sending to non-BTCP addresses (as seems to be supported by daemon)
         if (!installationObserver.isOnTestNet())
         {
@@ -419,6 +401,29 @@ public class SendCashPanel
 
                 return; // Do not send anything!
             }
+        }
+        
+        String errorMessage = null;
+
+		final int B_ADDRESS_PROPER_LENGTH = 35;
+		final int Z_ADDRESS_PROPER_LENGTH = 95;
+		int sourceAddressProperLength = (sourceAddress.startsWith("zk")) ? Z_ADDRESS_PROPER_LENGTH : B_ADDRESS_PROPER_LENGTH;
+		int destinationAddressProperLength = (destinationAddress.startsWith("zk")) ? Z_ADDRESS_PROPER_LENGTH : B_ADDRESS_PROPER_LENGTH;
+
+        if ((sourceAddress == null) || (sourceAddress.trim().length() < sourceAddressProperLength))
+        {
+            errorMessage = "'From' address is invalid; it is too short or missing.";
+        } else if (sourceAddress.trim().length() > sourceAddressProperLength)
+        {
+            errorMessage = "'From' address is invalid; it is too long.";
+        }
+
+        if ((destinationAddress == null) || (destinationAddress.trim().length() < destinationAddressProperLength))
+        {
+            errorMessage = "Destination address is invalid; it is too short or missing.";
+        } else if (destinationAddress.trim().length() > destinationAddressProperLength)
+        {
+            errorMessage = "Destination address is invalid; it is too long.";
         }
 
         if ((amount == null) || (amount.trim().length() <= 0))
