@@ -405,10 +405,10 @@ public class SendCashPanel
         
         String errorMessage = null;
 
-        int sourceAddressProperLength = 35;
-		if (sourceAddress.startsWith("zk")) sourceAddressProperLength = 95;
-		int destinationAddressProperLength = 35;
-		if (destinationAddress.startsWith("zk")) destinationAddressProperLength = 95;
+		final int BADDRESSPROPERLENGTH = 35;
+		final int ZADDRESSPROPERLENGTH = 95;
+		int sourceAddressProperLength = (sourceAddress.startsWith("zk")) ? ZADDRESSPROPERLENGTH : BADDRESSPROPERLENGTH;
+		int destinationAddressProperLength = (destinationAddress.startsWith("zk")) ? ZADDRESSPROPERLENGTH : BADDRESSPROPERLENGTH;
 
         if ((sourceAddress == null) || (sourceAddress.trim().length() < sourceAddressProperLength))
         {
