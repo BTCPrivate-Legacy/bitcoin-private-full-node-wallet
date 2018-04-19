@@ -188,8 +188,8 @@ public class SendCashPanel
         warningPanel.setLayout(new BorderLayout(7, 3));
         JLabel warningL = new JLabel(
                 "<html><span style=\"font-size:0.8em;\">" +
-                        " * When sending BTCP from a T (Transparent) address, the remaining unspent balance is sent to another " +
-                        "auto-generated T address. When sending from a Z (Private) address, the remaining unspent balance remains with " +
+                        " * When sending BTCP from a B (Transparent) address, the remaining unspent balance is sent to another " +
+                        "auto-generated B address. When sending from a Z (Private) address, the remaining unspent balance remains with " +
                         "the Z address. In both cases, the original sending address cannot be used for sending again until the " +
                         "transaction is confirmed. The address is temporarily removed from the list! Freshly mined coins may only "+
                         "be sent to a Z (Private) address." +
@@ -373,24 +373,25 @@ public class SendCashPanel
         final String fee = this.transactionFeeField.getText();
 
         // Verify general correctness.
+        // https://github.com/BTCPrivate/trezor-common/blob/08fe85ad07bbbdc25cc83ffae8be7aff89245594/coins.json#L575 
+        // B Addresses are 35 chars (b1, bx)
+        // Z Addresses are 95 chars (zk)
+        // base58check encoded
+
         String errorMessage = null;
 
-        if ((sourceAddress == null) || (sourceAddress.trim().length() <= 20))
+        if ((sourceAddress == null) || (sourceAddress.trim().length() < 35))
         {
-            errorMessage = "Source address is invalid; it is too short or missing.";
-        } else if (sourceAddress.length() > 512)
+            errorMessage = "'From' address is invalid; it is too short or missing.";
+        } else if (sourceAddress.trim().length() > 95)
         {
-            errorMessage = "Source address is invalid; it is too long.";
+            errorMessage = "'From' address is invalid; it is too long.";
         }
 
-        // TODO: full address validation
-        if ((destinationAddress == null) || (destinationAddress.trim().length() <= 0))
+        if ((destinationAddress == null) || (destinationAddress.trim().length() < 35))
         {
-            errorMessage = "Destination address is invalid; it is missing.";
-        } else if (destinationAddress.trim().length() <= 20)
-        {
-            errorMessage = "Destination address is invalid; it is too short.";
-        } else if (destinationAddress.length() > 512)
+            errorMessage = "Destination address is invalid; it is too short or missing.";
+        } else if (destinationAddress.trim().length() > 95)
         {
             errorMessage = "Destination address is invalid; it is too long.";
         }
@@ -398,7 +399,6 @@ public class SendCashPanel
         // Prevent accidental sending to non-BTCP addresses (as seems to be supported by daemon)
         if (!installationObserver.isOnTestNet())
         {
-            //TODO - BTCP
             if (!(destinationAddress.startsWith("zk") ||
                     destinationAddress.startsWith("b1") ||
                     destinationAddress.startsWith("bx")))
