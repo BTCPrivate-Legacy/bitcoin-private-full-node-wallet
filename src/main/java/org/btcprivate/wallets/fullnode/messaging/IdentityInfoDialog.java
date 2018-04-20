@@ -61,7 +61,7 @@ public class IdentityInfoDialog
         addFormField(detailsPanel, "Facebook URL:",  facebookTextField = new JTextField(40));
         addFormField(detailsPanel, "Twitter URL:",   twitterTextField = new JTextField(40));
 
-        addFormField(detailsPanel, "Sender identification T address:", senderidaddressTextField = new JTextField(40));
+        addFormField(detailsPanel, "Sender identification B address:", senderidaddressTextField = new JTextField(40));
         addFormField(detailsPanel, "Send/receive Z address:", sendreceiveaddressTextField = new JTextArea(2, 40));
         sendreceiveaddressTextField.setLineWrap(true);
 
@@ -120,7 +120,7 @@ public class IdentityInfoDialog
         JPanel tempPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 4, 2));
         JLabel tempLabel = new JLabel(name, JLabel.RIGHT);
         // TODO: hard sizing of labels may not scale!
-        final int width = new JLabel("Sender identification T address:").getPreferredSize().width + 10;
+        final int width = new JLabel("Sender identification B address:").getPreferredSize().width + 10;
         tempLabel.setPreferredSize(new Dimension(width, tempLabel.getPreferredSize().height));
         tempPanel.add(tempLabel);
         tempPanel.add(field);

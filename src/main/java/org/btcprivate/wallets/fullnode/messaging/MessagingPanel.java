@@ -545,12 +545,12 @@ public class MessagingPanel
                 {
                     JOptionPane.showMessageDialog(
                             this.parentFrame,
-                            "The T address used to identify you in messaging must have NO BTCP balance: \n" +
+                            "The B address used to identify you in messaging must have NO BTCP balance: \n" +
                                     ownIdentity.getSenderidaddress() + "\n" +
                                     "However it currently has a non-zero balance! This might mean that you \n" +
-                                    "accidentally used this T address in non-messaging transactions. It might\n" +
+                                    "accidentally used this B address in non-messaging transactions. It might\n" +
                                     "also mean that someone sent BTCP to it deliberately. To minimize the chance\n" +
-                                    "of compromising your privacy you must transfer all BTCP from this T address\n" +
+                                    "of compromising your privacy you must transfer all BTCP from this B address\n" +
                                     "to some Z address ASAP!",
                             "Messaging identification address has balance!",
                             JOptionPane.WARNING_MESSAGE);
@@ -908,7 +908,7 @@ public class MessagingPanel
             int reply = JOptionPane.showConfirmDialog(
                     this.parentFrame,
                     "The " + (id.isGroup() ? "messaging group " : "contact ")  + id.getDiplayString() + "\n" +
-                            "with messaging identification T address:\n" +
+                            "with messaging identification B address:\n" +
                             contactTAddress + "\n" +
                             "and send/receive Z address:\n" +
                             contactZAddress + "\n" +
@@ -1057,9 +1057,9 @@ public class MessagingPanel
                     JOptionPane.showMessageDialog(
                             this.parentFrame,
                             "The contact: " + contactIdentity.getDiplayString() + "\n" +
-                                    "has no message identification T address. It is not possible to \n" +
+                                    "has no message identification B address. It is not possible to \n" +
                                     "send a message!",
-                            "Contact Has No Message Identification T Address", JOptionPane.ERROR_MESSAGE);
+                            "Contact Has No Message Identification B Address", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
             }
@@ -1072,9 +1072,9 @@ public class MessagingPanel
                         this.parentFrame,
                         "The contact: " + contactIdentity.getDiplayString() + "\n" +
                                 "is anonymous. You are about to send a message to him\n" +
-                                "that includes your sender identification T address. Are you sure\n" +
+                                "that includes your sender identification B address. Are you sure\n" +
                                 "you want to send him the message?",
-                        "Send Message Revealing Your Sender Identification T Address?",
+                        "Send Message Revealing Your Sender Identification B Address?",
                         JOptionPane.YES_NO_OPTION);
 
                 if (reply == JOptionPane.NO_OPTION)
