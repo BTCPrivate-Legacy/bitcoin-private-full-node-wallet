@@ -80,7 +80,7 @@ public class AddressesPanel
         buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 3, 3));
         buttonPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 
-        JButton newTAddressButton = new JButton("New T (Transparent) address");
+        JButton newTAddressButton = new JButton("New B (Transparent) address");
         buttonPanel.add(newTAddressButton);
         JButton newZAddressButton = new JButton("New Z (Private) address");
         buttonPanel.add(newZAddressButton);
