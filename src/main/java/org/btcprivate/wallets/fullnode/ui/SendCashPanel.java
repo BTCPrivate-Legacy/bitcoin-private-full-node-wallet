@@ -44,6 +44,7 @@ import org.btcprivate.wallets.fullnode.daemon.DataGatheringThread;
 import org.btcprivate.wallets.fullnode.util.BackupTracker;
 import org.btcprivate.wallets.fullnode.util.Log;
 import org.btcprivate.wallets.fullnode.util.StatusUpdateErrorReporter;
+import org.btcprivate.wallets.fullnode.util.Util;
 
 
 /**
@@ -367,16 +368,16 @@ public class SendCashPanel
         }
 
         final String sourceAddress = this.lastAddressBalanceData[this.balanceAddressCombo.getSelectedIndex()][1];
-        final String destinationAddress = this.destinationAddressField.getText();
-        final String memo = this.destinationMemoField.getText();
-        final String amount = this.destinationAmountField.getText();
-        final String fee = this.transactionFeeField.getText();
+        final String destinationAddress = Util.removeUTF8BOM(this.destinationAddressField.getText());
+        final String memo = Util.removeUTF8BOM(this.destinationMemoField.getText());
+        final String amount = Util.removeUTF8BOM(this.destinationAmountField.getText());
+        final String fee = Util.removeUTF8BOM(this.transactionFeeField.getText());
 
         // Verify general correctness.
         // https://github.com/BTCPrivate/trezor-common/blob/08fe85ad07bbbdc25cc83ffae8be7aff89245594/coins.json#L575 
         // B Addresses are 35 chars (b1, bx)
         // Z Addresses are 95 chars (zk)
-        // base58check encoded
+        // base58check encoded		
 
         // Prevent accidental sending to non-BTCP addresses (as seems to be supported by daemon)
         if (!installationObserver.isOnTestNet())

@@ -1087,7 +1087,7 @@ public class MessagingPanel
         // Get the text to send as a message
         if (textToSend == null)
         {
-            textToSend = this.writeMessageTextArea.getText();
+            textToSend = Util.removeUTF8BOM(this.writeMessageTextArea.getText());
         }
 
         if (textToSend.length() <= 0)
@@ -1957,7 +1957,7 @@ public class MessagingPanel
 
             if (ipfsLink != null)
             {
-                String oldText = this.writeMessageTextArea.getText();
+                String oldText = Util.removeUTF8BOM(this.writeMessageTextArea.getText());
                 oldText = oldText != null ? oldText : "";
 
                 this.writeMessageTextArea.setText(oldText + "\n" + ipfsLink);

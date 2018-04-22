@@ -2,6 +2,7 @@ package org.btcprivate.wallets.fullnode.messaging;
 
 import org.btcprivate.wallets.fullnode.util.Log;
 import org.btcprivate.wallets.fullnode.util.StatusUpdateErrorReporter;
+import org.btcprivate.wallets.fullnode.util.Util;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -66,7 +67,7 @@ public class OwnIdentityEditDialog
                 try
                 {
                     // Check for validity and save the data - T/Z addresses are not changed!
-                    String nick = OwnIdentityEditDialog.this.nicknameTextField.getText();
+                    String nick = Util.removeUTF8BOM(OwnIdentityEditDialog.this.nicknameTextField.getText());
                     if ((nick == null) || nick.trim().length() <= 0)
                     {
                         JOptionPane.showMessageDialog(
@@ -80,14 +81,14 @@ public class OwnIdentityEditDialog
 
                     // Save all identity fields from the text fields
                     MessagingIdentity id = OwnIdentityEditDialog.this.identity;
-                    id.setNickname(OwnIdentityEditDialog.this.nicknameTextField.getText());
-                    id.setFirstname(OwnIdentityEditDialog.this.firstnameTextField.getText());
-                    id.setMiddlename(OwnIdentityEditDialog.this.middlenameTextField.getText());
-                    id.setSurname(OwnIdentityEditDialog.this.surnameTextField.getText());
-                    id.setEmail(OwnIdentityEditDialog.this.emailTextField.getText());
-                    id.setStreetaddress(OwnIdentityEditDialog.this.streetaddressTextField.getText());
-                    id.setFacebook(OwnIdentityEditDialog.this.facebookTextField.getText());
-                    id.setTwitter(OwnIdentityEditDialog.this.twitterTextField.getText());
+                    id.setNickname(Util.removeUTF8BOM(OwnIdentityEditDialog.this.nicknameTextField.getText()));
+                    id.setFirstname(Util.removeUTF8BOM(OwnIdentityEditDialog.this.firstnameTextField.getText()));
+                    id.setMiddlename(Util.removeUTF8BOM(OwnIdentityEditDialog.this.middlenameTextField.getText()));
+                    id.setSurname(Util.removeUTF8BOM(OwnIdentityEditDialog.this.surnameTextField.getText()));
+                    id.setEmail(Util.removeUTF8BOM(OwnIdentityEditDialog.this.emailTextField.getText()));
+                    id.setStreetaddress(Util.removeUTF8BOM(OwnIdentityEditDialog.this.streetaddressTextField.getText()));
+                    id.setFacebook(Util.removeUTF8BOM(OwnIdentityEditDialog.this.facebookTextField.getText()));
+                    id.setTwitter(Util.removeUTF8BOM(OwnIdentityEditDialog.this.twitterTextField.getText()));
 
                     // Save the identity
                     OwnIdentityEditDialog.this.storage.updateOwnIdentity(id);

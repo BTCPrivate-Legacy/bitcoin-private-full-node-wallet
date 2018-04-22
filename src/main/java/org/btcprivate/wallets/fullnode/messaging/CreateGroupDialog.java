@@ -137,7 +137,7 @@ public class CreateGroupDialog
 
     protected void processOK()
     {
-        final String keyPhrase = CreateGroupDialog.this.keyField.getText();
+        final String keyPhrase = Util.removeUTF8BOM(CreateGroupDialog.this.keyField.getText());
 
         if ((keyPhrase == null) || (keyPhrase.trim().length() <= 0))
         {

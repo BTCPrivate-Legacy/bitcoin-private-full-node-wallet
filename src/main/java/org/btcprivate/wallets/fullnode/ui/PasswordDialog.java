@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import org.btcprivate.wallets.fullnode.util.Util;
 
 
 /**
@@ -113,7 +114,7 @@ public class PasswordDialog
 
     protected void processOK()
     {
-        String pass = PasswordDialog.this.passwordField.getText();
+        String pass = Util.removeUTF8BOM(PasswordDialog.this.passwordField.getText());
 
         if ((pass == null) || (pass.trim().length() <= 0))
         {

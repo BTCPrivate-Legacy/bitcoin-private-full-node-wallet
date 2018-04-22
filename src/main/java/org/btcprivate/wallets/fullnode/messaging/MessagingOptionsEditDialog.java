@@ -106,8 +106,8 @@ public class MessagingOptionsEditDialog
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    String amountToSend = MessagingOptionsEditDialog.this.amountTextField.getText();
-                    String transactionFee = MessagingOptionsEditDialog.this.transactionFeeTextField.getText();
+                    String amountToSend = Util.removeUTF8BOM(MessagingOptionsEditDialog.this.amountTextField.getText());
+                    String transactionFee = Util.removeUTF8BOM(MessagingOptionsEditDialog.this.transactionFeeTextField.getText());
 
                     if ((!MessagingOptionsEditDialog.this.verifyNumericField("amount to send", amountToSend)) ||
                             (!MessagingOptionsEditDialog.this.verifyNumericField("transaction fee", transactionFee))) {

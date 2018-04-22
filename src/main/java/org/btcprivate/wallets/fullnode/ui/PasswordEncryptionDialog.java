@@ -7,6 +7,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import org.btcprivate.wallets.fullnode.util.Util;
 
 
 /**
@@ -45,8 +46,8 @@ public class PasswordEncryptionDialog
 
     protected void processOK()
     {
-        String password     = this.passwordField.getText();
-        String confirmation = this.passwordConfirmationField.getText();
+        String password     = Util.removeUTF8BOM(this.passwordField.getText());
+        String confirmation = Util.removeUTF8BOM(this.passwordConfirmationField.getText());
 
         if (password == null)
         {

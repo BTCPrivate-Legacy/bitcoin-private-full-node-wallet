@@ -133,7 +133,7 @@ public class SingleKeyImportDialog
 
     protected void processOK()
     {
-        final String key = SingleKeyImportDialog.this.keyField.getText();
+        final String key = Util.removeUTF8BOM(SingleKeyImportDialog.this.keyField.getText());
 
         if ((key == null) || (key.trim().length() <= 0))
         {
