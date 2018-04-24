@@ -8,6 +8,7 @@ import org.btcprivate.wallets.fullnode.daemon.BTCPClientCaller.*;
 import org.btcprivate.wallets.fullnode.daemon.DataGatheringThread;
 import org.btcprivate.wallets.fullnode.ui.SendCashPanel;
 import org.btcprivate.wallets.fullnode.ui.WalletTabPanel;
+import org.btcprivate.wallets.fullnode.ui.WalletTextArea;
 import org.btcprivate.wallets.fullnode.util.Log;
 
 import javax.swing.*;
@@ -52,7 +53,7 @@ public class MessagingPanel
     private JLabel conversationLabel;
     private JTextPane conversationTextPane;
 
-    private JTextArea    writeMessageTextArea;
+    private WalletTextArea    writeMessageTextArea;
     private JButton      sendButton;
     private JLabel       sendResultLabel;
     private JProgressBar sendMessageProgressBar;
@@ -128,7 +129,7 @@ public class MessagingPanel
         this.add(writeAndSendPanel, BorderLayout.SOUTH);
 
         JPanel writePanel = new JPanel(new BorderLayout(0, 0));
-        this.writeMessageTextArea = new JTextArea(3, 50);
+        this.writeMessageTextArea = new WalletTextArea(3, 50);
         this.writeMessageTextArea.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
         this.writeMessageTextArea.setLineWrap(true);
         writePanel.add(
@@ -1087,7 +1088,7 @@ public class MessagingPanel
         // Get the text to send as a message
         if (textToSend == null)
         {
-            textToSend = Util.removeUTF8BOM(this.writeMessageTextArea.getText());
+            textToSend = this.writeMessageTextArea.getText();
         }
 
         if (textToSend.length() <= 0)
@@ -1957,7 +1958,7 @@ public class MessagingPanel
 
             if (ipfsLink != null)
             {
-                String oldText = Util.removeUTF8BOM(this.writeMessageTextArea.getText());
+                String oldText = this.writeMessageTextArea.getText();
                 oldText = oldText != null ? oldText : "";
 
                 this.writeMessageTextArea.setText(oldText + "\n" + ipfsLink);

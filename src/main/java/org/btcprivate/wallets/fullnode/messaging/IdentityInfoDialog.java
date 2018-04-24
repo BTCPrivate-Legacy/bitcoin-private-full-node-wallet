@@ -6,6 +6,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import org.btcprivate.wallets.fullnode.ui.WalletTextArea;
+import org.btcprivate.wallets.fullnode.ui.WalletTextField;
+
 public class IdentityInfoDialog
         extends JDialog
 {
@@ -16,16 +19,16 @@ public class IdentityInfoDialog
 
     protected JPanel buttonPanel;
 
-    protected JTextField nicknameTextField;
-    protected JTextArea sendreceiveaddressTextField;
-    protected JTextField senderidaddressTextField;
-    protected JTextField firstnameTextField;
-    protected JTextField middlenameTextField;
-    protected JTextField surnameTextField;
-    protected JTextField emailTextField;
-    protected JTextField streetaddressTextField;
-    protected JTextField facebookTextField;
-    protected JTextField twitterTextField;
+    protected WalletTextField nicknameTextField;
+    protected WalletTextArea sendreceiveaddressTextField;
+    protected WalletTextField senderidaddressTextField;
+    protected WalletTextField firstnameTextField;
+    protected WalletTextField middlenameTextField;
+    protected WalletTextField surnameTextField;
+    protected WalletTextField emailTextField;
+    protected WalletTextField streetaddressTextField;
+    protected WalletTextField facebookTextField;
+    protected WalletTextField twitterTextField;
 
 
     public IdentityInfoDialog(JFrame parentFrame, MessagingIdentity identity)
@@ -51,18 +54,18 @@ public class IdentityInfoDialog
         JPanel detailsPanel = new JPanel();
         detailsPanel.setLayout(new BoxLayout(detailsPanel, BoxLayout.Y_AXIS));
 
-        addFormField(detailsPanel, "Nickname:",  nicknameTextField = new JTextField(40));
-        addFormField(detailsPanel, "First name:", firstnameTextField = new JTextField(40));
-        addFormField(detailsPanel, "Middle name:", middlenameTextField = new JTextField(40));
-        addFormField(detailsPanel, "Surname:",    surnameTextField = new JTextField(40));
+        addFormField(detailsPanel, "Nickname:",  nicknameTextField = new WalletTextField(40));
+        addFormField(detailsPanel, "First name:", firstnameTextField = new WalletTextField(40));
+        addFormField(detailsPanel, "Middle name:", middlenameTextField = new WalletTextField(40));
+        addFormField(detailsPanel, "Surname:",    surnameTextField = new WalletTextField(40));
 
-        addFormField(detailsPanel, "Email:",         emailTextField = new JTextField(40));
-        addFormField(detailsPanel, "Street address:", streetaddressTextField = new JTextField(40));
-        addFormField(detailsPanel, "Facebook URL:",  facebookTextField = new JTextField(40));
-        addFormField(detailsPanel, "Twitter URL:",   twitterTextField = new JTextField(40));
+        addFormField(detailsPanel, "Email:",         emailTextField = new WalletTextField(40));
+        addFormField(detailsPanel, "Street address:", streetaddressTextField = new WalletTextField(40));
+        addFormField(detailsPanel, "Facebook URL:",  facebookTextField = new WalletTextField(40));
+        addFormField(detailsPanel, "Twitter URL:",   twitterTextField = new WalletTextField(40));
 
-        addFormField(detailsPanel, "Sender identification T address:", senderidaddressTextField = new JTextField(40));
-        addFormField(detailsPanel, "Send/receive Z address:", sendreceiveaddressTextField = new JTextArea(2, 40));
+        addFormField(detailsPanel, "Sender identification T address:", senderidaddressTextField = new WalletTextField(40));
+        addFormField(detailsPanel, "Send/receive Z address:", sendreceiveaddressTextField = new WalletTextArea(2, 40));
         sendreceiveaddressTextField.setLineWrap(true);
 
 

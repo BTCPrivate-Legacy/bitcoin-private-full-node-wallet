@@ -7,6 +7,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import org.btcprivate.wallets.fullnode.ui.WalletPasswordField;
 import org.btcprivate.wallets.fullnode.util.Util;
 
 
@@ -18,7 +19,7 @@ import org.btcprivate.wallets.fullnode.util.Util;
 public class PasswordEncryptionDialog
         extends PasswordDialog
 {
-    protected JTextField passwordConfirmationField = null;
+    protected WalletPasswordField passwordConfirmationField = null;
 
     public PasswordEncryptionDialog(JFrame parent)
     {
@@ -31,7 +32,7 @@ public class PasswordEncryptionDialog
 
         JLabel confLabel = new JLabel("Confirmation: ");
         this.freeSlotPanel.add(confLabel);
-        this.freeSlotPanel.add(passwordConfirmationField = new JPasswordField(30));
+        this.freeSlotPanel.add(passwordConfirmationField = new WalletPasswordField(30));
         this.passwordLabel.setPreferredSize(confLabel.getPreferredSize());
 
         JLabel dividerLabel = new JLabel("   ");
@@ -46,8 +47,8 @@ public class PasswordEncryptionDialog
 
     protected void processOK()
     {
-        String password     = Util.removeUTF8BOM(this.passwordField.getText());
-        String confirmation = Util.removeUTF8BOM(this.passwordConfirmationField.getText());
+        String password     = this.passwordField.getText();
+        String confirmation = this.passwordConfirmationField.getText();
 
         if (password == null)
         {

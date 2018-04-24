@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import org.btcprivate.wallets.fullnode.ui.WalletPasswordField;
 import org.btcprivate.wallets.fullnode.util.Util;
 
 
@@ -19,7 +20,7 @@ public class PasswordDialog
     protected String  password    = null;
 
     protected JLabel     passwordLabel = null;
-    protected JTextField passwordField = null;
+    protected WalletPasswordField passwordField = null;
 
     protected JLabel upperLabel;
     protected JLabel lowerLabel;
@@ -51,7 +52,7 @@ public class PasswordDialog
 
         tempPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
         tempPanel.add(passwordLabel = new JLabel("Password: "));
-        tempPanel.add(passwordField = new JPasswordField(30));
+        tempPanel.add(passwordField = new WalletPasswordField(30));
         controlsPanel.add(tempPanel);
 
         dividerLabel = new JLabel("   ");
@@ -114,7 +115,7 @@ public class PasswordDialog
 
     protected void processOK()
     {
-        String pass = Util.removeUTF8BOM(PasswordDialog.this.passwordField.getText());
+        String pass = PasswordDialog.this.passwordField.getText();
 
         if ((pass == null) || (pass.trim().length() <= 0))
         {
