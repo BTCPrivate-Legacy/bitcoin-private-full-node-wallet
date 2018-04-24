@@ -20,7 +20,7 @@ public class IdentityInfoDialog
     protected JPanel buttonPanel;
 
     protected WalletTextField nicknameTextField;
-    protected WalletTextArea sendreceiveaddressTextField;
+    protected WalletTextArea sendreceiveaddressTextArea;
     protected WalletTextField senderidaddressTextField;
     protected WalletTextField firstnameTextField;
     protected WalletTextField middlenameTextField;
@@ -65,8 +65,8 @@ public class IdentityInfoDialog
         addFormField(detailsPanel, "Twitter URL:",   twitterTextField = new WalletTextField(40));
 
         addFormField(detailsPanel, "Sender identification B address:", senderidaddressTextField = new WalletTextField(40));
-        addFormField(detailsPanel, "Send/receive Z address:", sendreceiveaddressTextField = new WalletTextArea(2, 40));
-        sendreceiveaddressTextField.setLineWrap(true);
+        addFormField(detailsPanel, "Send/receive Z address:", sendreceiveaddressTextArea = new WalletTextArea(2, 40));
+        sendreceiveaddressTextArea.setLineWrap(true);
 
 
         nicknameTextField.setText(this.identity.getNickname());
@@ -78,7 +78,7 @@ public class IdentityInfoDialog
         facebookTextField.setText(this.identity.getFacebook());
         twitterTextField.setText(this.identity.getTwitter());
         senderidaddressTextField.setText(this.identity.getSenderidaddress());
-        sendreceiveaddressTextField.setText(this.identity.getSendreceiveaddress());
+        sendreceiveaddressTextArea.setText(this.identity.getSendreceiveaddress());
 
         nicknameTextField.setEditable(false);
         firstnameTextField.setEditable(false);
@@ -89,7 +89,7 @@ public class IdentityInfoDialog
         facebookTextField.setEditable(false);
         twitterTextField.setEditable(false);
         senderidaddressTextField.setEditable(false);
-        sendreceiveaddressTextField.setEditable(false);
+        sendreceiveaddressTextArea.setEditable(false);
 
         detailsPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
         this.getContentPane().add(detailsPanel, BorderLayout.CENTER);
