@@ -8,6 +8,7 @@ import java.lang.reflect.Method;
 import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import org.btcprivate.wallets.fullnode.util.Util;
 
 /**
  * Utilities - generally reusable across classes.
@@ -401,5 +402,12 @@ public class Util
                 oRAF.close();
             }
         }
+    }
+    
+    public static final String UTF8_BOM = "\uFEFF";
+
+	public static String removeUTF8BOM(String s)
+	{
+    	return (s.startsWith(UTF8_BOM) ? s.substring(1) : s);
     }
 }

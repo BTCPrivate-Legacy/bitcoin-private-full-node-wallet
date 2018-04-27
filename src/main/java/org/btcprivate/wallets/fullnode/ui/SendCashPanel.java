@@ -44,6 +44,8 @@ import org.btcprivate.wallets.fullnode.daemon.DataGatheringThread;
 import org.btcprivate.wallets.fullnode.util.BackupTracker;
 import org.btcprivate.wallets.fullnode.util.Log;
 import org.btcprivate.wallets.fullnode.util.StatusUpdateErrorReporter;
+import org.btcprivate.wallets.fullnode.util.Util;
+import org.btcprivate.wallets.fullnode.ui.WalletTextField;
 
 
 /**
@@ -65,10 +67,10 @@ public class SendCashPanel
     private String[]   comboBoxItems           = null;
     private DataGatheringThread<String[][]> addressBalanceGatheringThread = null;
 
-    private JTextField destinationAddressField = null;
-    private JTextField destinationAmountField  = null;
-    private JTextField destinationMemoField    = null;
-    private JTextField transactionFeeField     = null;
+    private WalletTextField destinationAddressField = null;
+    private WalletTextField destinationAmountField  = null;
+    private WalletTextField destinationMemoField    = null;
+    private WalletTextField transactionFeeField     = null;
 
     private JButton    sendButton              = null;
 
@@ -123,7 +125,7 @@ public class SendCashPanel
         tempPanel.add(new JLabel("Destination address:"));
         sendCashPanel.add(tempPanel);
 
-        destinationAddressField = new JTextField(73);
+        destinationAddressField = new WalletTextField(73);
         tempPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
         tempPanel.add(destinationAddressField);
         sendCashPanel.add(tempPanel);
@@ -140,7 +142,7 @@ public class SendCashPanel
                         "</span>  "));
         sendCashPanel.add(tempPanel);
 
-        destinationMemoField = new JTextField(73);
+        destinationMemoField = new WalletTextField(73);
         tempPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
         tempPanel.add(destinationMemoField);
         sendCashPanel.add(tempPanel);
@@ -154,7 +156,7 @@ public class SendCashPanel
         JPanel amountPanel = new JPanel(new BorderLayout());
         amountPanel.add(new JLabel("Amount to send:"), BorderLayout.NORTH);
         tempPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-        tempPanel.add(destinationAmountField = new JTextField(13));
+        tempPanel.add(destinationAmountField = new WalletTextField(13));
         destinationAmountField.setHorizontalAlignment(SwingConstants.RIGHT);
         tempPanel.add(new JLabel(" BTCP    "));
         amountPanel.add(tempPanel, BorderLayout.SOUTH);
@@ -162,7 +164,7 @@ public class SendCashPanel
         JPanel feePanel = new JPanel(new BorderLayout());
         feePanel.add(new JLabel("Transaction fee:"), BorderLayout.NORTH);
         tempPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-        tempPanel.add(transactionFeeField = new JTextField(13));
+        tempPanel.add(transactionFeeField = new WalletTextField(13));
         transactionFeeField.setText("0.0001"); // Default value
         transactionFeeField.setHorizontalAlignment(SwingConstants.RIGHT);
         tempPanel.add(new JLabel(" BTCP"));
@@ -376,7 +378,7 @@ public class SendCashPanel
         // https://github.com/BTCPrivate/trezor-common/blob/08fe85ad07bbbdc25cc83ffae8be7aff89245594/coins.json#L575 
         // B Addresses are 35 chars (b1, bx)
         // Z Addresses are 95 chars (zk)
-        // base58check encoded
+        // base58check encoded		
 
         // Prevent accidental sending to non-BTCP addresses (as seems to be supported by daemon)
         if (!installationObserver.isOnTestNet())

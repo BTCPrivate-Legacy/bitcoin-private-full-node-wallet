@@ -1,5 +1,6 @@
 package org.btcprivate.wallets.fullnode.messaging;
 
+import org.btcprivate.wallets.fullnode.ui.WalletTextField;
 import org.btcprivate.wallets.fullnode.util.Log;
 import org.btcprivate.wallets.fullnode.util.StatusUpdateErrorReporter;
 import org.btcprivate.wallets.fullnode.util.Util;
@@ -42,8 +43,8 @@ public class MessagingOptionsEditDialog
     protected JLabel infoLabel;
     protected JPanel buttonPanel;
 
-    protected JTextField amountTextField;
-    protected JTextField transactionFeeTextField;
+    protected WalletTextField amountTextField;
+    protected WalletTextField transactionFeeTextField;
     protected JCheckBox automaticallyAddUsers;
 
     public MessagingOptionsEditDialog(JFrame parentFrame, MessagingStorage storage, StatusUpdateErrorReporter errorReporter)
@@ -74,8 +75,8 @@ public class MessagingOptionsEditDialog
 
         addFormField(detailsPanel, "Automatically add users to contact list? ",
                 automaticallyAddUsers = new JCheckBox());
-        addFormField(detailsPanel, "Amount of BTCP to send with every message: ", amountTextField = new JTextField(12));
-        addFormField(detailsPanel, "Transaction fee: ", transactionFeeTextField = new JTextField(12));
+        addFormField(detailsPanel, "Amount of BTCP to send with every message: ", amountTextField = new WalletTextField(12));
+        addFormField(detailsPanel, "Transaction fee: ", transactionFeeTextField = new WalletTextField(12));
 
         DecimalFormatSymbols decSymbols = new DecimalFormatSymbols(Locale.ROOT);
         automaticallyAddUsers.setSelected(options.isAutomaticallyAddUsersIfNotExplicitlyImported());
