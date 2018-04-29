@@ -11,7 +11,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
-import org.btcprivate.wallets.fullnode.util.Util;
 
 /**
  * Utilities - generally reusable across classes.

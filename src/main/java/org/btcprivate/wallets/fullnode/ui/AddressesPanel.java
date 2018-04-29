@@ -84,6 +84,7 @@ public class AddressesPanel
         buttonPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 
         JButton newTAddressButton = new JButton(LOCAL_MENU_NEW_B_ADDRESS);
+
         buttonPanel.add(newTAddressButton);
         JButton newZAddressButton = new JButton(LOCAL_MENU_NEW_Z_ADDRESS);
         buttonPanel.add(newZAddressButton);

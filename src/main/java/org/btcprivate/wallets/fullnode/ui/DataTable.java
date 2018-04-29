@@ -49,7 +49,6 @@ public class DataTable
         this.setRowHeight(new Double(comp.getPreferredSize().getHeight()).intValue() + 2);
 
         popupMenu = new JPopupMenu();
-
         int accelaratorKeyMask = Toolkit.getDefaultToolkit ().getMenuShortcutKeyMask();
 
         popupMenu.add(instantiateCopyMenuItem());
