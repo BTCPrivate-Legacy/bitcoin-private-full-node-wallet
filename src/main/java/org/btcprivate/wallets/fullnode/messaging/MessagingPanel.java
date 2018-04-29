@@ -8,6 +8,7 @@ import org.btcprivate.wallets.fullnode.daemon.BTCPClientCaller.*;
 import org.btcprivate.wallets.fullnode.daemon.DataGatheringThread;
 import org.btcprivate.wallets.fullnode.ui.SendCashPanel;
 import org.btcprivate.wallets.fullnode.ui.WalletTabPanel;
+import org.btcprivate.wallets.fullnode.ui.WalletTextArea;
 import org.btcprivate.wallets.fullnode.util.Log;
 
 import javax.swing.*;
@@ -52,9 +53,9 @@ public class MessagingPanel
     private JLabel conversationLabel;
     private JTextPane conversationTextPane;
 
-    private JTextArea writeMessageTextArea;
-    private JButton sendButton;
-    private JLabel sendResultLabel;
+    private WalletTextArea    writeMessageTextArea;
+    private JButton      sendButton;
+    private JLabel       sendResultLabel;
     private JProgressBar sendMessageProgressBar;
     private JCheckBox sendAnonymously;
 
@@ -127,7 +128,7 @@ public class MessagingPanel
         this.add(writeAndSendPanel, BorderLayout.SOUTH);
 
         JPanel writePanel = new JPanel(new BorderLayout(0, 0));
-        this.writeMessageTextArea = new JTextArea(3, 50);
+        this.writeMessageTextArea = new WalletTextArea(3, 50);
         this.writeMessageTextArea.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
         this.writeMessageTextArea.setLineWrap(true);
         writePanel.add(
@@ -426,8 +427,8 @@ public class MessagingPanel
                 JOptionPane.showMessageDialog(
                         this.parentFrame,
                         "Welcome to Bitcoin Private Messaging. As a start you will need to create a new messaging\n" +
-                                "identity for yourself. As a part of this messaging identity a pair of T+Z addresses\n" +
-                                "will be created. The T address is to be used for identifying you to other users.\n" +
+                                "identity for yourself. As a part of this messaging identity a pair of B+Z addresses\n" +
+                                "will be created. The B address is to be used for identifying you to other users.\n" +
                                 "It must never be used for other financial transactions since this might reduce or\n" +
                                 "fully compromise your privacy. The Z address is to be used to send and receive\n" +
                                 "messages.\n\n" +
@@ -502,12 +503,12 @@ public class MessagingPanel
                 if (Double.valueOf(balance) > 0) {
                     JOptionPane.showMessageDialog(
                             this.parentFrame,
-                            "The T address used to identify you in messaging must have NO BTCP balance: \n" +
+                            "The B address used to identify you in messaging must have NO BTCP balance: \n" +
                                     ownIdentity.getSenderidaddress() + "\n" +
                                     "However it currently has a non-zero balance! This might mean that you \n" +
-                                    "accidentally used this T address in non-messaging transactions. It might\n" +
+                                    "accidentally used this B address in non-messaging transactions. It might\n" +
                                     "also mean that someone sent BTCP to it deliberately. To minimize the chance\n" +
-                                    "of compromising your privacy you must transfer all BTCP from this T address\n" +
+                                    "of compromising your privacy you must transfer all BTCP from this B address\n" +
                                     "to some Z address ASAP!",
                             "Messaging identification address has balance!",
                             JOptionPane.WARNING_MESSAGE);
@@ -824,8 +825,8 @@ public class MessagingPanel
                     "<NONE>" : id.getSendreceiveaddress();
             int reply = JOptionPane.showConfirmDialog(
                     this.parentFrame,
-                    "The " + (id.isGroup() ? "messaging group " : "contact ") + id.getDiplayString() + "\n" +
-                            "with messaging identification T address:\n" +
+                    "The " + (id.isGroup() ? "messaging group " : "contact ")  + id.getDiplayString() + "\n" +
+                            "with messaging identification B address:\n" +
                             contactTAddress + "\n" +
                             "and send/receive Z address:\n" +
                             contactZAddress + "\n" +
@@ -955,9 +956,9 @@ public class MessagingPanel
                     JOptionPane.showMessageDialog(
                             this.parentFrame,
                             "The contact: " + contactIdentity.getDiplayString() + "\n" +
-                                    "has no message identification T address. It is not possible to \n" +
+                                    "has no message identification B address. It is not possible to \n" +
                                     "send a message!",
-                            "Contact Has No Message Identification T Address", JOptionPane.ERROR_MESSAGE);
+                            "Contact Has No Message Identification B Address", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
             }
@@ -968,9 +969,9 @@ public class MessagingPanel
                         this.parentFrame,
                         "The contact: " + contactIdentity.getDiplayString() + "\n" +
                                 "is anonymous. You are about to send a message to him\n" +
-                                "that includes your sender identification T address. Are you sure\n" +
+                                "that includes your sender identification B address. Are you sure\n" +
                                 "you want to send him the message?",
-                        "Send Message Revealing Your Sender Identification T Address?",
+                        "Send Message Revealing Your Sender Identification B Address?",
                         JOptionPane.YES_NO_OPTION);
 
                 if (reply == JOptionPane.NO_OPTION) {

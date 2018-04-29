@@ -45,6 +45,7 @@ import org.btcprivate.wallets.fullnode.util.BackupTracker;
 import org.btcprivate.wallets.fullnode.util.Log;
 import org.btcprivate.wallets.fullnode.util.StatusUpdateErrorReporter;
 import org.btcprivate.wallets.fullnode.util.Util;
+import org.btcprivate.wallets.fullnode.ui.WalletTextField;
 
 
 /**
@@ -65,10 +66,10 @@ public class SendCashPanel
     private String[] comboBoxItems = null;
     private DataGatheringThread<String[][]> addressBalanceGatheringThread = null;
 
-    private JTextField destinationAddressField = null;
-    private JTextField destinationAmountField = null;
-    private JTextField destinationMemoField = null;
-    private JTextField transactionFeeField = null;
+    private WalletTextField destinationAddressField = null;
+    private WalletTextField destinationAmountField  = null;
+    private WalletTextField destinationMemoField    = null;
+    private WalletTextField transactionFeeField     = null;
 
     private JButton sendButton = null;
 
@@ -167,7 +168,7 @@ public class SendCashPanel
         tempPanel.add(new JLabel(LOCAL_MSG_TXN_DESTINATION + ":"));
         sendCashPanel.add(tempPanel);
 
-        destinationAddressField = new JTextField(73);
+        destinationAddressField = new WalletTextField(73);
         tempPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
         tempPanel.add(destinationAddressField);
         sendCashPanel.add(tempPanel);
@@ -184,7 +185,7 @@ public class SendCashPanel
                         "</span>  "));
         sendCashPanel.add(tempPanel);
 
-        destinationMemoField = new JTextField(73);
+        destinationMemoField = new WalletTextField(73);
         tempPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
         tempPanel.add(destinationMemoField);
         sendCashPanel.add(tempPanel);
@@ -198,7 +199,7 @@ public class SendCashPanel
         JPanel amountPanel = new JPanel(new BorderLayout());
         amountPanel.add(new JLabel(LOCAL_MSG_AMOUNT_TO_SEND + ":"), BorderLayout.NORTH);
         tempPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-        tempPanel.add(destinationAmountField = new JTextField(13));
+        tempPanel.add(destinationAmountField = new WalletTextField(13));
         destinationAmountField.setHorizontalAlignment(SwingConstants.RIGHT);
         tempPanel.add(new JLabel(" BTCP    "));
         amountPanel.add(tempPanel, BorderLayout.SOUTH);
@@ -206,7 +207,7 @@ public class SendCashPanel
         JPanel feePanel = new JPanel(new BorderLayout());
         feePanel.add(new JLabel(LOCAL_MSG_TXN_FEE + ":"), BorderLayout.NORTH);
         tempPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-        tempPanel.add(transactionFeeField = new JTextField(13));
+        tempPanel.add(transactionFeeField = new WalletTextField(13));
         transactionFeeField.setText("0.0001"); // Default value
         transactionFeeField.setHorizontalAlignment(SwingConstants.RIGHT);
         tempPanel.add(new JLabel(" BTCP"));
@@ -370,25 +371,14 @@ public class SendCashPanel
         final String fee = this.transactionFeeField.getText();
 
         // Verify general correctness.
-        String errorMessage = null;
-
-        if ((sourceAddress == null) || (sourceAddress.trim().length() <= 20)) {
-            errorMessage = LOCAL_MSG_ERROR_FROM_SHORT;
-        } else if (sourceAddress.length() > 512) {
-            errorMessage = LOCAL_MSG_ERROR_FROM_LONG;
-        }
-
-        // TODO: full address validation
-        if ((destinationAddress == null) || (destinationAddress.trim().length() <= 0)) {
-            errorMessage = LOCAL_MSG_ERROR_TO_MISSING;
-        } else if (destinationAddress.trim().length() <= 20) {
-            errorMessage = LOCAL_MSG_ERROR_TO_SHORT;
-        } else if (destinationAddress.length() > 512) {
-            errorMessage = LOCAL_MSG_ERROR_TO_LONG;
-        }
+        // https://github.com/BTCPrivate/trezor-common/blob/08fe85ad07bbbdc25cc83ffae8be7aff89245594/coins.json#L575 
+        // B Addresses are 35 chars (b1, bx)
+        // Z Addresses are 95 chars (zk)
+        // base58check encoded		
 
         // Prevent accidental sending to non-BTCP addresses (as seems to be supported by daemon)
-        if (!installationObserver.isOnTestNet()) {
+        if (!installationObserver.isOnTestNet())
+        {
             if (!(destinationAddress.startsWith("zk") ||
                     destinationAddress.startsWith("b1") ||
                     destinationAddress.startsWith("bx"))) {
@@ -408,6 +398,29 @@ public class SendCashPanel
 
                 return; // Do not send anything!
             }
+        }
+        
+        String errorMessage = null;
+
+		final int B_ADDRESS_PROPER_LENGTH = 35;
+		final int Z_ADDRESS_PROPER_LENGTH = 95;
+		int sourceAddressProperLength = (sourceAddress.startsWith("zk")) ? Z_ADDRESS_PROPER_LENGTH : B_ADDRESS_PROPER_LENGTH;
+		int destinationAddressProperLength = (destinationAddress.startsWith("zk")) ? Z_ADDRESS_PROPER_LENGTH : B_ADDRESS_PROPER_LENGTH;
+
+        if ((sourceAddress == null) || (sourceAddress.trim().length() < sourceAddressProperLength))
+        {
+            errorMessage = "'From' address is invalid; it is too short or missing.";
+        } else if (sourceAddress.trim().length() > sourceAddressProperLength)
+        {
+            errorMessage = "'From' address is invalid; it is too long.";
+        }
+
+        if ((destinationAddress == null) || (destinationAddress.trim().length() < destinationAddressProperLength))
+        {
+            errorMessage = "Destination address is invalid; it is too short or missing.";
+        } else if (destinationAddress.trim().length() > destinationAddressProperLength)
+        {
+            errorMessage = "Destination address is invalid; it is too long.";
         }
 
         if ((amount == null) || (amount.trim().length() <= 0)) {

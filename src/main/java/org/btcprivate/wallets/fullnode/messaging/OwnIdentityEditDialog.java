@@ -2,6 +2,7 @@ package org.btcprivate.wallets.fullnode.messaging;
 
 import org.btcprivate.wallets.fullnode.util.Log;
 import org.btcprivate.wallets.fullnode.util.StatusUpdateErrorReporter;
+import org.btcprivate.wallets.fullnode.util.Util;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

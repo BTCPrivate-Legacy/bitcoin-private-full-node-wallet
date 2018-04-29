@@ -2,6 +2,7 @@ package org.btcprivate.wallets.fullnode.ui;
 
 import org.btcprivate.wallets.fullnode.daemon.BTCPClientCaller;
 import org.btcprivate.wallets.fullnode.daemon.BTCPClientCaller.WalletCallException;
+import org.btcprivate.wallets.fullnode.ui.WalletTextField;
 import org.btcprivate.wallets.fullnode.util.Log;
 import org.btcprivate.wallets.fullnode.util.Util;
 
@@ -22,8 +23,8 @@ public class SingleKeyImportDialog
     protected boolean isOKPressed = false;
     protected String key = null;
 
-    protected JLabel keyLabel = null;
-    protected JTextField keyField = null;
+    protected JLabel     keyLabel = null;
+    protected WalletTextField keyField = null;
 
     protected JLabel upperLabel;
     protected JLabel lowerLabel;
@@ -83,7 +84,7 @@ public class SingleKeyImportDialog
 
         tempPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
         tempPanel.add(keyLabel = new JLabel("Key: "));
-        tempPanel.add(keyField = new JTextField(60));
+        tempPanel.add(keyField = new WalletTextField(60));
         controlsPanel.add(tempPanel);
 
         dividerLabel = new JLabel("   ");

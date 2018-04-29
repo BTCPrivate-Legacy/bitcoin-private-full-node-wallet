@@ -11,6 +11,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+import org.btcprivate.wallets.fullnode.util.Util;
 
 /**
  * Utilities - generally reusable across classes.
@@ -352,7 +353,8 @@ public class Util
     public static boolean isZAddress(String address)
     {
         return (address != null) &&
-                address.startsWith("zk") &&
+                (address.startsWith("zk")) &&
+//                (address.startsWith("zk") || address.startsWith("zz") || address.startsWith("zt")) &&
                 (address.length() > 40);
     }
 
@@ -432,5 +434,12 @@ public class Util
                 oRAF.close();
             }
         }
+    }
+    
+    public static final String UTF8_BOM = "\uFEFF";
+
+	public static String removeUTF8BOM(String s)
+	{
+    	return (s.startsWith(UTF8_BOM) ? s.substring(1) : s);
     }
 }
