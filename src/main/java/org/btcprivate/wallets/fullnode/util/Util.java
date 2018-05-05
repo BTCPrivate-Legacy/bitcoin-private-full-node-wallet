@@ -40,7 +40,7 @@ public class Util
     public static String local(String key) {
         if (bundle == null) {
             try {
-                Locale locale = Locale.getDefault();
+                Locale locale = Locale.forLanguageTag("nl");
                 bundle = ResourceBundle.getBundle("btcpwalletui",locale);
             }catch(MissingResourceException mre){
                 Locale locale = Locale.ENGLISH;
