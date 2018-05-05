@@ -10,7 +10,8 @@ import org.btcprivate.wallets.fullnode.ui.WalletTextArea;
 import org.btcprivate.wallets.fullnode.ui.WalletTextField;
 import org.btcprivate.wallets.fullnode.util.Util;
 
-public class IdentityInfoDialog
+public class
+IdentityInfoDialog
     extends JDialog {
   protected JFrame parentFrame;
   protected MessagingIdentity identity;

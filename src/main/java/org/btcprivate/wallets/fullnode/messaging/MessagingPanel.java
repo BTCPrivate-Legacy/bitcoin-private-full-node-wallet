@@ -104,7 +104,67 @@ public class MessagingPanel
   private static final String LOCAL_MSG_ADDR_HAS_BALANCE_DETAIL_2 = Util.local("LOCAL_MSG_ADDR_HAS_BALANCE_DETAIL_2");
   private static final String LOCAL_MSG_NO_MSG_ID = Util.local("LOCAL_MSG_NO_MSG_ID");
   private static final String LOCAL_MSG_NO_MSG_ID_DETAIL = Util.local("LOCAL_MSG_NO_MSG_ID_DETAIL");
-  //private static final String LOCAL_MSG_ = Util.local("");
+  private static final String LOCAL_MSG_EXPORT_ID_TO_JSON = Util.local("LOCAL_MSG_EXPORT_ID_TO_JSON");
+  private static final String LOCAL_MSG_SUCCESS_EXPORT_ID_TO_JSON = Util.local("LOCAL_MSG_SUCCESS_EXPORT_ID_TO_JSON");
+  private static final String LOCAL_MSG_SUCCESS_EXPORT_ID_TO_JSON_DETAIL_1 = Util.local("LOCAL_MSG_SUCCESS_EXPORT_ID_TO_JSON_DETAIL_1");
+  private static final String LOCAL_MSG_SUCCESS_EXPORT_ID_TO_JSON_DETAIL_2 = Util.local("LOCAL_MSG_SUCCESS_EXPORT_ID_TO_JSON_DETAIL_2");
+  private static final String LOCAL_MSG_IMPORT_ID = Util.local("LOCAL_MSG_IMPORT_ID");
+  private static final String MSG_LOCAL_IMPORT_ID_WRONG_FORMAT = Util.local("MSG_LOCAL_IMPORT_ID_WRONG_FORMAT");
+  private static final String MSG_LOCAL_IMPORT_ID_WRONG_FORMAT_DETAIL = Util.local("MSG_LOCAL_IMPORT_ID_WRONG_FORMAT_DETAIL");
+  private static final String LOCAL_MSG_IMPORT_DUPLICATE = Util.local("LOCAL_MSG_IMPORT_DUPLICATE");
+  private static final String LOCAL_MSG_IMPORT_DUPLICATE_DETAIL = Util.local("LOCAL_MSG_IMPORT_DUPLICATE_DETAIL");
+  private static final String LOCAL_MSG_IMPORT_CONTACT_SUCCESS = Util.local("LOCAL_MSG_IMPORT_CONTACT_SUCCESS");
+  private static final String LOCAL_MSG_IMPORT_CONTACT_SUCCESS_DETAIL = Util.local("LOCAL_MSG_IMPORT_CONTACT_SUCCESS_DETAIL");
+  private static final String LOCAL_MSG_DUPLICATE_SENDER = Util.local("LOCAL_MSG_DUPLICATE_SENDER");
+  private static final String LOCAL_MSG_DUPLICATE_SENDER_DETAIL = Util.local("LOCAL_MSG_DUPLICATE_SENDER_DETAIL");
+  private static final String LOCAL_MSG_UPDATE_CONTACT = Util.local("LOCAL_MSG_UPDATE_CONTACT");
+  private static final String LOCAL_MSG_UPDATE_CONTACT_DETAIL = Util.local("LOCAL_MSG_UPDATE_CONTACT_DETAIL");
+  private static final String LOCAL_MSG_IMPORT_OWN_ID = Util.local("LOCAL_MSG_IMPORT_OWN_ID");
+  private static final String LOCAL_MSG_IMPORT_OWN_ID_1 = Util.local("LOCAL_MSG_IMPORT_OWN_ID_1");
+  private static final String LOCAL_MSG_IMPORT_OWN_ID_2 = Util.local("LOCAL_MSG_IMPORT_OWN_ID_2");
+  private static final String LOCAL_MSG_NO_CONTACT = Util.local("LOCAL_MSG_NO_CONTACT");
+  private static final String LOCAL_MSG_NO_CONTACT_DETAIL = Util.local("LOCAL_MSG_NO_CONTACT_DETAIL");
+  private static final String LOCAL_MSG_NO_CONTACT_SELECTED = Util.local("LOCAL_MSG_NO_CONTACT_SELECTED");
+  private static final String LOCAL_MSG_NO_CONTACT_SELECTED_DETAIL = Util.local("LOCAL_MSG_NO_CONTACT_SELECTED_DETAIL");
+  private static final String LOCAL_MSG_DELETE_CONTACT_CONFIRM = Util.local("LOCAL_MSG_DELETE_CONTACT_CONFIRM");
+  private static final String LOCAL_MSG_DELETE_CONTACT_CONFIRM_DETAIL = Util.local("LOCAL_MSG_DELETE_CONTACT_CONFIRM_DETAIL");
+  private static final String LOCAL_MSG_NO_CONTACTS = Util.local("LOCAL_MSG_NO_CONTACTS");
+  private static final String LOCAL_MSG_NO_CONTACTS_DETAIL = Util.local("LOCAL_MSG_NO_CONTACTS_DETAIL");
+  private static final String LOCAL_MSG_NO_RECIPIENT = Util.local("LOCAL_MSG_NO_RECIPIENT");
+  private static final String LOCAL_MSG_NO_RECIPIENT_DETAIL = Util.local("LOCAL_MSG_NO_RECIPIENT_DETAIL");
+  private static final String LOCAL_MSG_CONTACT_NO_Z_TOSEND = Util.local("LOCAL_MSG_CONTACT_NO_Z_TOSEND");
+  private static final String LOCAL_MSG_CANT_SEND_MSG_NO_REPLY = Util.local("LOCAL_MSG_CANT_SEND_MSG_NO_REPLY");
+  private static final String LOCAL_MSG_REND_RETURN_Q = Util.local("LOCAL_MSG_REND_RETURN_Q");
+  private static final String LOCAL_MSG_FIRST_SEND_CONTACT = Util.local("LOCAL_MSG_FIRST_SEND_CONTACT");
+  private static final String LOCAL_MSG_NO_B_NO_MSG_DETAIL = Util.local("LOCAL_MSG_NO_B_NO_MSG_DETAIL");
+  private static final String LOCAL_MSG_NO_B_NO_MSG = Util.local("LOCAL_MSG_NO_B_NO_MSG");
+  private static final String LOCAL_MSG_CONTACT_ANONY_WARN_DETAIL = Util.local("LOCAL_MSG_CONTACT_ANONY_WARN_DETAIL");
+  private static final String LOCAL_MSG_CONTACT_ANONY_WARN = Util.local("LOCAL_MSG_CONTACT_ANONY_WARN");
+  private static final String LOCAL_MSG_NO_TEXT = Util.local("LOCAL_MSG_NO_TEXT");
+  private static final String LOCAL_MSG_NO_TEXT_DETAIL = Util.local("LOCAL_MSG_NO_TEXT_DETAIL");
+  private static final String LOCAL_MSG_SENDING_MSG = Util.local("LOCAL_MSG_SENDING_MSG");
+  private static final String LOCAL_MSG_SENDING_MSG_DETAIL = Util.local("LOCAL_MSG_SENDING_MSG_DETAIL");
+  private static final String LOCAL_MSG_INSUFF_BALANCE_MSG = Util.local("LOCAL_MSG_INSUFF_BALANCE_MSG");
+  private static final String LOCAL_MSG_INSUFF_BALANCE_MSG_DETAIL_1 = Util.local("LOCAL_MSG_INSUFF_BALANCE_MSG_DETAIL_1");
+  private static final String LOCAL_MSG_INSUFF_BALANCE_MSG_DETAIL_2 = Util.local("LOCAL_MSG_INSUFF_BALANCE_MSG_DETAIL_2");
+  private static final String LOCAL_MSG_INSUFF_BALANCE_MSG_CONFIRMED = Util.local("LOCAL_MSG_INSUFF_BALANCE_MSG_CONFIRMED");
+  private static final String LOCAL_MSG_INSUFF_BALANCE_MSG_CONFIRMED_DETAIL_1 = Util.local("LOCAL_MSG_INSUFF_BALANCE_MSG_CONFIRMED_DETAIL_1");
+  private static final String LOCAL_MSG_INSUFF_BALANCE_MSG_CONFIRMED_DETAIL_2 = Util.local("LOCAL_MSG_INSUFF_BALANCE_MSG_CONFIRMED_DETAIL_2");
+  private static final String LOCAL_MSG_TOO_LARGE = Util.local("LOCAL_MSG_TOO_LARGE");
+  private static final String LOCAL_MSG_TOO_LARGE_DETAIL = Util.local("LOCAL_MSG_TOO_LARGE_DETAIL");
+  private static final String LOCAL_MSG_ERROR_SEND_MSG = Util.local("LOCAL_MSG_ERROR_SEND_MSG");
+  private static final String LOCAL_MSG_ = Util.local("");
+  private static final String LOCAL_MSG_ = Util.local("");
+  private static final String LOCAL_MSG_ = Util.local("");
+  private static final String LOCAL_MSG_ = Util.local("");
+  private static final String LOCAL_MSG_ = Util.local("");
+  private static final String LOCAL_MSG_ = Util.local("");
+  private static final String LOCAL_MSG_ = Util.local("");
+  private static final String LOCAL_MSG_ = Util.local("");
+  private static final String LOCAL_MSG_ = Util.local("");
+  private static final String LOCAL_MSG_ = Util.local("");
+  private static final String LOCAL_MSG_ = Util.local("");
+  private static final String LOCAL_MSG_ = Util.local("");
 
 
   public MessagingPanel(JFrame parentFrame, SendCashPanel sendCashPanel, JTabbedPane parentTabs,
@@ -607,7 +667,7 @@ public class MessagingPanel
       }
 
       JFileChooser fileChooser = new JFileChooser();
-      fileChooser.setDialogTitle("Export Messaging Identity to JSON File");
+      fileChooser.setDialogTitle(LOCAL_MSG_EXPORT_ID_TO_JSON);
       fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
       fileChooser.setSelectedFile(
           new File(OSUtil.getUserHomeDirectory(), filePrefix + "_messaging_identity.json"));
@@ -638,11 +698,10 @@ public class MessagingPanel
 
       JOptionPane.showMessageDialog(
           this.parentFrame,
-          "Your messaging identity has been succesfully exported to file: \n" +
+          LOCAL_MSG_SUCCESS_EXPORT_ID_TO_JSON_DETAIL_1 +
               f.getName() + "\n" +
-              "You may give this file to other users to establish contact with them.\n" +
-              "They can then import it into their Bitcoin Private Full-Node Desktop Wallet.",
-          "Successfully Exported Messaging Identity", JOptionPane.INFORMATION_MESSAGE);
+              LOCAL_MSG_SUCCESS_EXPORT_ID_TO_JSON_DETAIL_2,
+          LOCAL_MSG_SUCCESS_EXPORT_ID_TO_JSON, JOptionPane.INFORMATION_MESSAGE);
     } catch (Exception ex) {
       Log.error("Unexpected error exporting own messaging identity to file!", ex);
       this.errorReporter.reportError(ex, false);
@@ -656,7 +715,7 @@ public class MessagingPanel
   public void importContactIdentity() {
     try {
       JFileChooser fileChooser = new JFileChooser();
-      fileChooser.setDialogTitle("Import Messaging Identity from File");
+      fileChooser.setDialogTitle(LOCAL_MSG_IMPORT_ID);
       fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 
       int result = fileChooser.showOpenDialog(this.parentFrame);
@@ -690,8 +749,8 @@ public class MessagingPanel
           (innerIdentity.get("senderidaddress") == null)) {
         JOptionPane.showMessageDialog(
             this.parentFrame,
-            "The selected JSON file has the wrong format, or is not a messaging identity file!",
-            "Wrong Format!", JOptionPane.ERROR_MESSAGE);
+            MSG_LOCAL_IMPORT_ID_WRONG_FORMAT_DETAIL,
+            MSG_LOCAL_IMPORT_ID_WRONG_FORMAT, JOptionPane.ERROR_MESSAGE);
         return;
       }
 
@@ -702,21 +761,16 @@ public class MessagingPanel
         if (mi.isIdenticalTo(contactIdentity)) {
           int choice = JOptionPane.showConfirmDialog(
               this.parentFrame,
-              "There is already a contact in your contact list with the same identity. \n\n" +
-                  "Existing contact identity: " + mi.getDiplayString() + "\n" +
-                  "Contact identity being imported: " + contactIdentity.getDiplayString() + "\n\n" +
-                  "Two identities are consiered the same if their T/Z addresses are the same. \n" +
-                  "Do you want to replace the details of the existing messaging identity with\n" +
-                  "the one being imported?",
-              "Collision - Duplicate Identities Found", JOptionPane.YES_NO_OPTION);
+              LOCAL_MSG_IMPORT_DUPLICATE_DETAIL,
+              LOCAL_MSG_IMPORT_DUPLICATE, JOptionPane.YES_NO_OPTION);
 
           if (choice == JOptionPane.YES_OPTION) {
             this.messagingStorage.updateContactIdentityForSenderIDAddress(
                 contactIdentity.getSenderidaddress(), contactIdentity);
             JOptionPane.showMessageDialog(
                 this.parentFrame,
-                "Your contact's messaging identity has been successfully updated.\n",
-                "Successfully Updated Contact's Messaging Identity", JOptionPane.INFORMATION_MESSAGE);
+                LOCAL_MSG_IMPORT_CONTACT_SUCCESS_DETAIL,
+                LOCAL_MSG_IMPORT_CONTACT_SUCCESS, JOptionPane.INFORMATION_MESSAGE);
             this.contactList.reloadMessagingIdentities();
           }
 
@@ -732,13 +786,8 @@ public class MessagingPanel
       if (existingUnknownID != null) {
         int choice = JOptionPane.showConfirmDialog(
             this.parentFrame,
-            "There is a contact in your contact list with the same sender identification address \n" +
-                "but with an unknown/not yet imported full identity:\n\n" +
-                "Existing contact identity: " + existingUnknownID.getDiplayString() + "\n" +
-                "Contact identity being imported: " + contactIdentity.getDiplayString() + "\n\n" +
-                "Do you want to update the details of the existing contact identity\n" +
-                "with this import?",
-            "Contact With This Sender Identification Address Found",
+            LOCAL_MSG_DUPLICATE_SENDER_DETAIL,
+            LOCAL_MSG_DUPLICATE_SENDER,
             JOptionPane.YES_NO_OPTION);
 
         if (choice == JOptionPane.YES_OPTION) {
@@ -746,8 +795,8 @@ public class MessagingPanel
               contactIdentity.getSenderidaddress(), contactIdentity);
           JOptionPane.showMessageDialog(
               this.parentFrame,
-              "Your contact's messaging identity has been successfully updated.\n",
-              "Messaging identity is successfully updated", JOptionPane.INFORMATION_MESSAGE);
+              LOCAL_MSG_UPDATE_CONTACT_DETAIL,
+              LOCAL_MSG_UPDATE_CONTACT, JOptionPane.INFORMATION_MESSAGE);
           this.contactList.reloadMessagingIdentities();
         }
 
@@ -759,14 +808,10 @@ public class MessagingPanel
 
       int sendIDChoice = JOptionPane.showConfirmDialog(
           this.parentFrame,
-          "Your contact's messaging identity has been successfully imported: \n" +
+          LOCAL_MSG_IMPORT_OWN_ID_1 +
               contactIdentity.getDiplayString() + "\n" +
-              "You can now send and receive messages from this contact. Do you wish\n" +
-              "to send (some) of your contact details to this new contact\n" +
-              "as a special message?\n\n" +
-              "This will allow him/her to establish contact with you without manaully\n" +
-              "importing your messaging identity (the way you imported his identity).",
-          "Successfully Imported! Send Your Identity?", JOptionPane.YES_NO_OPTION);
+              LOCAL_MSG_IMPORT_OWN_ID_2,
+          LOCAL_MSG_IMPORT_OWN_ID, JOptionPane.YES_NO_OPTION);
 
       this.contactList.reloadMessagingIdentities();
 
@@ -790,10 +835,8 @@ public class MessagingPanel
       if (this.contactList.getNumberOfContacts() <= 0) {
         JOptionPane.showMessageDialog(
             this.parentFrame,
-            "You have no messaging contacts in your Address Book. To use messaging,\n" +
-                "you need to add at least one contact. You can add a contact by importing\n" +
-                "their messaging identity (Messaging >> Import Contact).",
-            "No Messaging Contacts", JOptionPane.ERROR_MESSAGE);
+            LOCAL_MSG_NO_CONTACT_DETAIL,
+            LOCAL_MSG_NO_CONTACT, JOptionPane.ERROR_MESSAGE);
         return;
       }
 
@@ -802,28 +845,16 @@ public class MessagingPanel
       if (id == null) {
         JOptionPane.showMessageDialog(
             this.parentFrame,
-            "No messaging contact is selected in the contact list (on the right side of the UI).\n" +
-                "In order to remove a contact you need to select a contact first!",
-            "No Contact Selected", JOptionPane.ERROR_MESSAGE);
+            LOCAL_MSG_NO_CONTACT_SELECTED_DETAIL,
+            LOCAL_MSG_NO_CONTACT_SELECTED, JOptionPane.ERROR_MESSAGE);
         return;
       }
 
       // Offer the user a final warning on removing the contact
-      String contactTAddress = Util.stringIsEmpty(id.getSenderidaddress()) ?
-          "<NONE>" : id.getSenderidaddress();
-      String contactZAddress = Util.stringIsEmpty(id.getSendreceiveaddress()) ?
-          "<NONE>" : id.getSendreceiveaddress();
       int reply = JOptionPane.showConfirmDialog(
           this.parentFrame,
-          "The " + (id.isGroup() ? "messaging group " : "contact ") + id.getDiplayString() + "\n" +
-              "with messaging identification B address:\n" +
-              contactTAddress + "\n" +
-              "and send/receive Z address:\n" +
-              contactZAddress + "\n" +
-              "will be permanently deleted from your contact list! All incoming messages from\n" +
-              "this contact will subsequently be ignored. Are you sure you want to remove the\n" +
-              "selected contact?",
-          "Remove This Contact?",
+          LOCAL_MSG_DELETE_CONTACT_CONFIRM_DETAIL,
+          LOCAL_MSG_DELETE_CONTACT_CONFIRM,
           JOptionPane.YES_NO_OPTION);
 
       if (reply == JOptionPane.NO_OPTION) {
@@ -877,17 +908,16 @@ public class MessagingPanel
     if (this.contactList.getNumberOfContacts() <= 0) {
       JOptionPane.showMessageDialog(
           this.parentFrame,
-          "You have no contacts in your Address Book. You can add a contact by importing\n" +
-              "their messaging identity (Messaging >> Import Contact).",
-          "No Contacts", JOptionPane.ERROR_MESSAGE);
+          LOCAL_MSG_NO_CONTACTS_DETAIL,
+          LOCAL_MSG_NO_CONTACTS, JOptionPane.ERROR_MESSAGE);
       return;
     }
 
     if ((remoteIdentity == null) && (this.contactList.getSelectedContact() == null)) {
       JOptionPane.showMessageDialog(
           this.parentFrame,
-          "Select a contact as the message recipient!",
-          "No Recipient Selected", JOptionPane.ERROR_MESSAGE);
+          LOCAL_MSG_NO_RECIPIENT_DETAIL,
+          LOCAL_MSG_NO_RECIPIENT, JOptionPane.ERROR_MESSAGE);
       return;
     }
 
@@ -899,19 +929,10 @@ public class MessagingPanel
 
     // Make sure contact identity is full (not Unknown with no address to send to)
     if (Util.stringIsEmpty(contactIdentity.getSendreceiveaddress())) {
-      String errorMessage =
-          "The selected messaging contact: " + contactIdentity.getDiplayString() + "\n" +
-              "doesn't seem to have a Z address for sending and receiving messages. \n";
-      errorMessage += contactIdentity.isAnonymous() ?
-          ("Since the contact is anonymous, this means that the contact intentionally did\n" +
-              "not send his Z address - so replies are not possible. Message cannot be sent!")
-          :
-          ("This is probably because the contact's messaging identity hasn't been imported.\n" +
-              "Message cannot be sent!");
       JOptionPane.showMessageDialog(
           this.parentFrame,
-          errorMessage,
-          "Contact Needs a Reply Address!", JOptionPane.ERROR_MESSAGE);
+          LOCAL_MSG_CONTACT_NO_Z_TOSEND,
+          LOCAL_MSG_CANT_SEND_MSG_NO_REPLY, JOptionPane.ERROR_MESSAGE);
       return;
     }
 
@@ -924,11 +945,8 @@ public class MessagingPanel
           // Offer the user to send a return address
           int reply = JOptionPane.showConfirmDialog(
               this.parentFrame,
-              "This is the first anonymous message you are sending to contact: \n" +
-                  contactIdentity.getDiplayString() + "\n" +
-                  "Do you wish to send him your messaging identity's Z address, so\n" +
-                  "they can reply to your anonymous messages?",
-              "Send Return Address?",
+              LOCAL_MSG_FIRST_SEND_CONTACT,
+              LOCAL_MSG_REND_RETURN_Q,
               JOptionPane.YES_NO_OPTION);
 
           if (reply == JOptionPane.YES_OPTION) {
@@ -945,10 +963,8 @@ public class MessagingPanel
         } else {
           JOptionPane.showMessageDialog(
               this.parentFrame,
-              "The contact: " + contactIdentity.getDiplayString() + "\n" +
-                  "has no message identification B address. It is not possible to \n" +
-                  "send a message!",
-              "Contact Has No Message Identification B Address", JOptionPane.ERROR_MESSAGE);
+              LOCAL_MSG_NO_B_NO_MSG_DETAIL,
+              LOCAL_MSG_NO_B_NO_MSG, JOptionPane.ERROR_MESSAGE);
           return;
         }
       }
@@ -957,11 +973,8 @@ public class MessagingPanel
       if (contactIdentity.isAnonymous()) {
         int reply = JOptionPane.showConfirmDialog(
             this.parentFrame,
-            "The contact: " + contactIdentity.getDiplayString() + "\n" +
-                "is anonymous. You are about to send a message to him\n" +
-                "that includes your sender identification B address. Are you sure\n" +
-                "you want to send him the message?",
-            "Send Message Revealing Your Sender Identification B Address?",
+            LOCAL_MSG_CONTACT_ANONY_WARN_DETAIL,
+            LOCAL_MSG_CONTACT_ANONY_WARN,
             JOptionPane.YES_NO_OPTION);
 
         if (reply == JOptionPane.NO_OPTION) {
@@ -978,8 +991,8 @@ public class MessagingPanel
     if (textToSend.length() <= 0) {
       JOptionPane.showMessageDialog(
           this.parentFrame,
-          "Please write a message to send!",
-          "No Message Text", JOptionPane.ERROR_MESSAGE);
+          LOCAL_MSG_NO_TEXT_DETAIL,
+          LOCAL_MSG_NO_TEXT, JOptionPane.ERROR_MESSAGE);
       return;
     }
 
@@ -987,9 +1000,8 @@ public class MessagingPanel
     if ((this.operationStatusTimer != null) || (!this.sendButton.isEnabled())) {
       JOptionPane.showMessageDialog(
           this.parentFrame,
-          "There is currently another message sending operation underway.\n" +
-              "Please wait until the operation is completed.",
-          "Busy Sending", JOptionPane.ERROR_MESSAGE);
+          LOCAL_MSG_SENDING_MSG_DETAIL,
+          LOCAL_MSG_SENDING_MSG, JOptionPane.ERROR_MESSAGE);
       return;
     }
 
@@ -1023,14 +1035,10 @@ public class MessagingPanel
           balance, unconfirmedBalance);
       JOptionPane.showMessageDialog(
           this.parentFrame,
-          "The Z address used to send/receive messages has insufficient balance: \n" +
+          LOCAL_MSG_INSUFF_BALANCE_MSG_DETAIL_1 +
               ownIdentity.getSendreceiveaddress() + "\n" +
-              "You will be redirected to the UI tab for sending BTCP to add some balance to it. You need only\n" +
-              "a small amount e.g. typically 0.1 BTCP is suffucient to send 500 messages. After sending some\n" +
-              "BTCP you need to wait for the transaction to be confirmed (typically takes 2.5 minutes). It is\n" +
-              "recommended to send BTCP to this Z address in two or more separate transactions (though one \n" +
-              "transaction is sufficient).",
-          "Z address to send/receive messages has Insufficient Balance", JOptionPane.ERROR_MESSAGE);
+              LOCAL_MSG_INSUFF_BALANCE_MSG_DETAIL_2,
+          LOCAL_MSG_INSUFF_BALANCE_MSG, JOptionPane.ERROR_MESSAGE);
 
       // Restore controls and move to the send btcp tab etc.
       this.sendButton.setEnabled(true);
@@ -1046,13 +1054,10 @@ public class MessagingPanel
           balance, unconfirmedBalance);
       JOptionPane.showMessageDialog(
           this.parentFrame,
-          "The Z address used to send/receive messages has insufficient confirmed balance: \n" +
+          LOCAL_MSG_INSUFF_BALANCE_MSG_CONFIRMED_DETAIL_1 +
               ownIdentity.getSendreceiveaddress() + "\n" +
-              "This usually means that the previous mesasaging transaction is not yet confirmed. You\n" +
-              "need to wait for the transaciton to be confirmed (typically takes 2.5 minutes). This\n" +
-              "problem may be avoided if you send BTCP to this Z address in two or more separate \n" +
-              "transactions (when you supply the BTCP balance to be used for messaging).",
-          "Z address to send/receive messages has Insufficient Confirmed Balance", JOptionPane.ERROR_MESSAGE);
+              LOCAL_MSG_INSUFF_BALANCE_MSG_CONFIRMED_DETAIL_2,
+          LOCAL_MSG_INSUFF_BALANCE_MSG_CONFIRMED, JOptionPane.ERROR_MESSAGE);
 
       // Restore controls and move to the send cash tab etc.
       this.sendButton.setEnabled(true);
@@ -1104,14 +1109,8 @@ public class MessagingPanel
       // We give exact size and advice on reduction...
       JOptionPane.showMessageDialog(
           this.parentFrame,
-          "The text of the message you have written is too long to be sent. When\n" +
-              "packaged as a memo it comes up to " + overallSendingLength +
-              " bytes (maximum is " + maxSendingLength + " bytes)\n\n" +
-              "Advice: try to reduce the message length by " + difference + " characters. The current\n" +
-              "version of the BTCP messaging protocol supports approximately 330\n" +
-              "characters per message (number is not exact - depends on character\n" +
-              "encoding specifics).",
-          "Message size exceeds currently supported limits...", JOptionPane.ERROR_MESSAGE);
+          LOCAL_MSG_TOO_LARGE_DETAIL,
+          LOCAL_MSG_TOO_LARGE, JOptionPane.ERROR_MESSAGE);
       // Restore controls and exit
       this.sendButton.setEnabled(true);
       this.writeMessageTextArea.setEnabled(true);
@@ -1144,7 +1143,7 @@ public class MessagingPanel
           "Error sending message to contact \"" + contactIdentity.getDiplayString() + "\". \n" +
               "Error: " + wce.getMessage() + "\n" +
               "If the problem persists, you may need technical support :( Contact Us!\n",
-          "Error Sending Message", JOptionPane.ERROR_MESSAGE);
+          LOCAL_MSG_ERROR_SEND_MSG, JOptionPane.ERROR_MESSAGE);
 
       sendMessageProgressBar.setValue(0);
       sendButton.setEnabled(true);
@@ -1159,16 +1158,13 @@ public class MessagingPanel
     // Start a data gathering thread specific to the operation being executed - this is done is a separate
     // thread since the server responds more slowly during JoinSPlits and this blocks he GUI somewhat.
     final DataGatheringThread<Boolean> opFollowingThread = new DataGatheringThread<Boolean>(
-        new DataGatheringThread.DataGatherer<Boolean>() {
-          public Boolean gatherData()
-              throws Exception {
-            long start = System.currentTimeMillis();
-            Boolean result = MessagingPanel.this.clientCaller.isSendingOperationComplete(operationStatusID);
-            long end = System.currentTimeMillis();
-            Log.info("Checking for messaging operation " + operationStatusID + " status done in " + (end - start) + "ms.");
+        () -> {
+          long start = System.currentTimeMillis();
+          Boolean result = MessagingPanel.this.clientCaller.isSendingOperationComplete(operationStatusID);
+          long end = System.currentTimeMillis();
+          Log.info("Checking for messaging operation " + operationStatusID + " status done in " + (end - start) + "ms.");
 
-            return result;
-          }
+          return result;
         },
         this.errorReporter, 2000, true);
 
@@ -1708,24 +1704,6 @@ public class MessagingPanel
               "manually from a json file, or you can send it in separate parts.",
           "Too Large!", JOptionPane.ERROR_MESSAGE);
       return;
-    }
-  }
-
-
-  public void shareFileViaIPFS() {
-    try {
-      String ipfsLink = this.ipfs.shareFileViaIPFS();
-      Log.info("IPFS Link is: {0}", ipfsLink);
-
-      if (ipfsLink != null) {
-        String oldText = this.writeMessageTextArea.getText();
-        oldText = oldText != null ? oldText : "";
-
-        this.writeMessageTextArea.setText(oldText + "\n" + ipfsLink);
-      }
-    } catch (Exception ex) {
-      Log.error("Unexpected error in sharing file via IPFS: ", ex);
-      this.errorReporter.reportError(ex, false);
     }
   }
 }

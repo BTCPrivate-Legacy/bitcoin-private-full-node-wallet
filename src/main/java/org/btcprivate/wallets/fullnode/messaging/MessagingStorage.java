@@ -412,7 +412,7 @@ public class MessagingStorage {
      * Returns all known messages for a certain contact in ascending date order.
      * If identity not found etc. thorws an exception
      *
-     * @param conact
+     * @param contact
      * @return all known messages for a certain contact in ascending date order.
      */
     public List<Message> getAllMessagesForContact(MessagingIdentity contact)
@@ -440,12 +440,7 @@ public class MessagingStorage {
 
         // Finally sort them
         Collections.sort(messages,
-                new Comparator<Message>() {
-                    @Override
-                    public int compare(Message o1, Message o2) {
-                        return o1.getTime().compareTo(o2.getTime());
-                    }
-                }
+            (o1, o2) -> o1.getTime().compareTo(o2.getTime())
         );
 
         return messages;
