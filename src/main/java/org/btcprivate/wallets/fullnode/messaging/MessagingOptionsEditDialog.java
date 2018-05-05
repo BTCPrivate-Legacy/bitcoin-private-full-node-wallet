@@ -47,6 +47,15 @@ public class MessagingOptionsEditDialog
     protected WalletTextField transactionFeeTextField;
     protected JCheckBox automaticallyAddUsers;
 
+    private static final String LOCAL_MSG_ = Util.local("");
+    private static final String LOCAL_MSG_ = Util.local("");
+    private static final String LOCAL_MSG_ = Util.local("");
+    private static final String LOCAL_MSG_ = Util.local("");
+    private static final String LOCAL_MSG_ = Util.local("");
+    private static final String LOCAL_MSG_ = Util.local("");
+    private static final String LOCAL_MSG_ = Util.local("");
+    private static final String LOCAL_MSG_ = Util.local("");
+
     public MessagingOptionsEditDialog(JFrame parentFrame, MessagingStorage storage, StatusUpdateErrorReporter errorReporter)
             throws IOException {
         this.parentFrame = parentFrame;

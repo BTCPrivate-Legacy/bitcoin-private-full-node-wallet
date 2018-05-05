@@ -30,100 +30,105 @@ import org.btcprivate.wallets.fullnode.util.Util;
  * @author Ivan Vaklinov <ivan@vaklinov.com>
  */
 public class WalletOperations {
-    private BTCPWalletUI parent;
-    private JTabbedPane tabs;
-    private AddressesPanel addresses;
+  private BTCPWalletUI parent;
+  private JTabbedPane tabs;
+  private AddressesPanel addresses;
 
-    private BTCPClientCaller clientCaller;
-    private StatusUpdateErrorReporter errorReporter;
+  private BTCPClientCaller clientCaller;
+  private StatusUpdateErrorReporter errorReporter;
+
+  private static final String LOCAL_MENU_PK_INFO_1 = Util.local("LOCAL_MENU_PK_INFO_1");
+  private static final String LOCAL_MENU_PK_INFO_2 = Util.local("LOCAL_MENU_PK_INFO_2");
+  private static final String LOCAL_MENU_PK_INFO_3 = Util.local("LOCAL_MENU_PK_INFO_3");
+  private static final String LOCAL_MENU_SELECT_TO_VIEW_PK = Util.local("LOCAL_MENU_SELECT_TO_VIEW_PK");
+  private static final String LOCAL_MEN_SELECT_ADDRESS = Util.local("LOCAL_MEN_SELECT_ADDRESS");
+  private static final String LOCAL_MENU_PK = Util.local("LOCAL_MENU_PK");
 
 
-    public WalletOperations(BTCPWalletUI parent,
-                            JTabbedPane tabs,
-                            AddressesPanel addresses,
-                            BTCPClientCaller clientCaller,
-                            StatusUpdateErrorReporter errorReporter)
-            throws IOException, InterruptedException, WalletCallException {
-        this.parent = parent;
-        this.tabs = tabs;
-        this.addresses = addresses;
+  public WalletOperations(BTCPWalletUI parent,
+                          JTabbedPane tabs,
+                          AddressesPanel addresses,
+                          BTCPClientCaller clientCaller,
+                          StatusUpdateErrorReporter errorReporter)
+      throws IOException, InterruptedException, WalletCallException {
+    this.parent = parent;
+    this.tabs = tabs;
+    this.addresses = addresses;
 
-        this.clientCaller = clientCaller;
-        this.errorReporter = errorReporter;
+    this.clientCaller = clientCaller;
+    this.errorReporter = errorReporter;
 
+  }
+
+  public void showPrivateKey() {
+    if (this.tabs.getSelectedIndex() != 1) {
+      JOptionPane.showMessageDialog(
+          this.parent, LOCAL_MENU_SELECT_TO_VIEW_PK,
+          LOCAL_MEN_SELECT_ADDRESS, JOptionPane.INFORMATION_MESSAGE);
+      this.tabs.setSelectedIndex(1);
+      return;
     }
 
-    public void showPrivateKey() {
-        if (this.tabs.getSelectedIndex() != 1) {
-            JOptionPane.showMessageDialog(
-                    this.parent,
-                    "Please select an address in the \"My Addresses\" tab " +
-                            "to view its private key.",
-                    "Select an Address", JOptionPane.INFORMATION_MESSAGE);
-            this.tabs.setSelectedIndex(1);
-            return;
-        }
+    String address = this.addresses.getSelectedAddress();
 
-        String address = this.addresses.getSelectedAddress();
-
-        if (address == null) {
-            JOptionPane.showMessageDialog(
-                    this.parent,
-                    "Please select an address from the table " +
-                            "to view its private key.",
-                    "Select an Address", JOptionPane.INFORMATION_MESSAGE);
-            return;
-        }
-
-        try {
-            // Check for encrypted wallet
-            final boolean bEncryptedWallet = this.clientCaller.isWalletEncrypted();
-            if (bEncryptedWallet) {
-                PasswordDialog pd = new PasswordDialog((this.parent));
-                pd.setVisible(true);
-
-                if (!pd.isOKPressed()) {
-                    return;
-                }
-
-                this.clientCaller.unlockWallet(pd.getPassword());
-            }
-
-            boolean isZAddress = Util.isZAddress(address);
-
-            String privateKey = isZAddress ?
-                    this.clientCaller.getZPrivateKey(address) : this.clientCaller.getTPrivateKey(address);
-
-            // Lock the wallet again
-            if (bEncryptedWallet) {
-                this.clientCaller.lockWallet();
-            }
-
-            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-            clipboard.setContents(new StringSelection(privateKey), null);
-
-            JOptionPane.showMessageDialog(
-                    this.parent,
-                    (isZAddress ? "Z (Private)" : "T (Transparent)") + " address:\n" +
-                            address + "\n" +
-                            "has private key:\n" +
-                            privateKey + "\n\n" +
-                            "The private key has also been copied to the clipboard.",
-                    "Private Key Info", JOptionPane.INFORMATION_MESSAGE);
-
-        } catch (Exception ex) {
-            this.errorReporter.reportError(ex, false);
-        }
+    if (address == null) {
+      JOptionPane.showMessageDialog(
+          this.parent,
+          LOCAL_MENU_SELECT_TO_VIEW_PK,
+          LOCAL_MEN_SELECT_ADDRESS, JOptionPane.INFORMATION_MESSAGE);
+      return;
     }
 
+    try {
+      // Check for encrypted wallet
+      final boolean bEncryptedWallet = this.clientCaller.isWalletEncrypted();
+      if (bEncryptedWallet) {
+        PasswordDialog pd = new PasswordDialog((this.parent));
+        pd.setVisible(true);
 
-    public void importSinglePrivateKey() {
-        try {
-            SingleKeyImportDialog kd = new SingleKeyImportDialog(this.parent, this.clientCaller);
-            kd.setVisible(true);
-
-        } catch (Exception ex) {
-            this.errorReporter.reportError(ex, false);
+        if (!pd.isOKPressed()) {
+          return;
         }
+
+        this.clientCaller.unlockWallet(pd.getPassword());
+      }
+
+      boolean isZAddress = Util.isZAddress(address);
+
+      String privateKey = isZAddress ?
+          this.clientCaller.getZPrivateKey(address) : this.clientCaller.getTPrivateKey(address);
+
+      // Lock the wallet again
+      if (bEncryptedWallet) {
+        this.clientCaller.lockWallet();
+      }
+
+      Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+      clipboard.setContents(new StringSelection(privateKey), null);
+
+      JOptionPane.showMessageDialog(
+          this.parent,
+          LOCAL_MENU_PK_INFO_1 + "\n" +
+              address + "\n" +
+              LOCAL_MENU_PK_INFO_2 + "\n" +
+              privateKey + "\n\n" +
+              LOCAL_MENU_PK_INFO_3,
+          LOCAL_MENU_PK, JOptionPane.INFORMATION_MESSAGE);
+
+
+    } catch (Exception ex) {
+      this.errorReporter.reportError(ex, false);
     }
+  }
+
+
+  public void importSinglePrivateKey() {
+    try {
+      SingleKeyImportDialog kd = new SingleKeyImportDialog(this.parent, this.clientCaller);
+      kd.setVisible(true);
+
+    } catch (Exception ex) {
+      this.errorReporter.reportError(ex, false);
+    }
+  }
 }
