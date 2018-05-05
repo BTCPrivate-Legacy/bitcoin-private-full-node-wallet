@@ -34,16 +34,53 @@ public class Util {
   public final static String VERIFYING_KEY_FILE_SOURCE = "keys/sprout-verifying.key";
   public static final String PROVING_KEY_PATH_URL = "https://storage.googleapis.com/btcp-sprout-key/sprout-proving.key";
   public static final String PROVING_KEY_SHA256 = "8bc20a7f013b2b58970cddd2e7ea028975c88ae7ceb9259a5344a16bc2c0eef7";
+  public static final String LANGUAGE_FILE = "language";
+
+
+  private static String getLanguage() {
+    File languageFile;
+    try {
+      languageFile = new File(OSUtil.getSettingsDirectory(), LANGUAGE_FILE);
+
+      if (!languageFile.exists())
+        return null;
+      try (BufferedReader bufferedReader = new BufferedReader(new FileReader(languageFile))) {
+        String line;
+        while ((line = bufferedReader.readLine()) != null) {
+          return line;
+        }
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return null;
+  }
+
+  public static void setLanguage(String l) {
+    try {
+      File languageFile = new File(OSUtil.getSettingsDirectory(), LANGUAGE_FILE);
+      try (PrintWriter printWriter = new PrintWriter(new FileWriter(languageFile))) {
+        printWriter.println(l);
+      }
+    } catch (IOException bad) {
+      Log.error("Saving Language Failed!!!!", bad);
+    }
+  }
 
 
   public static String local(String key) {
     if (bundle == null) {
       try {
-        Locale locale = Locale.getDefault();
+        Locale locale;
+        //Locale locale = Locale.getDefault();
+        String lang = getLanguage();
+        if (lang == null)
+          locale = Locale.ENGLISH;
+        else
+          locale = Locale.forLanguageTag(lang);
         bundle = ResourceBundle.getBundle("btcpwalletui", locale);
-      } catch (MissingResourceException mre) {
-        Locale locale = Locale.ENGLISH;
-        bundle = ResourceBundle.getBundle("btcpwalletui", locale);
+      } catch (MissingResourceException e) {
+        bundle = ResourceBundle.getBundle("btcpwalletui", Locale.ENGLISH);
       }
     }
     return bundle.getString(key);

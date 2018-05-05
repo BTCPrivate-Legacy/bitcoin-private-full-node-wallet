@@ -153,19 +153,14 @@ public class MessagingPanel
   private static final String LOCAL_MSG_TOO_LARGE = Util.local("LOCAL_MSG_TOO_LARGE");
   private static final String LOCAL_MSG_TOO_LARGE_DETAIL = Util.local("LOCAL_MSG_TOO_LARGE_DETAIL");
   private static final String LOCAL_MSG_ERROR_SEND_MSG = Util.local("LOCAL_MSG_ERROR_SEND_MSG");
-  private static final String LOCAL_MSG_ = Util.local("");
-  private static final String LOCAL_MSG_ = Util.local("");
-  private static final String LOCAL_MSG_ = Util.local("");
-  private static final String LOCAL_MSG_ = Util.local("");
-  private static final String LOCAL_MSG_ = Util.local("");
-  private static final String LOCAL_MSG_ = Util.local("");
-  private static final String LOCAL_MSG_ = Util.local("");
-  private static final String LOCAL_MSG_ = Util.local("");
-  private static final String LOCAL_MSG_ = Util.local("");
-  private static final String LOCAL_MSG_ = Util.local("");
-  private static final String LOCAL_MSG_ = Util.local("");
-  private static final String LOCAL_MSG_ = Util.local("");
-
+  private static final String LOCAL_MSG_ERROR = Util.local("LOCAL_MSG_ERROR");
+  private static final String LOCAL_MSG_SUCCESSFUL = Util.local("LOCAL_MSG_SUCCESSFUL");
+  private static final String LOCAL_MSG_IN_PROGRESS = Util.local("LOCAL_MSG_IN_PROGRESS");
+  private static final String LOCAL_MSG_NO_MSG_ID_DETAIL_2 = Util.local("LOCAL_MSG_NO_MSG_ID_DETAIL_2");
+  private static final String LOCAL_MSG_SEND_CONTACT_DETAILS = Util.local("LOCAL_MSG_SEND_CONTACT_DETAILS");
+  private static final String LOCAL_MSG_SEND_CONTACT_DETAILS_Q = Util.local("LOCAL_MSG_SEND_CONTACT_DETAILS_Q");
+  private static final String LOCAL_MSG_SEND_CONTACT_DETAILS_Q_2 = Util.local("LOCAL_MSG_SEND_CONTACT_DETAILS_Q_2");
+  private static final String LOCAL_MSG_TOO_LARGE_ID = Util.local("LOCAL_MSG_TOO_LARGE_ID");
 
   public MessagingPanel(JFrame parentFrame, SendCashPanel sendCashPanel, JTabbedPane parentTabs,
                         BTCPClientCaller clientCaller, StatusUpdateErrorReporter errorReporter)
@@ -1137,12 +1132,10 @@ public class MessagingPanel
       Log.error("Wallet call error in sending message: ", wce);
 
       sendResultLabel.setText(
-          "<html><span style=\"color:red;font-size:0.8em;font-weight:bold\">ERROR!</span></html>");
+          "<html><span style=\"color:red;font-size:0.8em;font-weight:bold\">" + LOCAL_MSG_ERROR + "</span></html>");
       JOptionPane.showMessageDialog(
           MessagingPanel.this.getRootPane().getParent(),
-          "Error sending message to contact \"" + contactIdentity.getDiplayString() + "\". \n" +
-              "Error: " + wce.getMessage() + "\n" +
-              "If the problem persists, you may need technical support :( Contact Us!\n",
+          LOCAL_MSG_ERROR_SEND_MSG + " : " + wce.getMessage(),
           LOCAL_MSG_ERROR_SEND_MSG, JOptionPane.ERROR_MESSAGE);
 
       sendMessageProgressBar.setValue(0);
@@ -1184,17 +1177,15 @@ public class MessagingPanel
             boolean sendWasSuccessful = clientCaller.isCompletedOperationSuccessful(operationStatusID);
             if (sendWasSuccessful) {
               sendResultLabel.setText(
-                  "<html><span style=\"color:green;font-size:0.8em;font-weight:bold\">SUCCESSFUL</span></html>");
+                  "<html><span style=\"color:green;font-size:0.8em;font-weight:bold\">" + LOCAL_MSG_SUCCESSFUL + "</span></html>");
             } else {
               String errorMessage = clientCaller.getOperationFinalErrorMessage(operationStatusID);
               sendResultLabel.setText(
-                  "<html><span style=\"color:red;font-size:0.8em;font-weight:bold\">ERROR! </span></html>");
+                  "<html><span style=\"color:red;font-size:0.8em;font-weight:bold\">" + LOCAL_MSG_ERROR + "</span></html>");
               JOptionPane.showMessageDialog(
                   MessagingPanel.this.getRootPane().getParent(),
-                  "Error sending message to contact \"" + contactIdentity.getDiplayString() + "\". \n" +
-                      "Error: " + errorMessage + "\n\n" +
-                      "If the problem persists, you may need technical support :( Contact Us!\n",
-                  "Error Sending Message", JOptionPane.ERROR_MESSAGE);
+                  LOCAL_MSG_ERROR_SEND_MSG + ": " + errorMessage,
+                  LOCAL_MSG_ERROR_SEND_MSG, JOptionPane.ERROR_MESSAGE);
             }
 
 
@@ -1222,7 +1213,7 @@ public class MessagingPanel
           } else {
             // Update the progress
             sendResultLabel.setText(
-                "<html><span style=\"color:orange;font-size:0.8em;font-weight:bold\">IN PROGRESS</span></html>");
+                "<html><span style=\"color:orange;font-size:0.8em;font-weight:bold\">" + LOCAL_MSG_IN_PROGRESS + "</span></html>");
             operationStatusCounter += 2;
             int progress = 0;
             if (operationStatusCounter <= 100) {
@@ -1303,16 +1294,8 @@ public class MessagingPanel
       if (!bFound) {
         JOptionPane.showMessageDialog(
             MessagingPanel.this.getRootPane().getParent(),
-            "Your messaging identity's send/receive address: \n" +
-                ownZAddress + "\n" +
-                "was not found in the wallet.dat. The reason may be that, after a messaging identity\n" +
-                "was created, the wallet.dat was changed or you switched to the Testnet.\n" +
-                "If such a change was made, the messaging identity can no\n" +
-                "longer be used. To avoid this error message, you can rename the directory \n" +
-                OSUtil.getSettingsDirectory() + File.separator + "messaging" + "\n" +
-                "until the configuration or wallet.dat is restored! Directory may only be renamed when\n" +
-                "the wallet is stopped!",
-            "Messaging Identity Address is not found in wallet!", JOptionPane.ERROR_MESSAGE);
+            LOCAL_MSG_NO_MSG_ID_DETAIL_2,
+            LOCAL_MSG_NO_MSG_ID, JOptionPane.ERROR_MESSAGE);
         return;
       }
 
@@ -1332,7 +1315,7 @@ public class MessagingPanel
     }
 
     if (ownIdentity == null) {
-      Log.warning("My Identity does not exist yet. No received messages collected!");
+      Log.warning(LOCAL_MSG_NO_MSG_ID_DETAIL);
       return;
     }
 
@@ -1624,10 +1607,10 @@ public class MessagingPanel
 
       int sendIDChoice = JOptionPane.showConfirmDialog(
           this.parentFrame,
-          "Do you wish to send (some) of your contact details to the group:\n" +
+          LOCAL_MSG_SEND_CONTACT_DETAILS_Q +
               createdGroup.getDiplayString() + "\n" +
-              "This will allow other group members to know your messaging identity.",
-          "Send Contact Details?", JOptionPane.YES_NO_OPTION);
+              LOCAL_MSG_SEND_CONTACT_DETAILS_Q_2,
+          LOCAL_MSG_SEND_CONTACT_DETAILS, JOptionPane.YES_NO_OPTION);
 
       if (sendIDChoice == JOptionPane.YES_OPTION) {
         // Only a limited set of values is sent over the wire, due tr the limit of 330 characters.
@@ -1639,9 +1622,8 @@ public class MessagingPanel
         } else {
           JOptionPane.showMessageDialog(
               this.parentFrame,
-              "The size of your messaging identity is unfortunately too large to be sent\n" +
-                  "as a message.",
-              "Messaging identity size is too large!", JOptionPane.ERROR_MESSAGE);
+              LOCAL_MSG_TOO_LARGE_DETAIL,
+              LOCAL_MSG_TOO_LARGE, JOptionPane.ERROR_MESSAGE);
           return;
         }
       }
@@ -1699,10 +1681,8 @@ public class MessagingPanel
     } else {
       JOptionPane.showMessageDialog(
           this.parentFrame,
-          "Your messaging identity is unfortunately too large to be sent\n" +
-              "as one message. The recipient will have to import your messaging identity\n" +
-              "manually from a json file, or you can send it in separate parts.",
-          "Too Large!", JOptionPane.ERROR_MESSAGE);
+          LOCAL_MSG_TOO_LARGE_ID,
+          LOCAL_MSG_TOO_LARGE, JOptionPane.ERROR_MESSAGE);
       return;
     }
   }
