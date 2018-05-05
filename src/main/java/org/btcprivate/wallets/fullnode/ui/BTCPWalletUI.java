@@ -80,6 +80,9 @@ public class BTCPWalletUI extends JFrame {
   private static final String LOCAL_MSG_UI_TITLE = Util.local("LOCAL_MSG_UI_TITLE");
   private static final String LOCAL_MSG_DAEMON_ERROR = Util.local("LOCAL_MSG_DAEMON_ERROR");
   private static final String LOCAL_MSG_DAEMON_ERROR_TITLE = Util.local("LOCAL_MSG_DAEMON_ERROR_TITLE");
+  private static final String LOCAL_MSG_SET_LANG = Util.local("LOCAL_MSG_SET_LANG");
+  private static final String LOCAL_MSG_RESTART = Util.local("LOCAL_MSG_RESTART");
+  private static final String LOCAL_MSG_RESTART_DETAIL = Util.local("LOCAL_MSG_RESTART_DETAIL");
 
   //image resources
   private static final String IMG_TAB_TRANSACTIONS = "images/overview.png";
@@ -92,7 +95,11 @@ public class BTCPWalletUI extends JFrame {
   JTabbedPane tabs;
 
   private void showRestartRequired() {
-
+    JOptionPane.showMessageDialog(
+        null,
+        LOCAL_MSG_RESTART_DETAIL,
+        LOCAL_MSG_RESTART,
+        JOptionPane.INFORMATION_MESSAGE);
   }
 
   public BTCPWalletUI(StartupProgressDialog progressDialog, String title)
@@ -196,7 +203,7 @@ public class BTCPWalletUI extends JFrame {
 
     mb.add(messaging);
 
-    JMenu lang = new JMenu("Language");
+    JMenu lang = new JMenu(LOCAL_MSG_SET_LANG);
 
     lang.add(langEnglish = new JMenuItem("English"));
     lang.add(langDutch = new JMenuItem("Nederlands"));
