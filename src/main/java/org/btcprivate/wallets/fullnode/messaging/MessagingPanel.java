@@ -91,10 +91,20 @@ public class MessagingPanel
   private static final String LOCAL_MSG_ANONYMOUS = Util.local("LOCAL_MSG_ANONYMOUS");
   private static final String LOCAL_MSG_CONV_IN_GROUP = Util.local("LOCAL_MSG_CONV_IN_GROUP");
   private static final String LOCAL_MSG_CONV_WITH = Util.local("LOCAL_MSG_CONV_WITH");
-  private static final String LOCAL_MSG_ = Util.local("");
-  private static final String LOCAL_MSG_ = Util.local("");
-  private static final String LOCAL_MSG_ = Util.local("");
-  private static final String LOCAL_MSG_ = Util.local("");
+  private static final String LOCAL_MSG_WELCOME_TO_MSG_1 = Util.local("LOCAL_MSG_WELCOME_TO_MSG_1");
+  private static final String LOCAL_MSG_WELCOME_TO_MSG_2 = Util.local("LOCAL_MSG_WELCOME_TO_MSG_2");
+  private static final String LOCAL_MSG_WELCOME_TO_MSG_TITLE = Util.local("LOCAL_MSG_WELCOME_TO_MSG_TITLE");
+  private static final String LOCAL_MSG_EXPORT_MSG_ID = Util.local("LOCAL_MSG_EXPORT_MSG_ID");
+  private static final String LOCAL_MSG_MSG_CREATED_EXPORT = Util.local("LOCAL_MSG_MSG_CREATED_EXPORT");
+  private static final String LOCAL_MSG_ADD_BTCP_TO_SEND_1 = Util.local("LOCAL_MSG_ADD_BTCP_TO_SEND_1");
+  private static final String LOCAL_MSG_ADD_BTCP_TO_SEND_2 = Util.local("LOCAL_MSG_ADD_BTCP_TO_SEND_2");
+  private static final String LOCAL_MSG_ADD_BTCP_TO_SEND_TITLE = Util.local("LOCAL_MSG_ADD_BTCP_TO_SEND_TITLE");
+  private static final String LOCAL_MSG_ADDR_HAS_BALANCE_TITLE = Util.local("LOCAL_MSG_ADDR_HAS_BALANCE_TITLE");
+  private static final String LOCAL_MSG_ADDR_HAS_BALANCE_DETAIL_1 = Util.local("LOCAL_MSG_ADDR_HAS_BALANCE_DETAIL_1");
+  private static final String LOCAL_MSG_ADDR_HAS_BALANCE_DETAIL_2 = Util.local("LOCAL_MSG_ADDR_HAS_BALANCE_DETAIL_2");
+  private static final String LOCAL_MSG_NO_MSG_ID = Util.local("LOCAL_MSG_NO_MSG_ID");
+  private static final String LOCAL_MSG_NO_MSG_ID_DETAIL = Util.local("LOCAL_MSG_NO_MSG_ID_DETAIL");
+  //private static final String LOCAL_MSG_ = Util.local("");
 
 
   public MessagingPanel(JFrame parentFrame, SendCashPanel sendCashPanel, JTabbedPane parentTabs,
@@ -190,7 +200,7 @@ public class MessagingPanel
 
     tempPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
     tempPanel.add(this.sendAnonymously =
-        new JCheckBox("<html><span style=\"font-size:0.8em;\">"+ LOCAL_MSG_SEND_ANONYMOUS + "</span>"));
+        new JCheckBox("<html><span style=\"font-size:0.8em;\">" + LOCAL_MSG_SEND_ANONYMOUS + "</span>"));
     sendButtonPanel.add(tempPanel);
 
     sendPanel.add(sendButtonPanel);
@@ -261,8 +271,8 @@ public class MessagingPanel
                   LOCAL_MSG_USER_SENDER_ID_ADDRESS +
                   sender.getSenderidaddress() + "\n";
         } else {
-          if(anonymous)
-            messageStart = LOCAL_MSG_ID_ANONYMOUS + id ;
+          if (anonymous)
+            messageStart = LOCAL_MSG_ID_ANONYMOUS + id;
           else
             messageStart = LOCAL_MSG_ID_NON_ANONYMOUS + id;
         }
@@ -434,26 +444,10 @@ public class MessagingPanel
       if (this.messagingStorage.getOwnIdentity() == null) {
         JOptionPane.showMessageDialog(
             this.parentFrame,
-            "Welcome to Bitcoin Private Messaging. As a start you will need to create a new messaging\n" +
-                "identity for yourself. As a part of this messaging identity a pair of B+Z addresses\n" +
-                "will be created. The B address is to be used for identifying you to other users.\n" +
-                "It must never be used for other financial transactions since this might reduce or\n" +
-                "fully compromise your privacy. The Z address is to be used to send and receive\n" +
-                "messages.\n\n" +
-                "When creating a new messaging identity it is only mandatory to specify a nick-name\n" +
-                "for yourself. All other items such as names/addresses etc. are optional. The \n" +
-                "information in the messaging identity is meant to be shared with other users so \n" +
-                "you need to be careful about the details you disclose.\n\n" +
-                "Once your messaging identity has been created you can export it to a file using the\n" +
-                "menu option Messaging >> Export own identity. This file may then be shared with\n" +
-                "other users who wish to import it. To establish contact with other users you need to\n" +
-                "import their messaging identity, using the menu option Messaging >> Import Contact \n" +
-                "identity.\n\n" +
-                "Your messaging history will be saved and maintained in directory:\n" +
+            LOCAL_MSG_WELCOME_TO_MSG_1 +
                 OSUtil.getSettingsDirectory() + File.separator + "messaging" + "\n" +
-                "You need to ensure that no unauthorized users have access to it on this computer.\n\n" +
-                "(This message will only be shown once.)",
-            "Welcome to Messaging", JOptionPane.INFORMATION_MESSAGE);
+                LOCAL_MSG_WELCOME_TO_MSG_2,
+            LOCAL_MSG_WELCOME_TO_MSG_TITLE, JOptionPane.INFORMATION_MESSAGE);
 
         // Show the GUI dialog to edit an initially empty messaging identity
         boolean identityCreated = this.openOwnIdentityDialog();
@@ -461,10 +455,8 @@ public class MessagingPanel
         // Offer the user to export his messaging identity
         int reply = JOptionPane.showConfirmDialog(
             this.parentFrame,
-            "Your messaging identity has been created successfully. Would you\n" +
-                "like to export it to a JSON file at this time? You need to export\n" +
-                "it and give this file to other users in order to establish contact.",
-            "Export messaging identity?",
+            LOCAL_MSG_MSG_CREATED_EXPORT,
+            LOCAL_MSG_EXPORT_MSG_ID,
             JOptionPane.YES_NO_OPTION);
 
         if (reply == JOptionPane.YES_OPTION) {
@@ -475,15 +467,10 @@ public class MessagingPanel
           MessagingIdentity ownIdentity = this.messagingStorage.getOwnIdentity();
 
           JOptionPane.showMessageDialog(
-              this.parentFrame,
-              "The Z address used to send/receive messages needs to be supplied with BTCP: \n" +
+              this.parentFrame, LOCAL_MSG_ADD_BTCP_TO_SEND_1 +
                   ownIdentity.getSendreceiveaddress() + "\n" +
-                  "You will be redirected to the UI tab for sending BTCP to add some balance to it. You need only\n" +
-                  "a small amount e.g. typically 0.1 BTCP is suffucient to send 500 messages. After sending some\n" +
-                  "BTCP you need to wait for the transaction to be confirmed (typically takes 2.5 minutes). It is\n" +
-                  "recommended to send BTCP to this Z address in two or more separate transactions (though one \n" +
-                  "transaction is sufficient).",
-              "Z address to send/receive messages needs to be supplied with BTCP...",
+                  LOCAL_MSG_ADD_BTCP_TO_SEND_2,
+              LOCAL_MSG_ADD_BTCP_TO_SEND_TITLE,
               JOptionPane.INFORMATION_MESSAGE);
 
           sendCashPanel.prepareForSending(ownIdentity.getSendreceiveaddress());
@@ -500,7 +487,7 @@ public class MessagingPanel
         // My Identity exists, check balance of T address !!! - must be none
         MessagingIdentity ownIdentity = this.messagingStorage.getOwnIdentity();
         Cursor oldCursor = this.parentFrame.getCursor();
-        String balance = null;
+        String balance;
         try {
           this.parentFrame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
           balance = this.clientCaller.getBalanceForAddress(ownIdentity.getSenderidaddress());
@@ -511,14 +498,10 @@ public class MessagingPanel
         if (Double.valueOf(balance) > 0) {
           JOptionPane.showMessageDialog(
               this.parentFrame,
-              "The B address used to identify you in messaging must have NO BTCP balance: \n" +
+              LOCAL_MSG_ADDR_HAS_BALANCE_DETAIL_1 +
                   ownIdentity.getSenderidaddress() + "\n" +
-                  "However it currently has a non-zero balance! This might mean that you \n" +
-                  "accidentally used this B address in non-messaging transactions. It might\n" +
-                  "also mean that someone sent BTCP to it deliberately. To minimize the chance\n" +
-                  "of compromising your privacy you must transfer all BTCP from this B address\n" +
-                  "to some Z address ASAP!",
-              "Messaging identification address has balance!",
+                  LOCAL_MSG_ADDR_HAS_BALANCE_DETAIL_2,
+              LOCAL_MSG_ADDR_HAS_BALANCE_TITLE,
               JOptionPane.WARNING_MESSAGE);
         }
       }
@@ -609,9 +592,8 @@ public class MessagingPanel
       if (ownIdentity == null) {
         JOptionPane.showMessageDialog(
             this.parentFrame,
-            "Your messaging identity is missing! Maybe it has not been created yet.\n" +
-                "Use the menu option \"Messaging >> My Identity\" to create it!",
-            "No Messaging Identity", JOptionPane.ERROR_MESSAGE);
+            LOCAL_MSG_NO_MSG_ID_DETAIL,
+            LOCAL_MSG_NO_MSG_ID, JOptionPane.ERROR_MESSAGE);
         return;
       }
 
