@@ -72,10 +72,9 @@ public class Util {
     if (bundle == null) {
       try {
         Locale locale;
-        //Locale locale = Locale.getDefault();
         String lang = getLanguage();
         if (lang == null)
-          locale = Locale.ENGLISH;
+          locale =Locale.getDefault();
         else
           locale = Locale.forLanguageTag(lang);
         bundle = ResourceBundle.getBundle("btcpwalletui", locale);
