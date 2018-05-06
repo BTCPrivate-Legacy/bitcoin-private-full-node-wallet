@@ -272,6 +272,7 @@ public class BTCPWalletUI extends JFrame {
           showRestartRequired();
         }
     );
+    /*
     langPortuguese.addActionListener(
         e -> {
           Util.setLanguage("pt");
@@ -289,7 +290,7 @@ public class BTCPWalletUI extends JFrame {
           Util.setLanguage("ru");
           showRestartRequired();
         }
-    );
+    );*/
 
     // Close operation
     this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
