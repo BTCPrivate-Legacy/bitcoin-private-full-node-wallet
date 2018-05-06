@@ -207,9 +207,9 @@ public class BTCPWalletUI extends JFrame {
 
     lang.add(langEnglish = new JMenuItem("English"));
     lang.add(langDutch = new JMenuItem("Nederlands"));
-    lang.add(langPortuguese = new JMenuItem("Português"));
-    lang.add(langFrench = new JMenuItem("Français"));
-    lang.add(langRussian = new JMenuItem("русский"));
+    //lang.add(langPortuguese = new JMenuItem("Português"));
+    //lang.add(langFrench = new JMenuItem("Français"));
+    //lang.add(langRussian = new JMenuItem("русский"));
 
     mb.add(lang);
 
