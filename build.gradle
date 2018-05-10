@@ -16,6 +16,10 @@ plugins {
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
+
+mainClassName = "org.btcprivate.wallets.fullnode.ui.BTCPWalletUI"
+
+
 repositories {
     mavenCentral()
 }
@@ -48,8 +52,6 @@ dependencies {
     compile group: 'org.bitcoinj', name: 'bitcoinj-core', version: '0.14.5'
     compile group: 'org.xerial', name: 'sqlite-jdbc', version: '3.21.0'
     compile group: 'org.vafer', name: 'jdeb', version: '1.5'
-    
-    //TODO replace by GSON
     compile group: 'com.eclipsesource.minimal-json', name: 'minimal-json', version: '0.9.5'
 
 

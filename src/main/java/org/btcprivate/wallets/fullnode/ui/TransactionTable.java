@@ -25,124 +25,121 @@ import java.util.Map.Entry;
  * @author Ivan Vaklinov <ivan@vaklinov.com>
  */
 public class TransactionTable extends DataTable {
+
+    private static final String BLOCK_EXPLORER_URL = "https://explorer.btcprivate.org/tx/";
+    private static final String BLOCK_EXPLORER_TEST_URL = "https://testnet.btcprivate.org/tx/";
+
+    private static final String LOCAL_MSG_SHOW_DETAILS = Util.local("LOCAL_MSG_SHOW_DETAILS");
+    private static final String LOCAL_MSG_VIEW_ON_EXPLORER = Util.local("LOCAL_MSG_VIEW_ON_EXPLORER");
+    private static final String LOCAL_MSG_SHOW_MEMO = Util.local("LOCAL_MSG_SHOW_MEMO");
+    private static final String LOCAL_MSG_NO_MEMO = Util.local("LOCAL_MSG_NO_MEMO");
+    private static final String LOCAL_MSG_NO_MEMO_TITLE = Util.local("LOCAL_MSG_NO_MEMO_TITLE");
+    private static final String LOCAL_MSG_MEMO_DETAIL_1 = Util.local("LOCAL_MSG_MEMO_DETAIL_1");
+    private static final String LOCAL_MSG_MEMO_DETAIL_2 = Util.local("LOCAL_MSG_MEMO_DETAIL_2");
+    private static final String LOCAL_MSG_NO_MEMO_DETAIL = Util.local("LOCAL_MSG_NO_MEMO_DETAIL");
+    private static final String LOCAL_MSG_MEMO = Util.local("LOCAL_MSG_MEMO");
+    private static final String LOCAL_MSG_TXN_DETAILS = Util.local("LOCAL_MSG_TXN_DETAILS");
+    private static final String LOCAL_MSG_TXN_DETAILS_1 = Util.local("LOCAL_MSG_TXN_DETAILS_1");
+    private static final String LOCAL_MSG_TXN_NAME = Util.local("LOCAL_MSG_TXN_NAME");
+    private static final String LOCAL_MSG_TXN_VALUE = Util.local("LOCAL_MSG_TXN_VALUE");
+    private static final String LOCAL_MSG_TXN_CLOSE = Util.local("LOCAL_MSG_TXN_CLOSE");
+
     public TransactionTable(final Object[][] rowData, final Object[] columnNames, final JFrame parent,
                             final BTCPClientCaller caller, final BTCPInstallationObserver installationObserver) {
         super(rowData, columnNames);
-        int accelaratorKeyMask = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
 
-        JMenuItem showDetails = new JMenuItem("Show details");
-        //showDetails.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, accelaratorKeyMask));
+        JMenuItem showDetails = new JMenuItem(LOCAL_MSG_SHOW_DETAILS);
         popupMenu.add(showDetails);
 
-        showDetails.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if ((lastRow >= 0) && (lastColumn >= 0)) {
-                    try {
-                        String txID = TransactionTable.this.getModel().getValueAt(lastRow, 6).toString();
-                        txID = txID.replaceAll("\"", ""); // In case it has quotes
+        showDetails.addActionListener(e -> {
+            if ((lastRow >= 0) && (lastColumn >= 0)) {
+                try {
+                    String txID = TransactionTable.this.getModel().getValueAt(lastRow, 6).toString();
+                    txID = txID.replaceAll("\"", ""); // In case it has quotes
 
-                        Log.info("Transaction ID for detail dialog is: " + txID);
-                        Map<String, String> details = caller.getRawTransactionDetails(txID);
-                        String rawTrans = caller.getRawTransaction(txID);
+                    Log.info("Transaction ID for detail dialog is: " + txID);
+                    Map<String, String> details = caller.getRawTransactionDetails(txID);
+                    String rawTrans = caller.getRawTransaction(txID);
 
-                        DetailsDialog dd = new DetailsDialog(parent, details);
-                        dd.setVisible(true);
-                    } catch (Exception ex) {
-                        Log.error("Unexpected error: ", ex);
-                        // TODO: report exception to user
-                    }
-                } else {
-                    // Log perhaps
+                    DetailsDialog dd = new DetailsDialog(parent, details);
+                    dd.setVisible(true);
+                } catch (Exception ex) {
+                    Log.error("Unexpected error: ", ex);
                 }
+            } else {
+                // Log perhaps
             }
         });
 
-        JMenuItem showInExplorer = new JMenuItem("Show in block explorer");
-        //showInExplorer.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, accelaratorKeyMask));
+        JMenuItem showInExplorer = new JMenuItem(LOCAL_MSG_VIEW_ON_EXPLORER);
         popupMenu.add(showInExplorer);
 
-        showInExplorer.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if ((lastRow >= 0) && (lastColumn >= 0)) {
-                    try {
-                        String txID = TransactionTable.this.getModel().getValueAt(lastRow, 6).toString();
-                        txID = txID.replaceAll("\"", ""); // In case it has quotes
+        showInExplorer.addActionListener(e -> {
+            if ((lastRow >= 0) && (lastColumn >= 0)) {
+                try {
+                    String txID = TransactionTable.this.getModel().getValueAt(lastRow, 6).toString();
+                    txID = txID.replaceAll("\"", ""); // In case it has quotes
 
-                        Log.info("Transaction ID for block explorer is: " + txID);
-                        String urlPrefix = "https://explorer.btcprivate.org/tx/";
-                        // TODO testnet
-                        if (installationObserver.isOnTestNet()) {
-                            urlPrefix = "https://testnet.btcprivate.org/tx/";
-                        }
-
-                        Desktop.getDesktop().browse(new URL(urlPrefix + txID).toURI());
-                    } catch (Exception ex) {
-                        Log.error("Unexpected error: ", ex);
-                        // TODO: report exception to user
+                    Log.info("Transaction ID for block explorer is: " + txID);
+                    String urlPrefix = BLOCK_EXPLORER_URL;
+                    if (installationObserver.isOnTestNet()) {
+                        urlPrefix = BLOCK_EXPLORER_TEST_URL;
                     }
-                } else {
-                    // Log perhaps
+                    Desktop.getDesktop().browse(new URL(urlPrefix + txID).toURI());
+                } catch (Exception ex) {
+                    Log.error("Unexpected error: ", ex);
                 }
+            } else {
+                // Log perhaps
             }
         });
 
-        JMenuItem showMemoField = new JMenuItem("Get transaction memo");
-        //showMemoField.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, accelaratorKeyMask));
+        JMenuItem showMemoField = new JMenuItem(LOCAL_MSG_SHOW_MEMO);
         popupMenu.add(showMemoField);
 
-        showMemoField.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if ((lastRow >= 0) && (lastColumn >= 0)) {
-                    Cursor oldCursor = parent.getCursor();
-                    try {
-                        String txID = TransactionTable.this.getModel().getValueAt(lastRow, 6).toString();
-                        txID = txID.replaceAll("\"", ""); // In case it has quotes
+        showMemoField.addActionListener(e -> {
+            if ((lastRow >= 0) && (lastColumn >= 0)) {
+                Cursor oldCursor = parent.getCursor();
+                try {
+                    String txID = TransactionTable.this.getModel().getValueAt(lastRow, 6).toString();
+                    txID = txID.replaceAll("\"", ""); // In case it has quotes
 
-                        String acc = TransactionTable.this.getModel().getValueAt(lastRow, 5).toString();
-                        acc = acc.replaceAll("\"", ""); // In case it has quotes
+                    String acc = TransactionTable.this.getModel().getValueAt(lastRow, 5).toString();
+                    acc = acc.replaceAll("\"", ""); // In case it has quotes
 
-                        boolean isZAddress = Util.isZAddress(acc);
-                        if (!isZAddress) {
-                            JOptionPane.showMessageDialog(parent,
-                                    "The selected transaction does not have as destination a Z (private) \n"
-                                            + "address or it is unkonwn (not listed) and thus no memo information \n"
-                                            + "about this transaction is available.",
-                                    "No Memo Available", JOptionPane.ERROR_MESSAGE);
-                            return;
-                        }
-
-                        Log.info("Transaction ID for Memo field is: " + txID);
-                        Log.info("Account for Memo field is: " + acc);
-                        parent.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-                        // TODO: some day support outgoing Z transactions
-                        String MemoField = caller.getMemoField(acc, txID);
-                        parent.setCursor(oldCursor);
-                        Log.info("Memo field is: " + MemoField);
-
-                        if (MemoField != null) {
-                            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-                            clipboard.setContents(new StringSelection(MemoField), null);
-
-                            MemoField = Util.blockWrapString(MemoField, 80);
-                            JOptionPane.showMessageDialog(parent,
-                                    "The memo contained in the transaction is: \n" + MemoField + "\n\n"
-                                            + "This memo has also been copied to the clipboard.",
-                                    "Memo", JOptionPane.PLAIN_MESSAGE);
-                        } else {
-                            JOptionPane.showMessageDialog(parent,
-                                    "The selected transaction does not contain a memo.",
-                                    "No Memo Available", JOptionPane.ERROR_MESSAGE);
-                        }
-                    } catch (Exception ex) {
-                        parent.setCursor(oldCursor);
-                        Log.error("", ex);
-                        // TODO: report exception to user
+                    boolean isZAddress = Util.isZAddress(acc);
+                    if (!isZAddress) {
+                        JOptionPane.showMessageDialog(parent,
+                                LOCAL_MSG_NO_MEMO,
+                                LOCAL_MSG_NO_MEMO_TITLE, JOptionPane.ERROR_MESSAGE);
+                        return;
                     }
-                } else {
-                    // Log perhaps
+
+                    Log.info("Transaction ID for Memo field is: " + txID);
+                    Log.info("Account for Memo field is: " + acc);
+                    parent.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+                    // TODO: some day support outgoing Z transactions
+                    String MemoField = caller.getMemoField(acc, txID);
+                    parent.setCursor(oldCursor);
+                    Log.info("Memo field is: " + MemoField);
+
+                    if (MemoField != null) {
+                        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+                        clipboard.setContents(new StringSelection(MemoField), null);
+
+                        MemoField = Util.blockWrapString(MemoField, 80);
+                        JOptionPane.showMessageDialog(parent,
+                                LOCAL_MSG_MEMO_DETAIL_1 + ": \n" + MemoField + "\n\n"
+                                        + LOCAL_MSG_MEMO_DETAIL_2,
+                                LOCAL_MSG_MEMO, JOptionPane.PLAIN_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(parent,
+                                LOCAL_MSG_NO_MEMO_DETAIL,
+                                LOCAL_MSG_NO_MEMO_TITLE, JOptionPane.ERROR_MESSAGE);
+                    }
+                } catch (Exception ex) {
+                    parent.setCursor(oldCursor);
+                    Log.error("", ex);
                 }
             }
         });
@@ -151,7 +148,7 @@ public class TransactionTable extends DataTable {
 
     private static class DetailsDialog extends JDialog {
         public DetailsDialog(JFrame parent, Map<String, String> details) throws UnsupportedEncodingException {
-            this.setTitle("Transaction Details");
+            this.setTitle(LOCAL_MSG_TXN_DETAILS);
             this.setSize(600, 310);
             this.setLocation(100, 100);
             this.setLocationRelativeTo(parent);
@@ -163,13 +160,12 @@ public class TransactionTable extends DataTable {
             JPanel tempPanel = new JPanel(new BorderLayout(0, 0));
             tempPanel.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
             JLabel infoLabel = new JLabel("<html><span style=\"font-size:0.97em;\">"
-                    + "This table shows information about the transaction with technical details as "
-                    + "they appear at the Bitcoin Private network level." + "</span>");
+                    + LOCAL_MSG_TXN_DETAILS_1 + "</span>");
             infoLabel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
             tempPanel.add(infoLabel, BorderLayout.CENTER);
             this.getContentPane().add(tempPanel, BorderLayout.NORTH);
 
-            String[] columns = new String[] { "Name", "Value" };
+            String[] columns = new String[]{LOCAL_MSG_TXN_NAME, LOCAL_MSG_TXN_VALUE};
             String[][] data = new String[details.size()][2];
             int i = 0;
             int maxPreferredWidth = 400;
@@ -205,19 +201,14 @@ public class TransactionTable extends DataTable {
             // Lower close button
             JPanel closePanel = new JPanel();
             closePanel.setLayout(new FlowLayout(FlowLayout.CENTER, 3, 3));
-            JButton closeButton = new JButton("Close");
+            JButton closeButton = new JButton(LOCAL_MSG_TXN_CLOSE);
             closePanel.add(closeButton);
             this.getContentPane().add(closePanel, BorderLayout.SOUTH);
 
-            closeButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    DetailsDialog.this.setVisible(false);
-                    DetailsDialog.this.dispose();
-                }
+            closeButton.addActionListener(e -> {
+                DetailsDialog.this.setVisible(false);
+                DetailsDialog.this.dispose();
             });
-
         }
-
     }
 }

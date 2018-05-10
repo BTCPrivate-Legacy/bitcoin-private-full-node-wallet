@@ -91,7 +91,7 @@ public class BTCPInstallationObserver {
             StringTokenizer st = new StringTokenizer(line, " \t", false);
             boolean foundZCash = false;
             for (int i = 0; i < 11; i++) {
-                String token = null;
+                String token;
                 if (st.hasMoreTokens()) {
                     token = st.nextToken();
                 } else {
@@ -100,17 +100,23 @@ public class BTCPInstallationObserver {
                 if (i == 2) {
                     try {
                         info.cpuPercentage = Double.valueOf(token);
-                    } catch (NumberFormatException nfe) { /* TODO: Log or handle exception */ }
+                    } catch (NumberFormatException nfe) {
+                        Log.error("cant parse CPU precentage " + token);
+                    }
                     ;
                 } else if (i == 4) {
                     try {
                         info.virtualSizeMB = Double.valueOf(token) / 1000;
-                    } catch (NumberFormatException nfe) { /* TODO: Log or handle exception */ }
+                    } catch (NumberFormatException nfe) {
+                        Log.error("cant parse virtual MB size" + token);
+                    }
                     ;
                 } else if (i == 5) {
                     try {
                         info.residentSizeMB = Double.valueOf(token) / 1000;
-                    } catch (NumberFormatException nfe) { /* TODO: Log or handle exception */ }
+                    } catch (NumberFormatException nfe) {
+                        Log.error("cant parse resident MB size " + token);
+                    }
                     ;
                 } else if (i == 10) {
                 	// account for the case where Application names in Mac OS X commonly have spaces in them
@@ -185,7 +191,9 @@ public class BTCPInstallationObserver {
                         if (size.endsWith("K")) {
                             size = size.substring(0, size.length() - 1);
                         }
-                    } catch (NumberFormatException nfe) { /* TODO: Log or handle exception */ }
+                    } catch (NumberFormatException nfe) {
+                        Log.error("cant parse number " + token);
+                    }
                     ;
                 }
             } // End parsing row

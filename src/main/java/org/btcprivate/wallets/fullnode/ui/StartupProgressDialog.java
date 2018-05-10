@@ -32,6 +32,7 @@ import org.btcprivate.wallets.fullnode.util.Log;
 import org.btcprivate.wallets.fullnode.util.OSUtil;
 import org.btcprivate.wallets.fullnode.util.OSUtil.*;
 import org.btcprivate.wallets.fullnode.daemon.BTCPClientCaller.*;
+import org.btcprivate.wallets.fullnode.util.Util;
 
 public class StartupProgressDialog extends JFrame {
 
@@ -49,11 +50,15 @@ public class StartupProgressDialog extends JFrame {
 
     private final BTCPClientCaller clientCaller;
 
-    public StartupProgressDialog(BTCPClientCaller clientCaller)
-    {
+    private static final String LOCAL_MSG_BTCP_WALLET_TITLE = Util.local("LOCAL_MSG_BTCP_WALLET_TITLE");
+    private static final String LOCAL_MSG_STARTING = Util.local("LOCAL_MSG_STARTING");
+
+    private static final String splash_resource = "images/btcp-400.png";
+
+    public StartupProgressDialog(BTCPClientCaller clientCaller) {
         this.clientCaller = clientCaller;
 
-        URL iconUrl = this.getClass().getClassLoader().getResource("images/btcp-400.png");
+        URL iconUrl = this.getClass().getClassLoader().getResource(splash_resource);
         imageIcon = new ImageIcon(iconUrl);
         imageLabel.setIcon(imageIcon);
         imageLabel.setBorder(BorderFactory.createEmptyBorder(16, 16, 0, 16));
@@ -64,7 +69,7 @@ public class StartupProgressDialog extends JFrame {
         contentPane.add(imageLabel, BorderLayout.NORTH);
         JLabel zcashWalletLabel = new JLabel(
                 "<html><span style=\"font-style:italic;font-weight:bold;font-size:2.2em\">" +
-                        "Bitcoin Private Wallet</span></html>");
+                        LOCAL_MSG_BTCP_WALLET_TITLE + "</span></html>");
         zcashWalletLabel.setBorder(BorderFactory.createEmptyBorder(16, 16, 16, 16));
         // todo - place in a panel with flow center
         JPanel tempPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 1, 1));
@@ -73,7 +78,7 @@ public class StartupProgressDialog extends JFrame {
         contentPane.add(southPanel, BorderLayout.SOUTH);
         progressBar.setIndeterminate(true);
         southPanel.add(progressBar, BorderLayout.NORTH);
-        progressLabel.setText("Starting...");
+        progressLabel.setText(LOCAL_MSG_STARTING);
         southPanel.add(progressLabel, BorderLayout.SOUTH);
         pack();
         setLocationRelativeTo(null);
@@ -82,12 +87,11 @@ public class StartupProgressDialog extends JFrame {
     }
 
     public void waitForStartup() throws IOException,
-            InterruptedException,WalletCallException,InvocationTargetException {
+            InterruptedException, WalletCallException, InvocationTargetException {
 
         // special handling of Windows/Mac OS app launch
         OS_TYPE os = OSUtil.getOSType();
-        if ((os == OS_TYPE.WINDOWS) || (os == OS_TYPE.MAC_OS))
-        {
+        if ((os == OS_TYPE.WINDOWS) || (os == OS_TYPE.MAC_OS)) {
             ProvingKeyFetcher keyFetcher = new ProvingKeyFetcher();
             keyFetcher.fetchIfMissing(this);
         }
@@ -100,8 +104,7 @@ public class StartupProgressDialog extends JFrame {
             // Relying on a general exception may be unreliable
             // may be thrown for an unexpected reason!!! - so message is checked
             if (e.getMessage() != null &&
-                    e.getMessage().toLowerCase(Locale.ROOT).contains("error: couldn't connect to server"))
-            {
+                    e.getMessage().toLowerCase(Locale.ROOT).contains("error: couldn't connect to server")) {
                 shouldStartZCashd = true;
             }
         }
@@ -111,8 +114,7 @@ public class StartupProgressDialog extends JFrame {
             // What if started by hand but taking long to initialize???
 //            doDispose();
 //            return;
-        } else
-        {
+        } else {
             Log.info("Splash: btcpd will be started...");
         }
 
@@ -122,22 +124,18 @@ public class StartupProgressDialog extends JFrame {
         Thread.sleep(POLL_PERIOD); // just a little extra
 
         int iteration = 0;
-        while(true) {
+        while (true) {
             iteration++;
             Thread.sleep(POLL_PERIOD);
 
             JsonObject info = null;
 
-            try
-            {
+            try {
                 info = clientCaller.getDaemonRawRuntimeInfo();
-            } catch (IOException e)
-            {
-                if (iteration > 4)
-                {
+            } catch (IOException e) {
+                if (iteration > 4) {
                     throw e;
-                } else
-                {
+                } else {
                     continue;
                 }
             }
@@ -157,24 +155,20 @@ public class StartupProgressDialog extends JFrame {
             public void run() {
                 Log.info("Stopping btcpd because we started it - now it is alive: " +
                         StartupProgressDialog.this.isAlive(daemonProcess));
-                try
-                {
+                try {
                     clientCaller.stopDaemon();
                     long start = System.currentTimeMillis();
 
-                    while (!StartupProgressDialog.this.waitFor(daemonProcess, 3000))
-                    {
+                    while (!StartupProgressDialog.this.waitFor(daemonProcess, 3000)) {
                         long end = System.currentTimeMillis();
                         Log.info("Waiting for " + ((end - start) / 1000) + " seconds for btcpd to exit...");
 
-                        if (end - start > 10 * 1000)
-                        {
+                        if (end - start > 10 * 1000) {
                             clientCaller.stopDaemon();
                             daemonProcess.destroy();
                         }
 
-                        if (end - start > 1 * 60 * 1000)
-                        {
+                        if (end - start > 1 * 60 * 1000) {
                             break;
                         }
                     }
@@ -195,66 +189,43 @@ public class StartupProgressDialog extends JFrame {
     }
 
     public void doDispose() {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                setVisible(false);
-                dispose();
-            }
+        SwingUtilities.invokeLater(() -> {
+            setVisible(false);
+            dispose();
         });
     }
 
     public void setProgressText(final String text) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                progressLabel.setText(text);
-            }
-        });
+        SwingUtilities.invokeLater(() -> progressLabel.setText(text));
     }
 
-
-    // Custom code - to allow JDK7 compilation.
-    public boolean isAlive(Process p)
-    {
-        if (p == null)
-        {
+    public boolean isAlive(Process p) {
+        if (p == null) {
             return false;
         }
 
-        try
-        {
-            int val = p.exitValue();
-
+        try {
+            p.exitValue();
             return false;
-        } catch (IllegalThreadStateException itse)
-        {
+        } catch (IllegalThreadStateException itse) {
             return true;
         }
     }
 
-
-    // Custom code - to allow JDK7 compilation.
-    public boolean waitFor(Process p, long interval)
-    {
-        synchronized (this)
-        {
+    public boolean waitFor(Process p, long interval) {
+        synchronized (this) {
             long startWait = System.currentTimeMillis();
-            long endWait = startWait;
-            do
-            {
+            long endWait;
+            do {
                 boolean ended = !isAlive(p);
 
-                if (ended)
-                {
-                    return true; // End here
+                if (ended) {
+                    return true;
                 }
 
-                try
-                {
+                try {
                     this.wait(100);
-                } catch (InterruptedException ie)
-                {
+                } catch (InterruptedException ie) {
                     // One of the rare cases where we do nothing
                     Log.error("Unexpected error: ", ie);
                 }
@@ -262,7 +233,6 @@ public class StartupProgressDialog extends JFrame {
                 endWait = System.currentTimeMillis();
             } while ((endWait - startWait) <= interval);
         }
-
         return false;
     }
 }

@@ -15,7 +15,7 @@ public class BTCPWalletUITest {
     @Test
     public void testAppHasAGreeting() throws InterruptedException, BTCPClientCaller.WalletCallException, IOException {
         BTCPWalletUI classUnderTest = null;
-        classUnderTest = new BTCPWalletUI(null);
+        classUnderTest = new BTCPWalletUI(null,"BTCP Wallet TEST");
         assertNotNull("app should have a greeting", classUnderTest);
     }
 }

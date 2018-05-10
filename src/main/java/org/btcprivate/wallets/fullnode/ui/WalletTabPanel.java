@@ -21,14 +21,13 @@ public class WalletTabPanel
     protected List<Timer> timers                   = null;
     protected List<DataGatheringThread<?>> threads = null;
 
-
     public WalletTabPanel()
             throws IOException, InterruptedException, WalletCallException
     {
         super();
 
-        this.timers = new ArrayList<Timer>();
-        this.threads = new ArrayList<DataGatheringThread<?>>();
+        this.timers = new ArrayList<>();
+        this.threads = new ArrayList<>();
     }
 
 

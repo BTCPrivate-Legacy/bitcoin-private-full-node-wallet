@@ -1,6 +1,7 @@
 package org.btcprivate.wallets.fullnode.ui;
 
 import org.btcprivate.wallets.fullnode.util.Log;
+import org.btcprivate.wallets.fullnode.util.Util;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -30,7 +31,14 @@ public class DataTable
     protected int lastColumn = -1;
     
     protected JPopupMenu popupMenu;
-    
+
+    private static final String LOCAL_MSG_COPY_VALUE = Util.local("LOCAL_MSG_COPY_VALUE");
+    private static final String LOCAL_MSG_EXPORT_TO_CSV = Util.local("LOCAL_MSG_EXPORT_TO_CSV");
+    private static final String LOCAL_MSG_UNEXP_ERROR_EXPORT_CSV = Util.local("LOCAL_MSG_UNEXP_ERROR_EXPORT_CSV");
+    private static final String LOCAL_MSG_UNEXP_ERROR_EXPORT_CSV_TITLE = Util.local("LOCAL_MSG_UNEXP_ERROR_EXPORT_CSV_TITLE");
+    private static final String LOCAL_MSG_UNEXP_ERROR_EXPORT_CSV_SUCCESS = Util.local("LOCAL_MSG_UNEXP_ERROR_EXPORT_CSV_SUCCESS");
+    private static final String LOCAL_MSG_UNEXP_ERROR_EXPORT_CSV_SUCCESS_TITLE = Util.local("LOCAL_MSG_UNEXP_ERROR_EXPORT_CSV_SUCCESS_TITLE");
+
     public DataTable(final Object[][] rowData, final Object[] columnNames)
     {
         super(rowData, columnNames);
@@ -78,19 +86,6 @@ public class DataTable
                 }
             }
         });
-
-//        this.addKeyListener(new KeyAdapter()
-//		{
-//			@Override
-//			public void keyTyped(KeyEvent e)
-//			{
-//				if (e.getKeyCode() == KeyEvent.VK_CONTEXT_MENU)
-//				{
-//					System.out.println("Context menu invoked...");;
-//					popupMenu.show(e.getComponent(), e.getComponent().getX(), e.getComponent().getY());
-//				}
-//			}
-//		});
     }
 
 
@@ -163,7 +158,7 @@ public class DataTable
         final String ENCODING = "UTF-8";
 
         JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Export Data to CSV File");
+        fileChooser.setDialogTitle(LOCAL_MSG_EXPORT_TO_CSV);
         fileChooser.setFileFilter(new FileNameExtensionFilter("CSV Files (*.csv)", "csv"));
 
         int result = fileChooser.showSaveDialog(this.getRootPane().getParent());
@@ -214,9 +209,8 @@ public class DataTable
 
         JOptionPane.showMessageDialog(
                 this.getRootPane().getParent(),
-                "The data has been successfully exported as a CSV:\n" +
+                LOCAL_MSG_UNEXP_ERROR_EXPORT_CSV_SUCCESS + ": \n" +
                         f.getCanonicalPath(),
-                "Export Successful", JOptionPane.INFORMATION_MESSAGE);
+                LOCAL_MSG_UNEXP_ERROR_EXPORT_CSV_SUCCESS_TITLE, JOptionPane.INFORMATION_MESSAGE);
     }
 }
-
