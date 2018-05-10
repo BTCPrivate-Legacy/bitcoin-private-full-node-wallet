@@ -50,6 +50,7 @@ public class BTCPWalletUI extends JFrame {
     private JMenuItem langEnglish;
     private JMenuItem langDutch;
     private JMenuItem langPortuguese;
+    private JMenuItem langItalian;
     private JMenuItem langFrench;
     private JMenuItem langRussian;
 
@@ -208,6 +209,7 @@ public class BTCPWalletUI extends JFrame {
         lang.add(langEnglish = new JMenuItem("English"));
         lang.add(langDutch = new JMenuItem("Nederlands"));
         lang.add(langPortuguese = new JMenuItem("Português"));
+        lang.add(langItalian = new JMenuItem("Italiano"));
         //lang.add(langFrench = new JMenuItem("Français"));
         //lang.add(langRussian = new JMenuItem("русский"));
 
@@ -276,6 +278,13 @@ public class BTCPWalletUI extends JFrame {
         langPortuguese.addActionListener(
             e -> {
                 Util.setLanguage("pt");
+                showRestartRequired();
+            }
+        );
+
+        langItalian.addActionListener(
+            e -> {
+                Util.setLanguage("it");
                 showRestartRequired();
             }
         );
