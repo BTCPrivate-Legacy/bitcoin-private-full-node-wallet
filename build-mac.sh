@@ -8,7 +8,7 @@
 # set up your app name, version number, and background image file name
 APP_NAME="BitcoinPrivateDesktopWallet"
 APP_DISPLAY_NAME="Bitcoin Private Desktop Wallet"
-VERSION="1.1.0"
+VERSION="1.1.1"
 APP_EXE="${APP_DISPLAY_NAME}.app/Contents/MacOS/JavaAppLauncher"
 VOL_NAME="${APP_NAME}_${VERSION}"
 DMG_TMP="${VOL_NAME}-temp.dmg"
