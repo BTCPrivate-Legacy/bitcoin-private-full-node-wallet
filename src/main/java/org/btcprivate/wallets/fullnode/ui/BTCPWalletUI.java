@@ -300,7 +300,7 @@ public class BTCPWalletUI extends JFrame {
 	    
 	    langSpanish.addActionListener(
 	        e -> {
-	          Util.setLanguage("es");
+	          Util.setLanguage("es-ES");
 	          showRestartRequired();
 	        }
 	    );
