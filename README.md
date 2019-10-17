@@ -13,6 +13,7 @@ https://github.com/BTCPrivate/bitcoin-private-full-node-wallet/releases
 
 ![Bitcoin Private Desktop Wallet](https://github.com/BTCPrivate/bitcoin-private-full-node-wallet/raw/master/docs/WalletPreviewWin.png "Bitcoin Private Desktop Wallet")
 
+![Bitcoin Private Desktop Wallet Addresses](https://github.com/BTCPrivate/bitcoin-private-full-node-wallet/raw/master/docs/WalletPreviewWin2.png "Bitcoin Private Desktop Wallet Addresses]")
 
 #### WARNING: Be careful when using this software! It is highly experimental.
 #### Always test with small amounts first! It is your responsibility to properly handle your private keys!
@@ -89,7 +90,9 @@ Running the .jar will automatically set up `~/.btcprivate/btcprivate.conf` for y
 rpcuser=ENTER-RANDOM-ALPHANUMERICAL-PASSWORD
 rpcpassword=ENTER-RANDOM-ALPHANUMERICAL-PASSWORD
 rpcport=7932
+upnp=1
 #addnode=...
+
 
 ```
 

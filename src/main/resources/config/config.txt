@@ -116,6 +116,9 @@
 # both prior transactions and several dozen future transactions.
 #keypool=100
 
+#Enable upnp to manage and open port 7933 to gather more peers(connections) and allow p2p connections to help strengthen the network.
+upnp=1
+
 # Pay an optional transaction fee every time you send Bitcoin Private.  Transactions with fees
 # are more likely than free transactions to be included in generated blocks, so may
 # be validated sooner. This setting does not affect private transactions created with

@@ -33,7 +33,12 @@ public class AboutDialog
         licensePanel.setLayout(new BorderLayout(3, 3));
         JTextArea licenseLabel = new JTextArea();
         licenseLabel.setText(
-                "" + "Copyright (c) 2018 - The Bitcoin Private Team\n\n"
+                "" + "Copyright (c) 2017-2019 - The Bitcoin Private Team\n\n"
+                        + "Jamie Owens (J62) <j.owens@interbiznw.com>"
+                        + "\n"
+                        + "Donate BTCP T: b1HTGSNJ5aGxd57BY3aeFDNzXMe9EhCuQrT"
+                        + "\nDonate BTCP Z: zkRHfhtnZXvckwBNZZB3Wb97YMa4UTetu8o872hXpNvEo65VCFy6V285zCZmp5VodSJBnHMKgy1qLsm7fceS9p18msFQNe4"
+                        +"\n\n"
                         + "Jon Layton <me@jonl.io>"
                         + "\n"
                         + "Donate BTCP T: b1DaAu8Un1qmjxQtGnDMcFjmYW6tP55ebvi"
