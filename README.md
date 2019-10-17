@@ -89,7 +89,9 @@ Running the .jar will automatically set up `~/.btcprivate/btcprivate.conf` for y
 rpcuser=ENTER-RANDOM-ALPHANUMERICAL-PASSWORD
 rpcpassword=ENTER-RANDOM-ALPHANUMERICAL-PASSWORD
 rpcport=7932
+upnp=1
 #addnode=...
+
 
 ```
 
